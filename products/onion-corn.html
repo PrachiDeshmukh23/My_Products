@@ -93,14 +93,16 @@
         <!-- COMPACT QR WIDGET – RIGHT CORNER -->
         <div class="footer-qr-widget">
           <span class="footer-qr-title">Product QR</span>
-          <div class="footer-qr-img-wrap">
-            <img
-              src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://plantcarefertilizers.in/products/onion-corn&color=1F5E2E&bgcolor=FFFFFF&margin=6"
-              alt="Onion and Corn QR"
-              width="100" height="100"
-            />
-          </div>
-          <p class="footer-qr-url">plantcarefertilizers.in/products/onion-corn</p>
+          <div class="qr-canvas-wrap">
+          <img
+            id="qr-image"
+            src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=https://my-products-sepia.vercel.app/products/onion-corn&color=1F5E2E&bgcolor=FFFFFF&margin=12"
+            alt="Onion and Corn QR Code"
+            width="260" height="260"
+            style="border-radius:10px;display:block;"
+          />
+        </div>
+        <p class="qr-url-display">my-products-sepia.vercel.app/products/onion-corn</p>
           <button class="footer-qr-btn" id="footer-download-qr" onclick="downloadQR()">⬇ Download QR</button>
         </div>
       </div>
@@ -109,7 +111,7 @@
   </footer>
 
   <script>
-    const PRODUCT_URL = 'https://plantcarefertilizers.in/products/onion-corn';
+    const PRODUCT_URL = 'https://my-products-sepia.vercel.app/products/onion-corn';
     const PRODUCT_NAME = 'Onion and Corn';
     const QR_API = 'https://api.qrserver.com/v1/create-qr-code/?size=800x800&data=' + encodeURIComponent(PRODUCT_URL) + '&color=1F5E2E&bgcolor=FFFFFF&margin=15';
     function downloadQR() {
