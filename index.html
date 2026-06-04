@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PlantCare Fertilizers Pvt. Ltd. | Premium Organic Fertilizers</title>
   <meta name="description" content="PlantCare Fertilizers Pvt. Ltd. – Premium organic fertilizers for sugarcane, onion, corn, soybean, cotton and more. Farmer-friendly, high-yield solutions." />
+  <meta name="keywords" content="PlantCare Fertilizers, organic fertilizer, sugarcane fertilizer, soybean fertilizer, onion fertilizer, crop growth promoter, Maharashtra fertilizer, organic manure India" />
+  <!-- Open Graph / WhatsApp & Facebook Share Preview -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="PlantCare Fertilizers – Premium Organic Fertilizers" />
+  <meta property="og:description" content="🌱 Premium organic fertilizers for Indian farmers. Sugarcane, Onion, Corn, Soybean, Cotton – scientifically formulated for higher yield." />
+  <meta property="og:image" content="https://my-products-sepia.vercel.app/public/images/plantcare-logo.png" />
+  <meta property="og:url" content="https://my-products-sepia.vercel.app/" />
+  <meta property="og:site_name" content="PlantCare Fertilizers Pvt. Ltd." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="PlantCare Fertilizers – Premium Organic Fertilizers" />
+  <meta name="twitter:description" content="🌱 Premium organic fertilizers for Indian farmers. Higher yield, healthier soil." />
+  <meta name="twitter:image" content="https://my-products-sepia.vercel.app/public/images/plantcare-logo.png" />
   <link rel="stylesheet" href="css/global.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,7 +28,7 @@
     <div class="container">
       <div class="header-inner">
         <a href="index.html" class="brand-link" id="brand-home-link">
-          <img src="public/images/plantcare-logo.png" alt="PlantCare Logo" class="brand-logo" />
+          <img src="public/images/plantcare-logo.png" alt="PlantCare Fertilizers Logo" class="brand-logo" />
           <div class="brand-text">
             <span class="brand-name">PlantCare</span>
             <span class="brand-tagline">Fertilizers Pvt. Ltd.</span>
@@ -24,8 +36,9 @@
         </a>
         <nav class="main-nav" id="main-nav">
           <a href="index.html" class="nav-link active" id="nav-home">Home</a>
+          <a href="about.html" class="nav-link" id="nav-about">About</a>
           <a href="products.html" class="nav-link" id="nav-products">Products</a>
-          <a href="admin/login.html" class="nav-link nav-admin" id="nav-admin">Admin</a>
+          <a href="contact.html" class="nav-link" id="nav-contact">Contact</a>
         </nav>
         <button class="hamburger" id="hamburger-btn" aria-label="Toggle menu">
           <span></span><span></span><span></span>
@@ -85,11 +98,13 @@
       </div>
       <div class="products-grid" id="products-grid">
         <!-- Sugarcane Special -->
-        <a href="products/sugarcane-special.html" class="product-card" id="card-sugarcane">
+        <div class="product-card" id="card-sugarcane" data-category="organic">
           <div class="card-badge">Organic</div>
-          <div class="card-image-wrap">
-            <img src="public/images/sugarcane-special.png" alt="Sugarcane Special" class="card-image" />
-          </div>
+          <a href="products/sugarcane-special.html">
+            <div class="card-image-wrap">
+              <img src="public/images/sugarcane-special.png" alt="Sugarcane Special organic fertilizer by PlantCare" class="card-image" />
+            </div>
+          </a>
           <div class="card-body">
             <h3 class="card-title">Sugarcane Special</h3>
             <p class="card-desc">Organic fertilizer specially developed for Sugarcane crops for healthy root growth and higher yield.</p>
@@ -97,22 +112,22 @@
               <span class="card-price">₹1,480</span>
               <span class="card-weight">50 KG</span>
             </div>
-            <div class="card-qr-hint">
-              <span class="qr-icon">⬛</span>
-              <span>Scan QR for details</span>
-            </div>
           </div>
-          <div class="card-footer">
-            <span class="view-btn">View &amp; Download QR →</span>
+          <div class="card-actions">
+            <a href="products/sugarcane-special.html" class="card-action-btn view-details">View Details</a>
+            <a href="https://wa.me/917666046941?text=Hello%20PlantCare%2C%20I%20want%20to%20order%20Sugarcane%20Special.%20Please%20share%20more%20details." target="_blank" rel="noopener" class="card-action-btn card-wa" id="wa-sugarcane">📱 Order</a>
+            <a href="products/sugarcane-special.html#qr-image" class="card-action-btn card-qr">QR Code</a>
           </div>
-        </a>
+        </div>
 
         <!-- Onion and Corn -->
-        <a href="products/onion-corn.html" class="product-card" id="card-onion-corn">
+        <div class="product-card" id="card-onion-corn" data-category="organic">
           <div class="card-badge">Organic</div>
-          <div class="card-image-wrap">
-            <img src="public/images/onion-corn.png" alt="Onion and Corn" class="card-image" />
-          </div>
+          <a href="products/onion-corn.html">
+            <div class="card-image-wrap">
+              <img src="public/images/onion-corn.png" alt="Onion and Corn organic fertilizer by PlantCare" class="card-image" />
+            </div>
+          </a>
           <div class="card-body">
             <h3 class="card-title">Onion &amp; Corn</h3>
             <p class="card-desc">Organic nutrient fertilizer for Onion and Corn crops to improve productivity and soil health.</p>
@@ -120,22 +135,22 @@
               <span class="card-price">₹1,460</span>
               <span class="card-weight">50 KG</span>
             </div>
-            <div class="card-qr-hint">
-              <span class="qr-icon">⬛</span>
-              <span>Scan QR for details</span>
-            </div>
           </div>
-          <div class="card-footer">
-            <span class="view-btn">View &amp; Download QR →</span>
+          <div class="card-actions">
+            <a href="products/onion-corn.html" class="card-action-btn view-details">View Details</a>
+            <a href="https://wa.me/917666046941?text=Hello%20PlantCare%2C%20I%20want%20to%20order%20Onion%20%26%20Corn.%20Please%20share%20more%20details." target="_blank" rel="noopener" class="card-action-btn card-wa" id="wa-onion">📱 Order</a>
+            <a href="products/onion-corn.html#qr-image" class="card-action-btn card-qr">QR Code</a>
           </div>
-        </a>
+        </div>
 
         <!-- Soybean and Cotton -->
-        <a href="products/soybean-cotton.html" class="product-card" id="card-soybean-cotton">
+        <div class="product-card" id="card-soybean-cotton" data-category="microbial">
           <div class="card-badge">Microbial</div>
-          <div class="card-image-wrap">
-            <img src="public/images/soybean-cotton.png" alt="Soybean and Cotton" class="card-image" />
-          </div>
+          <a href="products/soybean-cotton.html">
+            <div class="card-image-wrap">
+              <img src="public/images/soybean-cotton.png" alt="Soybean and Cotton microbial fertilizer by PlantCare" class="card-image" />
+            </div>
+          </a>
           <div class="card-body">
             <h3 class="card-title">Soybean &amp; Cotton</h3>
             <p class="card-desc">Microbial organic fertilizer for Soybean and Cotton crops supporting nutrient absorption and root development.</p>
@@ -143,22 +158,22 @@
               <span class="card-price">₹1,490</span>
               <span class="card-weight">50 KG</span>
             </div>
-            <div class="card-qr-hint">
-              <span class="qr-icon">⬛</span>
-              <span>Scan QR for details</span>
-            </div>
           </div>
-          <div class="card-footer">
-            <span class="view-btn">View &amp; Download QR →</span>
+          <div class="card-actions">
+            <a href="products/soybean-cotton.html" class="card-action-btn view-details">View Details</a>
+            <a href="https://wa.me/917666046941?text=Hello%20PlantCare%2C%20I%20want%20to%20order%20Soybean%20%26%20Cotton.%20Please%20share%20more%20details." target="_blank" rel="noopener" class="card-action-btn card-wa" id="wa-soybean">📱 Order</a>
+            <a href="products/soybean-cotton.html#qr-image" class="card-action-btn card-qr">QR Code</a>
           </div>
-        </a>
+        </div>
 
         <!-- Crop Shakti -->
-        <a href="products/crop-shakti.html" class="product-card" id="card-crop-shakti">
+        <div class="product-card" id="card-crop-shakti" data-category="advanced">
           <div class="card-badge">Advanced</div>
-          <div class="card-image-wrap">
-            <img src="public/images/crop-shakti.png" alt="Crop Shakti" class="card-image" />
-          </div>
+          <a href="products/crop-shakti.html">
+            <div class="card-image-wrap">
+              <img src="public/images/crop-shakti.png" alt="Crop Shakti advanced growth promoter by PlantCare" class="card-image" />
+            </div>
+          </a>
           <div class="card-body">
             <h3 class="card-title">Crop Shakti</h3>
             <p class="card-desc">Advanced organic growth promoter enriched with humates, amino acids, seaweed extract, and fulvic acid.</p>
@@ -166,15 +181,13 @@
               <span class="card-price">₹1,560</span>
               <span class="card-weight">25 KG</span>
             </div>
-            <div class="card-qr-hint">
-              <span class="qr-icon">⬛</span>
-              <span>Scan QR for details</span>
-            </div>
           </div>
-          <div class="card-footer">
-            <span class="view-btn">View &amp; Download QR →</span>
+          <div class="card-actions">
+            <a href="products/crop-shakti.html" class="card-action-btn view-details">View Details</a>
+            <a href="https://wa.me/917666046941?text=Hello%20PlantCare%2C%20I%20want%20to%20order%20Crop%20Shakti.%20Please%20share%20more%20details." target="_blank" rel="noopener" class="card-action-btn card-wa" id="wa-cropshakti">📱 Order</a>
+            <a href="products/crop-shakti.html#qr-image" class="card-action-btn card-qr">QR Code</a>
           </div>
-        </a>
+        </div>
       </div>
     </div>
   </section>
@@ -210,11 +223,18 @@
   <!-- FOOTER -->
   <footer class="site-footer" id="site-footer">
     <div class="container">
-      <div class="footer-grid">
+      <div class="footer-grid-4">
         <div class="footer-brand">
-          <img src="public/images/plantcare-logo.png" alt="PlantCare Logo" class="footer-logo" />
+          <img src="public/images/plantcare-logo.png" alt="PlantCare Fertilizers Logo" class="footer-logo" />
           <p class="footer-brand-name">PlantCare Fertilizers Pvt. Ltd.</p>
           <p class="footer-brand-desc">Premium organic fertilizers for sustainable Indian agriculture.</p>
+        </div>
+        <div class="footer-info">
+          <h4>Quick Links</h4>
+          <p><a href="index.html">Home</a></p>
+          <p><a href="about.html">About Us</a></p>
+          <p><a href="products.html">Products</a></p>
+          <p><a href="contact.html">Contact</a></p>
         </div>
         <div class="footer-info">
           <h4>Contact Us</h4>
@@ -224,11 +244,9 @@
         </div>
         <div class="footer-info">
           <h4>Manufactured By</h4>
-          <p>Soil Sanjeevan Organic Fertilizers Private Limited</p>
-          <p>Rajgurunagar, Pune</p>
-          <br />
+          <p>Soil Sanjeevan Organic Fertilizers Pvt. Ltd., Rajgurunagar, Pune</p>
           <p><strong>License:</strong> LCFWD2026050740</p>
-          <p><em>Only For Agriculture Use</em></p>
+          <a href="https://wa.me/917666046941?text=Hello%20PlantCare%2C%20I%20have%20an%20enquiry." target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:12px;font-size:0.85rem;padding:10px 20px;">💬 WhatsApp Enquiry</a>
         </div>
       </div>
       <div class="footer-bottom">
