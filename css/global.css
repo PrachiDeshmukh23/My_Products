@@ -176,6 +176,14 @@ img{max-width:100%;display:block;}
 .footer-qr-btn{background:var(--leaf-green);color:var(--dark-green);border:none;border-radius:50px;padding:6px 14px;font-size:0.72rem;font-weight:700;cursor:pointer;transition:var(--transition);display:flex;align-items:center;gap:4px;}
 .footer-qr-btn:hover{background:#a0d44a;transform:translateY(-1px);}
 
+/* WHATSAPP ORDER BUTTON */
+.whatsapp-order-strip{background:linear-gradient(135deg,#25D366 0%,#128C7E 100%);padding:16px 0;text-align:center;}
+.whatsapp-order-strip .container{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}
+.whatsapp-order-strip p{color:#fff;font-size:0.95rem;font-weight:500;}
+.btn-whatsapp-order{display:inline-flex;align-items:center;gap:10px;background:#fff;color:#25D366;border:none;border-radius:50px;padding:14px 32px;font-size:1rem;font-weight:700;cursor:pointer;transition:var(--transition);box-shadow:0 4px 16px rgba(0,0,0,0.15);text-decoration:none;font-family:'Inter',sans-serif;}
+.btn-whatsapp-order:hover{background:#f0fdf4;transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.2);}
+.btn-whatsapp-order svg{width:22px;height:22px;fill:#25D366;}
+
 
 /* ADMIN */
 .admin-layout{display:flex;min-height:100vh;}
