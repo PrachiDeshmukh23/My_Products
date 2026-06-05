@@ -107,40 +107,6 @@
     </div>
   </section>
 
-  <!-- ===== CONTACT FORM ===== -->
-  <section class="product-info-section" style="background:#fff;">
-    <div class="container">
-      <div class="section-header" style="margin-bottom:32px;">
-        <span class="section-badge">Send a Message</span>
-        <h2 class="section-title">Enquiry Form</h2>
-        <p class="section-desc">Fill in your details and we'll get back to you shortly.</p>
-      </div>
-      <div style="max-width:600px;margin:0 auto;">
-        <form id="contact-form" onsubmit="handleContactSubmit(event)">
-          <div class="form-group">
-            <label class="form-label" for="contact-name">Your Name *</label>
-            <input class="form-input" type="text" id="contact-name" name="name" placeholder="Enter your full name" required />
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="contact-mobile">Mobile Number *</label>
-            <input class="form-input" type="tel" id="contact-mobile" name="mobile" placeholder="Enter 10-digit mobile number" pattern="[0-9]{10}" required />
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="contact-message">Your Message *</label>
-            <textarea class="form-input" id="contact-message" name="message" rows="5" placeholder="Tell us how we can help you..." required style="resize:vertical;"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary btn-lg" id="btn-submit-contact" style="width:100%;">Send Message</button>
-        </form>
-        <div id="form-success" style="display:none;text-align:center;padding:40px 20px;">
-          <div style="font-size:3rem;margin-bottom:16px;">✅</div>
-          <h3 style="color:#1F5E2E;font-family:Poppins,sans-serif;margin-bottom:8px;">Thank You!</h3>
-          <p style="color:#4a6350;">Your message has been received. We will contact you within 24 hours.</p>
-          <a href="https://wa.me/917666046941?text=Hello%20PlantCare%2C%20I%20just%20submitted%20an%20enquiry%20form." target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:20px;">💬 Chat on WhatsApp Now</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ===== FOOTER ===== -->
   <footer class="site-footer" id="site-footer">
     <div class="container">
@@ -176,19 +142,6 @@
 
   <!-- ===== SCRIPTS ===== -->
   <script src="js/main.js"></script>
-  <script>
-    function handleContactSubmit(e) {
-      e.preventDefault();
-      var name = document.getElementById('contact-name').value;
-      var mobile = document.getElementById('contact-mobile').value;
-      var message = document.getElementById('contact-message').value;
-      document.getElementById('contact-form').style.display = 'none';
-      document.getElementById('form-success').style.display = 'block';
-      // Also open WhatsApp with the form data
-      var waText = 'Hello PlantCare, my name is ' + name + '. Mobile: ' + mobile + '. Message: ' + message;
-      // Don't auto-redirect, just show success
-    }
-  </script>
 
 </body>
 </html>
