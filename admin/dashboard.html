@@ -177,7 +177,7 @@ function renderDashboard() {
       <td><strong>${p.name}</strong></td>
       <td><img src="${p.img}" class="product-thumb" alt="${p.name}" /></td>
       <td>₹${p.mrp.toLocaleString()}</td>
-      <td>${p.weight} KG</td>
+      <td>${p.weight}.100 KG</td>
       <td><span class="badge-active">Active</span></td>
       <td>
         <button class="action-btn edit" onclick="openEditModal(${p.id})">Edit</button>
@@ -195,7 +195,7 @@ function renderProducts() {
       <td><img src="${p.img}" class="product-thumb" alt="${p.name}" /></td>
       <td><strong>${p.name}</strong><br/><span style="font-size:0.78rem;color:#7a9880;">${p.desc.substring(0,50)}...</span></td>
       <td>₹${p.mrp.toLocaleString()}</td>
-      <td>${p.weight} KG</td>
+      <td>${p.weight}.100 KG</td>
       <td style="font-size:0.78rem;color:var(--sky-blue);">...com/products/${p.slug}</td>
       <td>
         <button class="action-btn edit" onclick="openEditModal(${p.id})">Edit</button>
