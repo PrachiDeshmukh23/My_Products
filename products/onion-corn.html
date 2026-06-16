@@ -9,13 +9,13 @@
   <meta property="og:type" content="product" />
   <meta property="og:title" content="Onion & Corn – PlantCare Fertilizers" />
   <meta property="og:description" content="🧅 Organic fertilizer for Onion & Corn crops. Improved productivity & soil health. MRP ₹1,460 | 50 KG Bag" />
-  <meta property="og:image" content="https://my-products-sepia.vercel.app/public/images/onion-maize.png" />
+  <meta property="og:image" content="https://my-products-sepia.vercel.app/public/images/onion-maize-front.png" />
   <meta property="og:url" content="https://my-products-sepia.vercel.app/products/onion-corn" />
   <meta property="og:site_name" content="PlantCare Fertilizers Pvt. Ltd." />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Onion & Corn – PlantCare Fertilizers" />
   <meta name="twitter:description" content="🧅 Organic fertilizer for Onion & Corn crops. MRP ₹1,460 | 50 KG Bag" />
-  <meta name="twitter:image" content="https://my-products-sepia.vercel.app/public/images/onion-maize.png" />
+  <meta name="twitter:image" content="https://my-products-sepia.vercel.app/public/images/onion-maize-front.png" />
   <link rel="stylesheet" href="../css/global.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
@@ -39,8 +39,9 @@
   <section class="product-hero">
     <div class="container">
       <div class="product-hero-inner">
-        <div class="product-logo-wrap">
-          <img src="../public/images/onion-maize.png" alt="Onion and Corn" class="product-logo-img" />
+        <div class="product-logo-wrap product-image-card">
+          <img src="../public/images/onion-maize-front.png" alt="Onion and Corn" class="product-logo-img product-toggle-image" data-front="../public/images/onion-maize-front.png" data-back="../public/images/onion-maize-back.png" />
+          <button class="image-swap-btn" type="button" aria-label="Show back side image" title="Swap image" data-image-toggle>⇄</button>
         </div>
         <div class="product-title-block">
           <div class="section-badge" style="margin-bottom:12px;">Organic Fertilizer</div>
@@ -132,6 +133,7 @@
     </div>
   </footer>
 
+  <script src="../js/main.js"></script>
   <script>
     const PRODUCT_URL = 'https://my-products-sepia.vercel.app/products/onion-corn';
     const PRODUCT_NAME = 'Onion and Corn';
