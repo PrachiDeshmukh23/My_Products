@@ -18,7 +18,7 @@
   <!-- SIDEBAR -->
   <aside class="admin-sidebar">
     <div class="sidebar-brand">
-      <img src="../public/images/plantcare-logo.png" alt="Logo" class="sidebar-logo" />
+      <img src="../public/images/plantcare-logo-new.png" alt="Logo" class="sidebar-logo" />
       <div>
         <div class="sidebar-title">PlantCare</div>
         <div class="sidebar-subtitle">Admin Panel</div>
@@ -302,7 +302,7 @@ function saveProduct() {
     if (idx > -1) { products[idx] = { ...products[idx], name, desc, mrp, weight, slug }; }
   } else {
     const newId = Math.max(...products.map(p => p.id)) + 1;
-    products.push({ id: newId, name, desc, mrp: mrp||0, weight: weight||0, slug, img:'../public/images/plantcare-logo.png', scans: 0 });
+    products.push({ id: newId, name, desc, mrp: mrp||0, weight: weight||0, slug, img:'../public/images/plantcare-logo-new.png', scans: 0 });
   }
   saveProducts(products);
   closeModal();
