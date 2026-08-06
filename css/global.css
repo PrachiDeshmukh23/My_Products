@@ -370,3 +370,71 @@ img{max-width:100%;display:block;}
   .trust-grid{grid-template-columns:1fr;}
   .filter-btn{padding:8px 14px;font-size:0.78rem;}
 }
+
+/* ==========================================
+   PERFECT RESPONSIVE DESIGN FOR MOBILE & LAPTOP
+   ========================================== */
+
+/* Product Card 3 Action Buttons */
+.card-actions {
+  display: flex !important;
+  gap: 6px !important;
+  padding: 12px 14px !important;
+  background: #FAFAFA !important;
+  border-top: 1px solid #eee !important;
+  border-radius: 0 0 12px 12px !important;
+}
+
+.card-action-btn {
+  flex: 1 1 0px !important;
+  text-align: center !important;
+  padding: 10px 4px !important;
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+  font-size: 0.82rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.card-action-btn:hover, .card-action-btn:active {
+  transform: translateY(-1px);
+  opacity: 0.92;
+}
+
+/* Mobile & Laptop Responsive Tweaks */
+@media (max-width: 768px) {
+  .product-page-header .header-inner {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+  .ph-brand {
+    gap: 8px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-actions {
+    padding: 10px 8px !important;
+    gap: 4px !important;
+  }
+  .card-action-btn {
+    padding: 10px 2px !important;
+    font-size: 0.74rem !important;
+  }
+  #admin-edit-btn, #admin-delete-btn {
+    padding: 6px 12px !important;
+    font-size: 0.78rem !important;
+  }
+  .modal-overlay > div {
+    padding: 20px 16px !important;
+    max-width: 96% !important;
+  }
+}
