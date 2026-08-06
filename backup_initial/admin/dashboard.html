@@ -305,7 +305,6 @@ function saveProduct() {
     products.push({ id: newId, name, desc, mrp: mrp||0, weight: weight||0, slug, img:'../public/images/plantcare-logo-new.png', scans: 0 });
   }
   saveProducts(products);
-  localStorage.setItem('pc_product_' + slug, JSON.stringify({ name, desc, mrp, weight }));
   closeModal();
   renderProducts();
   showToast(editId ? 'Product updated!' : 'Product added!');

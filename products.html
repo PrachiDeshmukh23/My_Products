@@ -19,6 +19,7 @@
         <nav class="main-nav" id="main-nav">
           <a href="index.html" class="nav-link" id="nav-home">Home</a>
           <a href="products.html" class="nav-link active" id="nav-products">Products</a>
+          <a href="admin/login.html" class="nav-link" id="nav-admin">Admin</a>
         </nav>
         <button class="hamburger" id="hamburger-btn" aria-label="Toggle menu">
           <span></span><span></span><span></span>
@@ -32,72 +33,110 @@
       <div class="section-badge">Our Products</div>
       <h1 class="page-hero-title">All Fertilizer Products</h1>
       <p class="page-hero-sub">Scan any QR code for instant product information on your phone.</p>
+      <div style="margin-top:24px;display:flex;justify-content:center;">
+        <button id="add-product-btn-hero" onclick="openAddProductModal()" style="background:#1F5E2E;color:#ffffff;border:none;font-family:Poppins,sans-serif;font-weight:700;padding:12px 30px;border-radius:50px;cursor:pointer;box-shadow:0 6px 20px rgba(31,94,46,0.35);font-size:1rem;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s ease;">
+          ➕ Add New Product
+        </button>
+      </div>
     </div>
   </section>
 
   <section class="products-section" style="padding-top:48px;">
     <div class="container">
       <div class="products-grid">
-        <a href="products/sugarcane-special.html" class="product-card" id="card-sugarcane">
+
+        <!-- 1. Sugarcane Special -->
+        <div class="product-card" id="card-sugarcane">
           <div class="card-badge">Organic</div>
-          <div class="card-image-wrap">
-            <img src="public/images/sugarcane-special-front.png" alt="Sugarcane Special" class="card-image" />
-          </div>
+          <a href="products/sugarcane-special.html">
+            <div class="card-image-wrap">
+              <img src="public/images/sugarcane-special-front.png" alt="Sugarcane Special" class="card-image" />
+            </div>
+          </a>
           <div class="card-body">
-            <h2 class="card-title">Sugarcane Special</h2>
+            <h2 class="card-title"><a href="products/sugarcane-special.html" style="color:inherit;text-decoration:none;">Sugarcane Special</a></h2>
             <p class="card-desc">Organic fertilizer specially developed for Sugarcane crops for healthy root growth and higher yield.</p>
             <div class="card-meta">
               <span class="card-price">₹1,480</span>
               <span class="card-weight">50.100 KG</span>
             </div>
           </div>
-          <div class="card-footer"><span class="view-btn">View &amp; Download QR →</span></div>
-        </a>
-        <a href="products/onion-corn.html" class="product-card" id="card-onion-corn">
-          <div class="card-badge">Organic</div>
-          <div class="card-image-wrap">
-            <img src="public/images/onion-maize-front.png" alt="Onion and Corn" class="card-image" />
+          <div class="card-actions" style="padding:12px 14px;border-top:1px solid #eee;display:flex;gap:6px;background:#FAFAFA;border-radius:0 0 12px 12px;">
+            <a href="products/sugarcane-special.html" class="card-action-btn view-details" style="flex:1;text-align:center;background:#1F5E2E;color:#fff;padding:8px 4px;border-radius:6px;text-decoration:none;font-weight:600;font-size:0.82rem;display:inline-flex;align-items:center;justify-content:center;">View Details</a>
+            <a href="https://wa.me/917666046941?text=Hello%20PlantCare%2C%20I%20want%20to%20order%20Sugarcane%20Special." target="_blank" rel="noopener" class="card-action-btn card-wa" style="flex:1;text-align:center;background:#25D366;color:#fff;padding:8px 4px;border-radius:6px;text-decoration:none;font-weight:600;font-size:0.82rem;display:inline-flex;align-items:center;justify-content:center;gap:3px;">📱 Order</a>
+            <button onclick="deleteStaticProduct('card-sugarcane', 'Sugarcane Special')" class="card-action-btn delete-btn" style="flex:1;text-align:center;background:#dc3545;color:#fff;border:none;padding:8px 4px;border-radius:6px;font-weight:600;font-size:0.82rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:3px;" title="Delete Product">🗑️ Delete</button>
           </div>
+        </div>
+
+        <!-- 2. Onion & Corn -->
+        <div class="product-card" id="card-onion-corn">
+          <div class="card-badge">Organic</div>
+          <a href="products/onion-corn.html">
+            <div class="card-image-wrap">
+              <img src="public/images/onion-maize-front.png" alt="Onion and Corn" class="card-image" />
+            </div>
+          </a>
           <div class="card-body">
-            <h2 class="card-title">Onion &amp; Corn</h2>
+            <h2 class="card-title"><a href="products/onion-corn.html" style="color:inherit;text-decoration:none;">Onion &amp; Corn</a></h2>
             <p class="card-desc">Organic nutrient fertilizer for Onion and Corn crops to improve productivity and soil health.</p>
             <div class="card-meta">
               <span class="card-price">₹1,460</span>
               <span class="card-weight">50.100 KG</span>
             </div>
           </div>
-          <div class="card-footer"><span class="view-btn">View &amp; Download QR →</span></div>
-        </a>
-        <a href="products/soybean-cotton.html" class="product-card" id="card-soybean-cotton">
-          <div class="card-badge">Microbial</div>
-          <div class="card-image-wrap">
-            <img src="public/images/soybean-cotton-front.png" alt="Soybean and Cotton" class="card-image" />
+          <div class="card-actions" style="padding:12px 14px;border-top:1px solid #eee;display:flex;gap:6px;background:#FAFAFA;border-radius:0 0 12px 12px;">
+            <a href="products/onion-corn.html" class="card-action-btn view-details" style="flex:1;text-align:center;background:#1F5E2E;color:#fff;padding:8px 4px;border-radius:6px;text-decoration:none;font-weight:600;font-size:0.82rem;display:inline-flex;align-items:center;justify-content:center;">View Details</a>
+            <a href="https://wa.me/917666046941?text=Hello%20PlantCare%2C%20I%20want%20to%20order%20Onion%20%26%20Corn." target="_blank" rel="noopener" class="card-action-btn card-wa" style="flex:1;text-align:center;background:#25D366;color:#fff;padding:8px 4px;border-radius:6px;text-decoration:none;font-weight:600;font-size:0.82rem;display:inline-flex;align-items:center;justify-content:center;gap:3px;">📱 Order</a>
+            <button onclick="deleteStaticProduct('card-onion-corn', 'Onion & Corn')" class="card-action-btn delete-btn" style="flex:1;text-align:center;background:#dc3545;color:#fff;border:none;padding:8px 4px;border-radius:6px;font-weight:600;font-size:0.82rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:3px;" title="Delete Product">🗑️ Delete</button>
           </div>
+        </div>
+
+        <!-- 3. Soybean & Cotton -->
+        <div class="product-card" id="card-soybean-cotton">
+          <div class="card-badge">Microbial</div>
+          <a href="products/soybean-cotton.html">
+            <div class="card-image-wrap">
+              <img src="public/images/soybean-cotton-front.png" alt="Soybean and Cotton" class="card-image" />
+            </div>
+          </a>
           <div class="card-body">
-            <h2 class="card-title">Soybean &amp; Cotton</h2>
+            <h2 class="card-title"><a href="products/soybean-cotton.html" style="color:inherit;text-decoration:none;">Soybean &amp; Cotton</a></h2>
             <p class="card-desc">Microbial organic fertilizer for Soybean and Cotton crops supporting nutrient absorption and root development.</p>
             <div class="card-meta">
               <span class="card-price">₹1,490</span>
               <span class="card-weight">50.100 KG</span>
             </div>
           </div>
-          <div class="card-footer"><span class="view-btn">View &amp; Download QR →</span></div>
-        </a>
-        <a href="products/crop-shakti.html" class="product-card" id="card-crop-shakti">
-          <div class="card-badge">Advanced</div>
-          <div class="card-image-wrap">
-            <img src="public/images/crop-shakti-front.png" alt="Crop Shakti" class="card-image" />
+          <div class="card-actions" style="padding:12px 14px;border-top:1px solid #eee;display:flex;gap:6px;background:#FAFAFA;border-radius:0 0 12px 12px;">
+            <a href="products/soybean-cotton.html" class="card-action-btn view-details" style="flex:1;text-align:center;background:#1F5E2E;color:#fff;padding:8px 4px;border-radius:6px;text-decoration:none;font-weight:600;font-size:0.82rem;display:inline-flex;align-items:center;justify-content:center;">View Details</a>
+            <a href="https://wa.me/917666046941?text=Hello%20PlantCare%2C%20I%20want%20to%20order%20Soybean%20%26%20Cotton." target="_blank" rel="noopener" class="card-action-btn card-wa" style="flex:1;text-align:center;background:#25D366;color:#fff;padding:8px 4px;border-radius:6px;text-decoration:none;font-weight:600;font-size:0.82rem;display:inline-flex;align-items:center;justify-content:center;gap:3px;">📱 Order</a>
+            <button onclick="deleteStaticProduct('card-soybean-cotton', 'Soybean & Cotton')" class="card-action-btn delete-btn" style="flex:1;text-align:center;background:#dc3545;color:#fff;border:none;padding:8px 4px;border-radius:6px;font-weight:600;font-size:0.82rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:3px;" title="Delete Product">🗑️ Delete</button>
           </div>
+        </div>
+
+        <!-- 4. Crop Shakti -->
+        <div class="product-card" id="card-crop-shakti">
+          <div class="card-badge">Advanced</div>
+          <a href="products/crop-shakti.html">
+            <div class="card-image-wrap">
+              <img src="public/images/crop-shakti-front.png" alt="Crop Shakti" class="card-image" />
+            </div>
+          </a>
           <div class="card-body">
-            <h2 class="card-title">Crop Shakti</h2>
+            <h2 class="card-title"><a href="products/crop-shakti.html" style="color:inherit;text-decoration:none;">Crop Shakti</a></h2>
             <p class="card-desc">Advanced organic growth promoter enriched with humates, amino acids, seaweed extract, and fulvic acid.</p>
             <div class="card-meta">
               <span class="card-price">₹1,560</span>
               <span class="card-weight">25.100 KG</span>
             </div>
           </div>
-          <div class="card-footer"><span class="view-btn">View &amp; Download QR →</span></div>
-        </a>
+          <div class="card-actions" style="padding:12px 14px;border-top:1px solid #eee;display:flex;gap:6px;background:#FAFAFA;border-radius:0 0 12px 12px;">
+            <a href="products/crop-shakti.html" class="card-action-btn view-details" style="flex:1;text-align:center;background:#1F5E2E;color:#fff;padding:8px 4px;border-radius:6px;text-decoration:none;font-weight:600;font-size:0.82rem;display:inline-flex;align-items:center;justify-content:center;">View Details</a>
+            <a href="https://wa.me/917666046941?text=Hello%20PlantCare%2C%20I%20want%20to%20order%20Crop%20Shakti." target="_blank" rel="noopener" class="card-action-btn card-wa" style="flex:1;text-align:center;background:#25D366;color:#fff;padding:8px 4px;border-radius:6px;text-decoration:none;font-weight:600;font-size:0.82rem;display:inline-flex;align-items:center;justify-content:center;gap:3px;">📱 Order</a>
+            <button onclick="deleteStaticProduct('card-crop-shakti', 'Crop Shakti')" class="card-action-btn delete-btn" style="flex:1;text-align:center;background:#dc3545;color:#fff;border:none;padding:8px 4px;border-radius:6px;font-weight:600;font-size:0.82rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:3px;" title="Delete Product">🗑️ Delete</button>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -126,6 +165,49 @@
       <div class="footer-bottom"><p>© 2026 PlantCare Fertilizers Pvt. Ltd. All rights reserved.</p></div>
     </div>
   </footer>
+
+  <!-- ADD NEW PRODUCT MODAL OVERLAY -->
+  <div class="modal-overlay" id="add-product-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:999999;align-items:center;justify-content:center;padding:20px;overflow-y:auto;">
+    <div style="background:#ffffff;border-radius:16px;max-width:540px;width:100%;padding:28px;box-shadow:0 24px 48px rgba(0,0,0,0.3);margin:auto;max-height:90vh;overflow-y:auto;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;border-bottom:1.5px solid #eee;padding-bottom:12px;">
+        <h2 style="font-family:Poppins,sans-serif;color:#1F5E2E;margin:0;font-size:1.3rem;">➕ Add New Product</h2>
+        <button type="button" onclick="closeAddProductModal()" style="background:none;border:none;font-size:1.8rem;cursor:pointer;color:#666;">&times;</button>
+      </div>
+      <form id="add-product-form" onsubmit="handleAddNewProduct(event)">
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-weight:600;margin-bottom:4px;font-size:0.85rem;color:#333;">Product Name *</label>
+          <input type="text" id="new-name" placeholder="e.g. Banana Special" style="width:100%;padding:10px;border:1.5px solid #ccc;border-radius:8px;" required />
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-weight:600;margin-bottom:4px;font-size:0.85rem;color:#333;">Category Badge *</label>
+          <input type="text" id="new-badge" placeholder="e.g. ORGANIC" style="width:100%;padding:10px;border:1.5px solid #ccc;border-radius:8px;" value="ORGANIC" required />
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block;font-weight:600;margin-bottom:4px;font-size:0.85rem;color:#333;">Description *</label>
+          <textarea id="new-desc" rows="3" placeholder="Enter product description..." style="width:100%;padding:10px;border:1.5px solid #ccc;border-radius:8px;resize:vertical;" required></textarea>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+          <div>
+            <label style="display:block;font-weight:600;margin-bottom:4px;font-size:0.85rem;color:#333;">MRP Price (₹) *</label>
+            <input type="number" id="new-price" placeholder="e.g. 1500" style="width:100%;padding:10px;border:1.5px solid #ccc;border-radius:8px;" required />
+          </div>
+          <div>
+            <label style="display:block;font-weight:600;margin-bottom:4px;font-size:0.85rem;color:#333;">Bag Weight (KG) *</label>
+            <input type="text" id="new-weight" placeholder="e.g. 50.100" style="width:100%;padding:10px;border:1.5px solid #ccc;border-radius:8px;" required />
+          </div>
+        </div>
+        <div style="margin-bottom:20px;">
+          <label style="display:block;font-weight:600;margin-bottom:4px;font-size:0.85rem;color:#333;">Product Image Path / URL</label>
+          <input type="text" id="new-img" placeholder="e.g. public/images/plantcare-logo-new.png" style="width:100%;padding:10px;border:1.5px solid #ccc;border-radius:8px;" value="public/images/plantcare-logo-new.png" />
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:12px;border-top:1.5px solid #eee;padding-top:16px;">
+          <button type="button" onclick="closeAddProductModal()" style="padding:10px 20px;border-radius:8px;border:1.5px solid #ccc;background:#fff;cursor:pointer;">Cancel</button>
+          <button type="submit" style="padding:10px 24px;border-radius:8px;background:#1F5E2E;color:#fff;border:none;font-weight:600;cursor:pointer;">Save Product →</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="js/main.js"></script>
 </body>
 </html>

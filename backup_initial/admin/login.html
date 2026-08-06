@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login – PlantCare Fertilizers</title>
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="login-page">
+    <div class="login-card">
+      <div class="login-header">
+        <img src="../public/images/plantcare-logo-new.png" alt="PlantCare Logo" class="login-logo" />
+        <h1 class="login-title">Admin Login</h1>
+        <p class="login-sub">PlantCare Fertilizers Management</p>
+      </div>
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label" for="username">Username</label>
+          <input type="text" id="username" class="form-input" placeholder="Enter username" autocomplete="username" />
+          <span class="form-error" id="username-error">Please enter username</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <input type="password" id="password" class="form-input" placeholder="Enter password" autocomplete="current-password" />
+          <span class="form-error" id="password-error">Please enter password</span>
+        </div>
+        <div id="login-error" style="color:#ef4444;font-size:0.85rem;margin-bottom:12px;display:none;">Invalid credentials. Try admin / plantcare2026</div>
+        <button type="submit" class="btn btn-primary" id="login-btn" style="width:100%;padding:14px;border-radius:8px;font-size:1rem;">Login →</button>
+      </form>
+      <p style="text-align:center;margin-top:16px;font-size:0.8rem;color:#7a9880;">Demo: admin / plantcare2026</p>
+    </div>
+  </div>
+  <script>
+    function handleLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value.trim();
+      const errDiv = document.getElementById('login-error');
+      if (!user || !pass) { errDiv.style.display='block'; errDiv.textContent='Please fill all fields.'; return; }
+      if (user === 'admin' && pass === 'plantcare2026') {
+        sessionStorage.setItem('pc_admin', '1');
+        window.location.href = 'dashboard.html';
+      } else {
+        errDiv.style.display = 'block';
+        errDiv.textContent = 'Invalid credentials. Try admin / plantcare2026';
+      }
+    }
+  </script>
+</body>
+</html>
