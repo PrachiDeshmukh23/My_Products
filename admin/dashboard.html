@@ -50,7 +50,10 @@
   <main class="admin-main">
     <div class="admin-topbar">
       <span class="admin-topbar-title" id="topbar-title">Dashboard</span>
-      <span style="font-size:0.85rem;color:#7a9880;">Welcome, Admin</span>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:0.85rem;color:#7a9880;">Welcome, Admin</span>
+        <button onclick="logout()" class="mobile-logout-btn" style="background:#dc3545;color:#fff;border:none;padding:6px 14px;border-radius:50px;font-size:0.78rem;font-weight:700;cursor:pointer;">Logout</button>
+      </div>
     </div>
     <div class="admin-content">
 
@@ -62,7 +65,10 @@
           <div class="stat-card"><div class="stat-card-number" id="total-scans">0</div><div class="stat-card-label">Total QR Scans</div></div>
           <div class="stat-card"><div class="stat-card-number">✅</div><div class="stat-card-label">License Valid</div></div>
         </div>
-        <div class="admin-table-wrap">
+        <div class="table-scroll-hint" style="font-size:0.75rem;color:#1F5E2E;background:#E8F5D0;padding:6px 14px;border-radius:8px 8px 0 0;font-weight:600;border:1.5px solid #d4e8bb;border-bottom:none;display:flex;align-items:center;gap:6px;">
+            <span>↔</span> Scroll table sideways to view all columns &amp; action buttons
+          </div>
+          <div class="admin-table-wrap" style="border-radius:0 0 16px 16px;">
           <table class="admin-table">
             <thead><tr><th>Product</th><th>Image</th><th>MRP</th><th>Weight</th><th>Status</th><th>Actions</th></tr></thead>
             <tbody id="dashboard-table-body"></tbody>
@@ -76,7 +82,10 @@
           <h2 style="font-family:Poppins,sans-serif;color:var(--dark-green);font-size:1.2rem;">Product Management</h2>
           <button class="btn btn-primary" id="btn-add-product" onclick="openAddModal()">+ Add Product</button>
         </div>
-        <div class="admin-table-wrap">
+        <div class="table-scroll-hint" style="font-size:0.75rem;color:#1F5E2E;background:#E8F5D0;padding:6px 14px;border-radius:8px 8px 0 0;font-weight:600;border:1.5px solid #d4e8bb;border-bottom:none;display:flex;align-items:center;gap:6px;">
+            <span>↔</span> Scroll table sideways to view all columns &amp; action buttons
+          </div>
+          <div class="admin-table-wrap" style="border-radius:0 0 16px 16px;">
           <table class="admin-table">
             <thead><tr><th>Image</th><th>Name</th><th>MRP</th><th>Weight</th><th>URL</th><th>Actions</th></tr></thead>
             <tbody id="products-table-body"></tbody>
@@ -94,7 +103,10 @@
       <section class="admin-section" id="section-analytics">
         <h2 style="font-family:Poppins,sans-serif;color:var(--dark-green);font-size:1.2rem;margin-bottom:24px;">Analytics &amp; Reports</h2>
         <div class="stats-row" id="analytics-stats"></div>
-        <div class="admin-table-wrap">
+        <div class="table-scroll-hint" style="font-size:0.75rem;color:#1F5E2E;background:#E8F5D0;padding:6px 14px;border-radius:8px 8px 0 0;font-weight:600;border:1.5px solid #d4e8bb;border-bottom:none;display:flex;align-items:center;gap:6px;">
+            <span>↔</span> Scroll table sideways to view all columns &amp; action buttons
+          </div>
+          <div class="admin-table-wrap" style="border-radius:0 0 16px 16px;">
           <table class="admin-table">
             <thead><tr><th>Product</th><th>URL</th><th>QR Scans</th><th>Last Scan</th></tr></thead>
             <tbody id="analytics-table-body"></tbody>
