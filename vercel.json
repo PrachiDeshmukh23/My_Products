@@ -1,16 +1,16 @@
 {
-  "buildCommand": "",
   "outputDirectory": ".",
-  "framework": null,
   "cleanUrls": true,
-  "trailingSlash": false,
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" }
-      ]
-    }
+  "rewrites": [
+    { "source": "/products/sugarcane-special.html", "destination": "/products/sugarcane-special.html" },
+    { "source": "/products/sugarcane-special", "destination": "/products/sugarcane-special.html" },
+    { "source": "/products/onion-corn.html", "destination": "/products/onion-corn.html" },
+    { "source": "/products/onion-corn", "destination": "/products/onion-corn.html" },
+    { "source": "/products/soybean-cotton.html", "destination": "/products/soybean-cotton.html" },
+    { "source": "/products/soybean-cotton", "destination": "/products/soybean-cotton.html" },
+    { "source": "/products/crop-shakti.html", "destination": "/products/crop-shakti.html" },
+    { "source": "/products/crop-shakti", "destination": "/products/crop-shakti.html" },
+    { "source": "/products/detail.html", "destination": "/products/detail.html" },
+    { "source": "/products/detail", "destination": "/products/detail.html" }
   ]
 }

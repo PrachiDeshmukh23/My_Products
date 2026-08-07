@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="page-title">Product Details – PlantCare Fertilizers</title>
+  <meta name="description" id="page-meta-desc" content="Product details – PlantCare Fertilizers Pvt. Ltd." />
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <script src="../js/network-config.js"></script>
+</head>
+<body>
+
+  <!-- ① HEADER -->
+  <header class="product-page-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../products.html" class="back-link" id="back-to-home">← Back to Products</a>
+        <div class="ph-brand" style="display:flex;align-items:center;gap:12px;">
+          <button id="admin-edit-btn" onclick="openProductEditModal()" style="background:#ffffff;color:#1F5E2E;border:2px solid #ffffff;font-family:Poppins,sans-serif;font-weight:700;padding:8px 18px;border-radius:50px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.25);display:inline-flex;align-items:center;gap:6px;font-size:0.88rem;">✏️ Edit Product</button>
+          <button id="admin-delete-btn" onclick="deleteCurrentProduct()" style="background:#dc3545;color:#ffffff;border:2px solid #dc3545;font-family:Poppins,sans-serif;font-weight:700;padding:8px 18px;border-radius:50px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.25);display:inline-flex;align-items:center;gap:6px;font-size:0.88rem;">🗑️ Delete Product</button>
+          <img src="../public/images/plantcare-logo-new.png" alt="PlantCare Logo" class="ph-logo" />
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ② PRODUCT HERO -->
+  <section class="product-hero">
+    <div class="container">
+      <div class="product-hero-inner">
+        <div class="product-logo-wrap product-image-card">
+          <img id="product-logo-img" src="../public/images/plantcare-logo-new.png" alt="Product Image" class="product-logo-img product-toggle-image" data-front="../public/images/plantcare-logo-new.png" data-back="../public/images/plantcare-logo-new.png" />
+          <button class="image-swap-btn" type="button" aria-label="Show back side image" title="Swap image" data-image-toggle>⇄</button>
+        </div>
+        <div class="product-title-block">
+          <div class="section-badge" id="p-badge" style="margin-bottom:12px;">ORGANIC</div>
+          <h1 class="product-name" id="p-name">Product Name</h1>
+          <p class="product-desc" id="p-desc">Product Description</p>
+          <div class="product-price-row">
+            <span class="price-tag" id="p-price">₹0</span>
+            <span class="weight-tag" id="p-weight">0 KG Bag</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ③ PRODUCT INFORMATION -->
+  <section class="product-info-section">
+    <div class="container">
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-title"><span class="info-card-icon">🧪</span> Composition</div>
+          <div style="overflow-x:auto;">
+            <table class="detail-table" style="width:100%;border-collapse:collapse;margin-top:8px;font-size:0.88rem;border:1px solid #d4e8bb;border-radius:8px;overflow:hidden;">
+              <thead>
+                <tr style="background:#1F5E2E;color:#ffffff;text-align:left;">
+                  <th style="padding:10px 14px;font-weight:700;">Ingredient / Parameter</th>
+                  <th style="padding:10px 14px;font-weight:700;text-align:right;">Percentage / Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid #E8F5D0;background:#ffffff;">
+                  <td style="padding:10px 14px;color:var(--text-mid);font-weight:500;">Base</td>
+                  <td style="padding:10px 14px;color:var(--dark-green);font-weight:700;text-align:right;" id="comp-base">PM Base Organic Manure</td>
+                </tr>
+                <tr style="border-bottom:1px solid #E8F5D0;background:#F9FDF7;">
+                  <td style="padding:10px 14px;color:var(--text-mid);font-weight:500;">Nitrogen (N)</td>
+                  <td style="padding:10px 14px;color:var(--dark-green);font-weight:700;text-align:right;" id="comp-n">0.5%</td>
+                </tr>
+                <tr style="border-bottom:1px solid #E8F5D0;background:#ffffff;">
+                  <td style="padding:10px 14px;color:var(--text-mid);font-weight:500;">Phosphate (P₂O₅)</td>
+                  <td style="padding:10px 14px;color:var(--dark-green);font-weight:700;text-align:right;" id="comp-p">0.5%</td>
+                </tr>
+                <tr style="background:#F9FDF7;">
+                  <td style="padding:10px 14px;color:var(--text-mid);font-weight:500;">Potash (K₂O)</td>
+                  <td style="padding:10px 14px;color:var(--dark-green);font-weight:700;text-align:right;" id="comp-k">0.5%</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-title"><span class="info-card-icon">📋</span> Specifications</div>
+          <div style="overflow-x:auto;">
+            <table class="detail-table" style="width:100%;border-collapse:collapse;margin-top:8px;font-size:0.88rem;border:1px solid #d4e8bb;border-radius:8px;overflow:hidden;">
+              <thead>
+                <tr style="background:#1F5E2E;color:#ffffff;text-align:left;">
+                  <th style="padding:10px 14px;font-weight:700;">Specification Parameter</th>
+                  <th style="padding:10px 14px;font-weight:700;text-align:right;">Standard Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid #E8F5D0;background:#ffffff;">
+                  <td style="padding:10px 14px;color:var(--text-mid);font-weight:500;">C:N Ratio</td>
+                  <td style="padding:10px 14px;color:var(--dark-green);font-weight:700;text-align:right;" id="spec-cn">&lt; 20</td>
+                </tr>
+                <tr style="border-bottom:1px solid #E8F5D0;background:#F9FDF7;">
+                  <td style="padding:10px 14px;color:var(--text-mid);font-weight:500;">pH Range</td>
+                  <td style="padding:10px 14px;color:var(--dark-green);font-weight:700;text-align:right;" id="spec-ph">6.5 – 7.5</td>
+                </tr>
+                <tr style="border-bottom:1px solid #E8F5D0;background:#ffffff;">
+                  <td style="padding:10px 14px;color:var(--text-mid);font-weight:500;">MRP Price</td>
+                  <td style="padding:10px 14px;color:var(--dark-green);font-weight:700;text-align:right;" id="spec-price">₹0</td>
+                </tr>
+                <tr style="border-bottom:1px solid #E8F5D0;background:#F9FDF7;">
+                  <td style="padding:10px 14px;color:var(--text-mid);font-weight:500;">Bag Weight / Size</td>
+                  <td style="padding:10px 14px;color:var(--dark-green);font-weight:700;text-align:right;" id="spec-weight">0 KG</td>
+                </tr>
+                <tr style="background:#ffffff;">
+                  <td style="padding:10px 14px;color:var(--text-mid);font-weight:500;">Usage Scope</td>
+                  <td style="padding:10px 14px;color:var(--dark-green);font-weight:700;text-align:right;">Only For Agriculture</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="info-card full-width-card">
+          <div class="info-card-title"><span class="info-card-icon">🏢</span> Company &amp; License Information</div>
+          <div class="common-grid">
+            <div class="common-item"><span class="common-item-label">Fertilizer License</span><span class="common-item-value" id="license-no">LCFWD2026050740</span></div>
+            <div class="common-item"><span class="common-item-label">Manufactured By</span><span class="common-item-value" id="mfg-by">Soil Sanjeevan Organic Fertilizers Pvt. Ltd., Rajgurunagar, Pune</span></div>
+            <div class="common-item"><span class="common-item-label">Marketed By</span><span class="common-item-value" id="mkt-by">PlantCare Fertilizers Private Limited</span></div>
+            <div class="common-item"><span class="common-item-label">Customer Care</span><span class="common-item-value"><a href="tel:7666046941" id="cust-care">7666046941</a></span></div>
+            <div class="common-item"><span class="common-item-label">Email</span><span class="common-item-value"><a href="mailto:plantcarefertilizerspvt@gmail.com" id="cust-email">plantcarefertilizerspvt@gmail.com</a></span></div>
+            <div class="common-item"><span class="common-item-label">Office Address</span><span class="common-item-value" id="office-addr">Gat No. 399/1, At. Post. Manoli, Tal. Sangamner, Dist. Ahilyanagar, Maharashtra 422605</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ④ ORDER VIA WHATSAPP -->
+  <section class="whatsapp-order-strip" id="order-section">
+    <div class="container">
+      <p id="wa-text">🌱 Interested in this product?</p>
+      <a class="btn-whatsapp-order" id="btn-order-whatsapp" href="https://wa.me/917666046941" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.75.75 0 00.917.918l4.458-1.495A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.4 0-4.637-.84-6.397-2.236l-.255-.196-2.637.884.884-2.637-.196-.255A9.952 9.952 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+        Order via WhatsApp
+      </a>
+    </div>
+  </section>
+
+  <!-- ⑤ FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid-qr">
+        <div class="footer-brand">
+          <img src="../public/images/plantcare-logo.png" alt="PlantCare Logo" class="footer-logo" />
+          <p class="footer-brand-name">PlantCare Fertilizers Pvt. Ltd.</p>
+          <p class="footer-brand-desc">Premium organic fertilizers for sustainable Indian agriculture.</p>
+        </div>
+        <div class="footer-info"><h4>Contact Us</h4><p>📞 <a href="tel:7666046941">7666046941</a></p><p>✉️ <a href="mailto:plantcarefertilizerspvt@gmail.com">plantcarefertilizerspvt@gmail.com</a></p></div>
+        <div class="footer-info"><h4>Manufactured By</h4><p>Soil Sanjeevan Organic Fertilizers Pvt. Ltd., Rajgurunagar, Pune</p><p><strong>License:</strong> LCFWD2026050740</p></div>
+        <div class="footer-qr-widget">
+          <span class="footer-qr-title">Product QR</span>
+          <div class="qr-canvas-wrap">
+            <img id="qr-image" src="" alt="QR Code" width="260" height="260" style="border-radius:10px;display:block;" />
+          </div>
+          <p class="qr-url-display" id="qr-url-text"></p>
+          <button class="footer-qr-btn" id="footer-download-qr" onclick="downloadQR()">⬇ Download QR</button>
+        </div>
+      </div>
+      <div class="footer-bottom"><p>© 2026 PlantCare Fertilizers Pvt. Ltd. All rights reserved.</p></div>
+    </div>
+  </footer>
+
+  <!-- EDIT PRODUCT MODAL -->
+  <div class="modal-overlay" id="edit-product-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:999999;align-items:center;justify-content:center;padding:20px;overflow-y:auto;">
+    <div style="background:#ffffff;border-radius:16px;max-width:560px;width:100%;padding:28px;box-shadow:0 24px 48px rgba(0,0,0,0.3);position:relative;margin:auto;max-height:90vh;overflow-y:auto;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;border-bottom:1.5px solid var(--border);padding-bottom:12px;">
+        <h2 style="font-family:Poppins,sans-serif;color:var(--dark-green);margin:0;font-size:1.3rem;">✏️ Edit Product</h2>
+        <button type="button" onclick="closeProductEditModal()" style="background:none;border:none;font-size:1.8rem;cursor:pointer;color:#666;line-height:1;">&times;</button>
+      </div>
+
+      <form id="edit-product-form" onsubmit="saveProductEdit(event)" autocomplete="off">
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="form-label" style="display:block;font-weight:600;margin-bottom:4px;font-size:0.85rem;color:var(--text-dark);">Product Name</label>
+          <input type="text" id="edit-name" name="edit-product-name-no-autofill" class="form-input" autocomplete="new-password" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;" required />
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="form-label" style="display:block;font-weight:600;margin-bottom:4px;font-size:0.85rem;color:var(--text-dark);">Category Badge</label>
+          <input type="text" id="edit-badge" name="edit-product-badge-no-autofill" class="form-input" autocomplete="off" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;" required />
+        </div>
+
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="form-label" style="display:block;font-weight:600;margin-bottom:4px;font-size:0.85rem;color:var(--text-dark);">Description</label>
+          <textarea id="edit-desc" name="edit-product-desc-no-autofill" class="form-input" rows="3" autocomplete="off" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;resize:vertical;" required></textarea>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+          <div class="form-group">
+            <label class="form-label" style="display:block;font-weight:600;margin-bottom:4px;font-size:0.85rem;color:var(--text-dark);">MRP Price (₹)</label>
+            <input type="number" id="edit-mrp" name="edit-product-mrp-no-autofill" class="form-input" autocomplete="off" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" style="display:block;font-weight:600;margin-bottom:4px;font-size:0.85rem;color:var(--text-dark);">Weight / Size &amp; Unit</label>
+            <div style="display:flex;gap:6px;">
+              <input type="text" id="edit-weight" name="edit-product-weight-no-autofill" class="form-input" autocomplete="off" style="flex:1;padding:10px;border:1.5px solid var(--border);border-radius:8px;" required />
+              <select id="edit-unit" class="form-input" style="width:85px;padding:10px 4px;border:1.5px solid var(--border);border-radius:8px;font-weight:700;background:#fff;cursor:pointer;">
+                <option value="KG">KG</option>
+                <option value="ML">ML</option>
+                <option value="L">L</option>
+                <option value="GM">GM</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <h4 style="font-family:Poppins,sans-serif;color:var(--dark-green);margin:16px 0 8px;font-size:0.95rem;">🖼️ Product Image</h4>
+        <div style="margin-bottom:14px;">
+          <label class="form-label" style="display:block;font-weight:600;margin-bottom:4px;font-size:0.8rem;color:#555;">Front Image Path / URL</label>
+          <input type="text" id="edit-img-front" class="form-input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" />
+        </div>
+
+        <h4 style="font-family:Poppins,sans-serif;color:var(--dark-green);margin:16px 0 8px;font-size:0.95rem;">🧪 Composition</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+          <div><label style="font-size:0.8rem;color:#555;font-weight:600;">Base</label><input type="text" id="edit-comp-base" class="form-input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" /></div>
+          <div><label style="font-size:0.8rem;color:#555;font-weight:600;">Nitrogen (N)</label><input type="text" id="edit-comp-n" class="form-input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" /></div>
+          <div><label style="font-size:0.8rem;color:#555;font-weight:600;">Phosphate (P₂O₅)</label><input type="text" id="edit-comp-p" class="form-input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" /></div>
+          <div><label style="font-size:0.8rem;color:#555;font-weight:600;">Potash (K₂O)</label><input type="text" id="edit-comp-k" class="form-input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" /></div>
+        </div>
+
+        <h4 style="font-family:Poppins,sans-serif;color:var(--dark-green);margin:16px 0 8px;font-size:0.95rem;">📋 Specifications</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
+          <div><label style="font-size:0.8rem;color:#555;font-weight:600;">C:N Ratio</label><input type="text" id="edit-spec-cn" class="form-input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" /></div>
+          <div><label style="font-size:0.8rem;color:#555;font-weight:600;">pH Range</label><input type="text" id="edit-spec-ph" class="form-input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" /></div>
+        </div>
+
+        <div style="display:flex;justify-content:flex-end;gap:12px;border-top:1.5px solid var(--border);padding-top:16px;">
+          <button type="button" onclick="closeProductEditModal()" class="btn btn-outline" style="padding:10px 20px;border-radius:8px;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="padding:10px 24px;border-radius:8px;">Save Changes →</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    let PRODUCT_SLUG = urlParams.get('slug') || '';
+    let PRODUCT_NAME = 'Product Details';
+    let QR_API = '';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadSavedProductData();
+    });
+
+    async function loadSavedProductData() {
+      let data = null;
+
+      // 1. Try URL parameters first (Universal for QR scanning on any device!)
+      const qName = urlParams.get('name');
+      const qMrp = urlParams.get('mrp');
+      const qWeight = urlParams.get('weight');
+      const qUnit = urlParams.get('unit') || 'KG';
+      const qBadge = urlParams.get('badge') || 'ORGANIC';
+      const qDesc = urlParams.get('desc');
+      const qImg = urlParams.get('img');
+      const qCompBase = urlParams.get('compBase');
+      const qCompN = urlParams.get('compN');
+      const qCompP = urlParams.get('compP');
+      const qCompK = urlParams.get('compK');
+      const qSpecCn = urlParams.get('specCn');
+      const qSpecPh = urlParams.get('specPh');
+
+      if (qName || qMrp) {
+        data = {
+          name: qName || 'Product',
+          mrp: qMrp || '0',
+          weight: qWeight || '0',
+          unit: qUnit,
+          badge: qBadge,
+          desc: qDesc || 'High quality organic agricultural fertilizer by PlantCare Fertilizers Pvt. Ltd.',
+          imgFront: qImg || '../public/images/plantcare-logo-new.png',
+          imgBack: qImg || '../public/images/plantcare-logo-new.png',
+          compBase: qCompBase || 'PM Base Organic Manure',
+          compN: qCompN || '0.5%', compP: qCompP || '0.5%', compK: qCompK || '0.5%',
+          specCn: qSpecCn || '< 20', specPh: qSpecPh || '6.5 – 7.5'
+        };
+      }
+
+      // 2. Load the shared catalogue. This is what makes newly added products
+      // available when a QR code is scanned on a different phone.
+      if (!data && PRODUCT_SLUG) {
+        try {
+          const response = await fetch('/api/products/' + encodeURIComponent(PRODUCT_SLUG));
+          if (response.ok) data = await response.json();
+        } catch (e) {}
+      }
+
+      // 3. Try pc_product_<slug> from localStorage
+      if (!data && PRODUCT_SLUG) {
+        const saved = localStorage.getItem('pc_product_' + PRODUCT_SLUG);
+        if (saved) {
+          try { data = JSON.parse(saved); } catch(e) {}
+        }
+      }
+
+      // 4. Try pc_custom_products from localStorage
+      if (!data && PRODUCT_SLUG) {
+        try {
+          const customSaved = localStorage.getItem('pc_custom_products');
+          if (customSaved) {
+            const list = JSON.parse(customSaved);
+            data = list.find(p => p.slug === PRODUCT_SLUG || String(p.id) === PRODUCT_SLUG);
+          }
+        } catch(e) {}
+      }
+
+      // 5. Auto-load latest custom product if no slug and no params
+      if (!data && !PRODUCT_SLUG) {
+        try {
+          const customSaved = localStorage.getItem('pc_custom_products');
+          if (customSaved) {
+            const list = JSON.parse(customSaved);
+            if (list.length > 0) {
+              const latestProduct = list[list.length - 1];
+              PRODUCT_SLUG = latestProduct.slug || String(latestProduct.id);
+              data = latestProduct;
+
+              // Check pc_product_<slug> for composition/spec
+              const richData = localStorage.getItem('pc_product_' + PRODUCT_SLUG);
+              if (richData) {
+                try { data = { ...data, ...JSON.parse(richData) }; } catch(e) {}
+              }
+            }
+          }
+        } catch(e) {}
+      }
+
+      if (data) {
+        if (data.name) {
+          document.getElementById('p-name').textContent = data.name;
+          document.getElementById('page-title').textContent = data.name + ' – PlantCare Fertilizers';
+          PRODUCT_NAME = data.name;
+        }
+        if (data.badge) document.getElementById('p-badge').textContent = data.badge;
+        if (data.desc) document.getElementById('p-desc').textContent = data.desc;
+        if (data.mrp) {
+          const cleanMrp = String(data.mrp).replace(/[^0-9.]/g, '');
+          document.getElementById('p-price').textContent = '₹' + Number(cleanMrp).toLocaleString();
+          document.getElementById('spec-price').textContent = '₹' + Number(cleanMrp).toLocaleString();
+        }
+        if (data.weight) {
+          const cleanW = String(data.weight).replace(/Bag/i,'').replace(/KG/i,'').trim();
+          const currentUnit = data.unit || 'KG';
+          const containerText = (currentUnit === 'ML' || currentUnit === 'L') ? 'Bottle' : 'Bag';
+          document.getElementById('p-weight').textContent = cleanW + ' ' + currentUnit + ' ' + containerText;
+          document.getElementById('spec-weight').textContent = cleanW + ' ' + currentUnit;
+        }
+
+        if (data.compBase && document.getElementById('comp-base')) document.getElementById('comp-base').textContent = data.compBase;
+        if (data.compN && document.getElementById('comp-n')) document.getElementById('comp-n').textContent = data.compN;
+        if (data.compP && document.getElementById('comp-p')) document.getElementById('comp-p').textContent = data.compP;
+        if (data.compK && document.getElementById('comp-k')) document.getElementById('comp-k').textContent = data.compK;
+        if (data.specCn && document.getElementById('spec-cn')) document.getElementById('spec-cn').textContent = data.specCn;
+        if (data.specPh && document.getElementById('spec-ph')) document.getElementById('spec-ph').textContent = data.specPh;
+
+        // Images
+        const logoImg = document.getElementById('product-logo-img');
+        const frontImg = data.imgFront || data.img || '../public/images/plantcare-logo-new.png';
+        const backImg = data.imgBack || frontImg;
+        if (logoImg) {
+          logoImg.src = frontImg.startsWith('public/') ? '../' + frontImg : frontImg;
+          logoImg.dataset.front = logoImg.src;
+          logoImg.dataset.back = backImg.startsWith('public/') ? '../' + backImg : backImg;
+        }
+
+        // WhatsApp link
+        const waLink = document.getElementById('btn-order-whatsapp');
+        if (waLink) {
+          const waText = encodeURIComponent(`Hello PlantCare, I want to order ${data.name || PRODUCT_NAME} (₹${data.mrp || ''} / ${data.weight || ''} KG). Please share details.`);
+          waLink.href = `https://wa.me/917666046941?text=${waText}`;
+        }
+      }
+
+      // Universal QR Code Link Generator
+      let baseDomain = window.getPlantCareQrBaseUrl
+        ? window.getPlantCareQrBaseUrl()
+        : window.location.origin;
+
+      const pName = (data && data.name) ? data.name : PRODUCT_NAME;
+      const pMrp = (data && data.mrp) ? data.mrp : '';
+      const pWeight = (data && data.weight) ? data.weight : '';
+      const pUnit = (data && data.unit) ? data.unit : 'KG';
+      const pBadge = (data && data.badge) ? data.badge : 'ORGANIC';
+      const pDesc = (data && data.desc) ? data.desc : '';
+      const pImg = (data && (data.imgFront || data.img)) ? (data.imgFront || data.img) : '';
+      const pCompBase = (data && data.compBase) ? data.compBase : 'PM Base Organic Manure';
+      const pCompN = (data && data.compN) ? data.compN : '0.5%';
+      const pCompP = (data && data.compP) ? data.compP : '0.5%';
+      const pCompK = (data && data.compK) ? data.compK : '0.5%';
+      const pSpecCn = (data && data.specCn) ? data.specCn : '< 20';
+      const pSpecPh = (data && data.specPh) ? data.specPh : '6.5 – 7.5';
+
+      const qrParams = new URLSearchParams();
+      qrParams.set('slug', PRODUCT_SLUG || pName.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+      qrParams.set('name', pName);
+      qrParams.set('mrp', pMrp);
+      qrParams.set('weight', pWeight);
+      qrParams.set('unit', pUnit);
+      qrParams.set('badge', pBadge);
+      qrParams.set('desc', pDesc);
+      if (pImg && !pImg.startsWith('data:') && !pImg.startsWith('../')) {
+        qrParams.set('img', pImg);
+      }
+      qrParams.set('compBase', pCompBase);
+      qrParams.set('compN', pCompN);
+      qrParams.set('compP', pCompP);
+      qrParams.set('compK', pCompK);
+      qrParams.set('specCn', pSpecCn);
+      qrParams.set('specPh', pSpecPh);
+
+      const targetUrl = baseDomain + '/products/detail.html?' + qrParams.toString();
+
+      QR_API = 'https://api.qrserver.com/v1/create-qr-code/?size=800x800&data=' + encodeURIComponent(targetUrl) + '&color=1F5E2E&bgcolor=FFFFFF&margin=15';
+      const qrImg = document.getElementById('qr-image');
+      if (qrImg) {
+        qrImg.style.display = 'block';
+        qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=' + encodeURIComponent(targetUrl) + '&color=1F5E2E&bgcolor=FFFFFF&margin=12';
+      }
+      const qrText = document.getElementById('qr-url-text');
+      if (qrText) {
+        qrText.innerHTML = '<a href="' + targetUrl + '" target="_blank" style="color:var(--leaf-green);text-decoration:underline;font-weight:600;word-break:break-all;font-size:0.7rem;">' + targetUrl + '</a>';
+      }
+    }
+
+    function openProductEditModal() {
+      try {
+        const nameElem = document.getElementById('p-name');
+        const badgeElem = document.getElementById('p-badge');
+        const descElem = document.getElementById('p-desc');
+        const priceElem = document.getElementById('p-price');
+        const weightElem = document.getElementById('p-weight');
+
+        if (nameElem && document.getElementById('edit-name')) document.getElementById('edit-name').value = nameElem.textContent.trim();
+        if (badgeElem && document.getElementById('edit-badge')) document.getElementById('edit-badge').value = badgeElem.textContent.trim();
+        if (descElem && document.getElementById('edit-desc')) document.getElementById('edit-desc').value = descElem.textContent.trim();
+        
+        if (priceElem && document.getElementById('edit-mrp')) {
+          document.getElementById('edit-mrp').value = priceElem.textContent.replace(/[^0-9.]/g, '');
+        }
+        if (weightElem && document.getElementById('edit-weight')) {
+          document.getElementById('edit-weight').value = weightElem.textContent.replace(/Bag/i,'').replace(/Bottle/i,'').replace(/KG/i,'').replace(/GM/i,'').replace(/ML/i,'').replace(/L/i,'').trim();
+        }
+
+        const logoImg = document.getElementById('product-logo-img');
+        if (logoImg && document.getElementById('edit-img-front')) {
+          document.getElementById('edit-img-front').value = logoImg.dataset.front || logoImg.src;
+        }
+
+        const compBase = document.getElementById('comp-base');
+        const compN = document.getElementById('comp-n');
+        const compP = document.getElementById('comp-p');
+        const compK = document.getElementById('comp-k');
+        const specCn = document.getElementById('spec-cn');
+        const specPh = document.getElementById('spec-ph');
+
+        if (compBase && document.getElementById('edit-comp-base')) document.getElementById('edit-comp-base').value = compBase.textContent.trim();
+        if (compN && document.getElementById('edit-comp-n')) document.getElementById('edit-comp-n').value = compN.textContent.trim();
+        if (compP && document.getElementById('edit-comp-p')) document.getElementById('edit-comp-p').value = compP.textContent.trim();
+        if (compK && document.getElementById('edit-comp-k')) document.getElementById('edit-comp-k').value = compK.textContent.trim();
+        if (specCn && document.getElementById('edit-spec-cn')) document.getElementById('edit-spec-cn').value = specCn.textContent.trim();
+        if (specPh && document.getElementById('edit-spec-ph')) document.getElementById('edit-spec-ph').value = specPh.textContent.trim();
+      } catch(e) {}
+
+      const modal = document.getElementById('edit-product-modal');
+      if (modal) {
+        modal.classList.add('open');
+        modal.style.display = 'flex';
+      }
+    }
+
+    function closeProductEditModal() {
+      const modal = document.getElementById('edit-product-modal');
+      if (modal) {
+        modal.classList.remove('open');
+        modal.style.display = 'none';
+      }
+    }
+
+    function saveProductEdit(e) {
+      if (e) e.preventDefault();
+      const name = document.getElementById('edit-name') ? document.getElementById('edit-name').value.trim() : '';
+      const badge = document.getElementById('edit-badge') ? document.getElementById('edit-badge').value.trim() : '';
+      const desc = document.getElementById('edit-desc') ? document.getElementById('edit-desc').value.trim() : '';
+      const mrp = document.getElementById('edit-mrp') ? document.getElementById('edit-mrp').value.trim() : '';
+      const weight = document.getElementById('edit-weight') ? document.getElementById('edit-weight').value.trim() : '';
+      const unit = document.getElementById('edit-unit') ? document.getElementById('edit-unit').value : 'KG';
+      const imgFront = document.getElementById('edit-img-front') ? document.getElementById('edit-img-front').value.trim() : '';
+      const compBase = document.getElementById('edit-comp-base') ? document.getElementById('edit-comp-base').value.trim() : '';
+      const compN = document.getElementById('edit-comp-n') ? document.getElementById('edit-comp-n').value.trim() : '';
+      const compP = document.getElementById('edit-comp-p') ? document.getElementById('edit-comp-p').value.trim() : '';
+      const compK = document.getElementById('edit-comp-k') ? document.getElementById('edit-comp-k').value.trim() : '';
+      const specCn = document.getElementById('edit-spec-cn') ? document.getElementById('edit-spec-cn').value.trim() : '';
+      const specPh = document.getElementById('edit-spec-ph') ? document.getElementById('edit-spec-ph').value.trim() : '';
+
+      const data = { name, badge, desc, mrp, weight, unit, imgFront, compBase, compN, compP, compK, specCn, specPh };
+
+      if (PRODUCT_SLUG) {
+        localStorage.setItem('pc_product_' + PRODUCT_SLUG, JSON.stringify(data));
+      }
+
+      // Update custom products list in localStorage
+      try {
+        const savedCustom = localStorage.getItem('pc_custom_products');
+        if (savedCustom) {
+          let customList = JSON.parse(savedCustom);
+          const idx = customList.findIndex(p => p.slug === PRODUCT_SLUG || String(p.id) === PRODUCT_SLUG);
+          if (idx > -1) {
+            customList[idx] = { ...customList[idx], name, badge, desc, mrp: parseInt(mrp) || customList[idx].mrp, weight, img: imgFront || customList[idx].img };
+            localStorage.setItem('pc_custom_products', JSON.stringify(customList));
+          }
+        }
+      } catch(err) {}
+
+      // Update URL parameters & reload to show changes
+      const params = new URLSearchParams();
+      params.set('slug', PRODUCT_SLUG || name.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
+      params.set('name', name);
+      params.set('mrp', mrp);
+      params.set('weight', weight);
+      params.set('unit', unit);
+      params.set('badge', badge);
+      params.set('desc', desc);
+      if (imgFront) params.set('img', imgFront);
+      if (compBase) params.set('compBase', compBase);
+      if (compN) params.set('compN', compN);
+      if (compP) params.set('compP', compP);
+      if (compK) params.set('compK', compK);
+      if (specCn) params.set('specCn', specCn);
+      if (specPh) params.set('specPh', specPh);
+
+      window.location.href = 'detail.html?' + params.toString();
+    }
+
+    function deleteCurrentProduct() {
+      if (!confirm('Are you sure you want to delete this product?')) return;
+      if (PRODUCT_SLUG) {
+        localStorage.removeItem('pc_product_' + PRODUCT_SLUG);
+        try {
+          const savedCustom = localStorage.getItem('pc_custom_products');
+          if (savedCustom) {
+            let customList = JSON.parse(savedCustom);
+            const updated = customList.filter(p => p.slug !== PRODUCT_SLUG && String(p.id) !== PRODUCT_SLUG);
+            localStorage.setItem('pc_custom_products', JSON.stringify(updated));
+          }
+        } catch(e) {}
+      }
+      showToast('🗑️ Product deleted successfully!');
+      setTimeout(() => { window.location.href = '../products.html'; }, 1000);
+    }
+
+    function downloadQR() {
+      showToast('Downloading QR Code...');
+      fetch(QR_API)
+        .then(r => r.blob())
+        .then(blob => {
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url; a.download = 'PlantCare-' + (PRODUCT_SLUG || 'product') + '-QR.png'; a.click();
+          URL.revokeObjectURL(url);
+          showToast('✅ QR Code downloaded!');
+        }).catch(() => { window.open(QR_API); showToast('Opening QR Code...'); });
+    }
+
+    function showToast(msg) {
+      let t = document.getElementById('toast');
+      if (!t) { t = document.createElement('div'); t.id = 'toast'; t.className = 'toast'; document.body.appendChild(t); }
+      t.textContent = msg; t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+  </script>
+</body>
+</html>

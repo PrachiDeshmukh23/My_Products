@@ -1,0 +1,10 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "products/sugarcane-special", "destination": "/products/sugarcane-special.html" },
+    { "source": "products/onion-corn", "destination": "/products/onion-corn.html" },
+    { "source": "products/soybean-cotton", "destination": "/products/soybean-cotton.html" },
+    { "source": "products/crop-shakti", "destination": "/products/crop-shakti.html" },
+    { "source": "products/detail", "destination": "/products/detail.html" }
+  ]
+}
