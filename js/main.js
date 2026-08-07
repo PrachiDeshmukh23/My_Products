@@ -68,67 +68,57 @@ function showToast(msg, duration = 3000) {
   setTimeout(() => toast.classList.remove('show'), duration);
 }
 
-// Add Product Modal functions
-function openAddProductModal() {
-  const modal = document.getElementById('add-product-modal');
-  if (modal) {
-    modal.classList.add('open');
-    modal.style.display = 'flex';
+// Dynamic Field Utilities (Composition & Specifications)
+function createDynamicFieldRow(containerId, label = '', value = '', labelPlaceholder = 'Parameter Name', valuePlaceholder = 'Value') {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const row = document.createElement('div');
+  row.className = 'dynamic-row';
+  row.style.cssText = 'display:flex;gap:8px;align-items:center;margin-bottom:8px;';
+  const cleanLabel = String(label || '').replace(/"/g, '&quot;');
+  const cleanValue = String(value || '').replace(/"/g, '&quot;');
+  row.innerHTML = `
+    <input type="text" placeholder="${labelPlaceholder}" class="row-label-input" value="${cleanLabel}" style="flex:1;min-width:120px;padding:8px 10px;border:1px solid #ccc;border-radius:6px;font-size:0.85rem;" />
+    <input type="text" placeholder="${valuePlaceholder}" class="row-value-input" value="${cleanValue}" style="flex:1;min-width:120px;padding:8px 10px;border:1px solid #ccc;border-radius:6px;font-size:0.85rem;" />
+    <button type="button" onclick="this.closest('.dynamic-row').remove()" style="background:#dc3545;color:#fff;border:none;padding:8px 10px;border-radius:6px;cursor:pointer;font-size:0.8rem;line-height:1;flex-shrink:0;" title="Remove Field">🗑️</button>
+  `;
+  container.appendChild(row);
+}
+
+function getDynamicFieldsData(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return [];
+  const rows = container.querySelectorAll('.dynamic-row');
+  const result = [];
+  rows.forEach(row => {
+    const labelInput = row.querySelector('.row-label-input');
+    const valueInput = row.querySelector('.row-value-input');
+    const label = labelInput ? labelInput.value.trim() : '';
+    const value = valueInput ? valueInput.value.trim() : '';
+    if (label || value) {
+      result.push({ label, value });
+    }
+  });
+  return result;
+}
+
+function populateDynamicFields(containerId, itemsArray, defaultItems = [], labelPlaceholder = 'Parameter Name', valuePlaceholder = 'Value') {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+  const list = (Array.isArray(itemsArray) && itemsArray.length > 0) ? itemsArray : defaultItems;
+  if (Array.isArray(list) && list.length > 0) {
+    list.forEach(item => {
+      createDynamicFieldRow(containerId, item.label || '', item.value || '', labelPlaceholder, valuePlaceholder);
+    });
+  } else {
+    createDynamicFieldRow(containerId, '', '', labelPlaceholder, valuePlaceholder);
   }
 }
 
-function closeAddProductModal() {
-  const modal = document.getElementById('add-product-modal');
-  if (modal) {
-    modal.classList.remove('open');
-    modal.style.display = 'none';
-  }
-}
-
-async function handleAddNewProduct(e) {
-  if (e) e.preventDefault();
-  const name = document.getElementById('new-name').value.trim();
-  const badge = document.getElementById('new-badge').value.trim() || 'ORGANIC';
-  const desc = document.getElementById('new-desc').value.trim();
-  const mrp = document.getElementById('new-price').value.trim();
-  const weight = document.getElementById('new-weight').value.trim();
-  const img = document.getElementById('new-img').value.trim() || 'public/images/plantcare-logo-new.png';
-
-  if (!name || !desc || !mrp || !weight) {
-    showToast('⚠️ Please fill in all required fields!');
-    return;
-  }
-
-  const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-  const newProduct = { id: Date.now(), name, badge, desc, mrp: parseInt(mrp), weight, slug, img };
-
-  let customProducts = [];
-  try {
-    const saved = localStorage.getItem('pc_custom_products');
-    if (saved) customProducts = JSON.parse(saved);
-  } catch(e) {}
-
-  customProducts.push(newProduct);
-  localStorage.setItem('pc_custom_products', JSON.stringify(customProducts));
-
-  // Save product detail page entry
-  localStorage.setItem('pc_product_' + slug, JSON.stringify({
-    name, badge, desc, mrp, weight,
-    compBase: 'PM Base Organic Manure',
-    compN: '0.5%', compP: '0.5%', compK: '0.5%',
-    specCn: '< 20', specPh: '6.5 – 7.5'
-  }));
-
-  try {
-    await saveProductToServer(newProduct);
-  } catch (error) {
-    showToast('Saved on this computer, but shared catalogue sync failed.');
-  }
-
-  closeAddProductModal();
-  renderCustomProducts();
-  showToast('✅ New product "' + name + '" added successfully!');
-}
+window.createDynamicFieldRow = createDynamicFieldRow;
+window.getDynamicFieldsData = getDynamicFieldsData;
+window.populateDynamicFields = populateDynamicFields;
 
 function renderCustomProducts() {
   const grid = document.querySelector('.products-grid');
@@ -184,7 +174,6 @@ function renderCustomProducts() {
         <a href="${detailPath}" class="card-action-btn view-details" style="flex:1;min-width:65px;text-align:center;background:#1F5E2E;color:#fff;padding:7px 4px;border-radius:6px;text-decoration:none;font-weight:600;font-size:0.78rem;display:inline-flex;align-items:center;justify-content:center;">Details</a>
         <button onclick="showProductQRModal('${p.name.replace(/'/g,"\\'")}', '${p.slug}', false, '${encodeURIComponent(qParams)}')" class="card-action-btn view-qr" style="flex:1;min-width:65px;text-align:center;background:#0d6efd;color:#fff;border:none;padding:7px 4px;border-radius:6px;font-weight:600;font-size:0.78rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:3px;" title="View QR Code">📷 QR</button>
         <a href="https://wa.me/917666046941?text=Hello%20PlantCare%2C%20I%20want%20to%20order%20${encodeURIComponent(p.name)}" target="_blank" class="card-action-btn card-wa" style="flex:1;min-width:65px;text-align:center;background:#25D366;color:#fff;padding:7px 4px;border-radius:6px;text-decoration:none;font-weight:600;font-size:0.78rem;display:inline-flex;align-items:center;justify-content:center;gap:3px;">📱 Order</a>
-        <button onclick="deleteCustomProduct(${p.id})" class="card-action-btn delete-btn" style="flex:1;min-width:65px;text-align:center;background:#dc3545;color:#fff;border:none;padding:7px 4px;border-radius:6px;font-weight:600;font-size:0.78rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:3px;" title="Delete Product">🗑️ Delete</button>
       </div>
     `;
     grid.appendChild(card);
@@ -195,8 +184,6 @@ function showProductQRModal(name, slug, isStatic, encodedQParams) {
   let baseDomain = window.getPlantCareQrBaseUrl
     ? window.getPlantCareQrBaseUrl()
     : window.location.origin;
-
-  let targetUrl = '';
   if (isStatic) {
     targetUrl = baseDomain + '/products/' + slug;
   } else if (encodedQParams) {

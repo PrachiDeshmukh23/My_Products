@@ -14,6 +14,50 @@
     "compK": "0.5%",
     "specCn": "< 20",
     "specPh": "6.5 – 7.5",
-    "updatedAt": "2026-08-07T09:16:46.900Z"
+    "updatedAt": "2026-08-07T10:32:40.314Z"
+  },
+  {
+    "id": 1,
+    "name": "Sugarcane Special",
+    "desc": "Organic fertilizer specially developed for Sugarcane crops for healthy root growth and higher yield.",
+    "mrp": 1480,
+    "weight": 50,
+    "slug": "sugarcane-special",
+    "img": "../public/images/sugarcane-special-front.png",
+    "scans": 41,
+    "updatedAt": "2026-08-07T12:30:38.275Z"
+  },
+  {
+    "id": 2,
+    "name": "Onion & Corn",
+    "desc": "Organic nutrient fertilizer for Onion and Corn crops to improve productivity and soil health.",
+    "mrp": 1460,
+    "weight": 50,
+    "slug": "onion-corn",
+    "img": "../public/images/onion-maize-front.png",
+    "scans": 70,
+    "updatedAt": "2026-08-07T12:30:38.285Z"
+  },
+  {
+    "id": 3,
+    "name": "Soybean & Cotton",
+    "desc": "Microbial organic fertilizer for Soybean and Cotton crops supporting nutrient absorption and root development.",
+    "mrp": 1490,
+    "weight": 50,
+    "slug": "soybean-cotton",
+    "img": "../public/images/soybean-cotton-front.png",
+    "scans": 39,
+    "updatedAt": "2026-08-07T12:30:38.290Z"
+  },
+  {
+    "id": 4,
+    "name": "Crop Shakti",
+    "desc": "Advanced organic growth promoter enriched with humates, amino acids, seaweed extract, and fulvic acid.",
+    "mrp": 1560,
+    "weight": 25,
+    "slug": "crop-shakti",
+    "img": "../public/images/crop-shakti-front.png",
+    "scans": 100,
+    "updatedAt": "2026-08-07T12:30:38.303Z"
   }
 ]

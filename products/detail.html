@@ -18,8 +18,6 @@
       <div class="header-inner">
         <a href="../products.html" class="back-link" id="back-to-home">← Back to Products</a>
         <div class="ph-brand" style="display:flex;align-items:center;gap:12px;">
-          <button id="admin-edit-btn" onclick="openProductEditModal()" style="background:#ffffff;color:#1F5E2E;border:2px solid #ffffff;font-family:Poppins,sans-serif;font-weight:700;padding:8px 18px;border-radius:50px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.25);display:inline-flex;align-items:center;gap:6px;font-size:0.88rem;">✏️ Edit Product</button>
-          <button id="admin-delete-btn" onclick="deleteCurrentProduct()" style="background:#dc3545;color:#ffffff;border:2px solid #dc3545;font-family:Poppins,sans-serif;font-weight:700;padding:8px 18px;border-radius:50px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.25);display:inline-flex;align-items:center;gap:6px;font-size:0.88rem;">🗑️ Delete Product</button>
           <img src="../public/images/plantcare-logo-new.png" alt="PlantCare Logo" class="ph-logo" />
         </div>
       </div>
@@ -51,70 +49,23 @@
   <section class="product-info-section">
     <div class="container">
       <div class="info-grid">
-        <div class="info-card">
+        <div class="info-card" id="comp-card-wrap">
           <div class="info-card-title"><span class="info-card-icon">🧪</span> Composition</div>
-          <div style="overflow-x:auto;">
-            <table class="detail-table" style="width:100%;border-collapse:collapse;margin-top:8px;font-size:0.88rem;border:1px solid #d4e8bb;border-radius:8px;overflow:hidden;">
-              <thead>
-                <tr style="background:#1F5E2E;color:#ffffff;text-align:left;">
-                  <th style="padding:10px 14px;font-weight:700;">Ingredient / Parameter</th>
-                  <th style="padding:10px 14px;font-weight:700;text-align:right;">Percentage / Value</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr style="border-bottom:1px solid #E8F5D0;background:#ffffff;">
-                  <td style="padding:10px 14px;color:var(--text-mid);font-weight:500;">Base</td>
-                  <td style="padding:10px 14px;color:var(--dark-green);font-weight:700;text-align:right;" id="comp-base">PM Base Organic Manure</td>
-                </tr>
-                <tr style="border-bottom:1px solid #E8F5D0;background:#F9FDF7;">
-                  <td style="padding:10px 14px;color:var(--text-mid);font-weight:500;">Nitrogen (N)</td>
-                  <td style="padding:10px 14px;color:var(--dark-green);font-weight:700;text-align:right;" id="comp-n">0.5%</td>
-                </tr>
-                <tr style="border-bottom:1px solid #E8F5D0;background:#ffffff;">
-                  <td style="padding:10px 14px;color:var(--text-mid);font-weight:500;">Phosphate (P₂O₅)</td>
-                  <td style="padding:10px 14px;color:var(--dark-green);font-weight:700;text-align:right;" id="comp-p">0.5%</td>
-                </tr>
-                <tr style="background:#F9FDF7;">
-                  <td style="padding:10px 14px;color:var(--text-mid);font-weight:500;">Potash (K₂O)</td>
-                  <td style="padding:10px 14px;color:var(--dark-green);font-weight:700;text-align:right;" id="comp-k">0.5%</td>
-                </tr>
-              </tbody>
-            </table>
+          <div id="comp-card-rows">
+            <div class="comp-row"><span class="comp-label">Base</span><span class="comp-value">PM Base Organic Manure</span></div>
+            <div class="comp-row"><span class="comp-label">Nitrogen (N)</span><span class="comp-value">0.5%</span></div>
+            <div class="comp-row"><span class="comp-label">Phosphate (P₂O₅)</span><span class="comp-value">0.5%</span></div>
+            <div class="comp-row"><span class="comp-label">Potash (K₂O)</span><span class="comp-value">0.5%</span></div>
           </div>
         </div>
-        <div class="info-card">
+        <div class="info-card" id="spec-card-wrap">
           <div class="info-card-title"><span class="info-card-icon">📋</span> Specifications</div>
-          <div style="overflow-x:auto;">
-            <table class="detail-table" style="width:100%;border-collapse:collapse;margin-top:8px;font-size:0.88rem;border:1px solid #d4e8bb;border-radius:8px;overflow:hidden;">
-              <thead>
-                <tr style="background:#1F5E2E;color:#ffffff;text-align:left;">
-                  <th style="padding:10px 14px;font-weight:700;">Specification Parameter</th>
-                  <th style="padding:10px 14px;font-weight:700;text-align:right;">Standard Value</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr style="border-bottom:1px solid #E8F5D0;background:#ffffff;">
-                  <td style="padding:10px 14px;color:var(--text-mid);font-weight:500;">C:N Ratio</td>
-                  <td style="padding:10px 14px;color:var(--dark-green);font-weight:700;text-align:right;" id="spec-cn">&lt; 20</td>
-                </tr>
-                <tr style="border-bottom:1px solid #E8F5D0;background:#F9FDF7;">
-                  <td style="padding:10px 14px;color:var(--text-mid);font-weight:500;">pH Range</td>
-                  <td style="padding:10px 14px;color:var(--dark-green);font-weight:700;text-align:right;" id="spec-ph">6.5 – 7.5</td>
-                </tr>
-                <tr style="border-bottom:1px solid #E8F5D0;background:#ffffff;">
-                  <td style="padding:10px 14px;color:var(--text-mid);font-weight:500;">MRP Price</td>
-                  <td style="padding:10px 14px;color:var(--dark-green);font-weight:700;text-align:right;" id="spec-price">₹0</td>
-                </tr>
-                <tr style="border-bottom:1px solid #E8F5D0;background:#F9FDF7;">
-                  <td style="padding:10px 14px;color:var(--text-mid);font-weight:500;">Bag Weight / Size</td>
-                  <td style="padding:10px 14px;color:var(--dark-green);font-weight:700;text-align:right;" id="spec-weight">0 KG</td>
-                </tr>
-                <tr style="background:#ffffff;">
-                  <td style="padding:10px 14px;color:var(--text-mid);font-weight:500;">Usage Scope</td>
-                  <td style="padding:10px 14px;color:var(--dark-green);font-weight:700;text-align:right;">Only For Agriculture</td>
-                </tr>
-              </tbody>
-            </table>
+          <div id="spec-card-rows">
+            <div class="comp-row"><span class="comp-label">C:N Ratio</span><span class="comp-value">&lt; 20</span></div>
+            <div class="comp-row"><span class="comp-label">pH Range</span><span class="comp-value">6.5 – 7.5</span></div>
+            <div class="comp-row"><span class="comp-label">MRP Price</span><span class="comp-value" id="spec-price">₹0</span></div>
+            <div class="comp-row"><span class="comp-label">Bag Weight / Size</span><span class="comp-value" id="spec-weight">0 KG</span></div>
+            <div class="comp-row"><span class="comp-label">Usage Scope</span><span class="comp-value">Only For Agriculture</span></div>
           </div>
         </div>
         <div class="info-card full-width-card">
@@ -216,18 +167,22 @@
           <input type="text" id="edit-img-front" class="form-input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" />
         </div>
 
-        <h4 style="font-family:Poppins,sans-serif;color:var(--dark-green);margin:16px 0 8px;font-size:0.95rem;">🧪 Composition</h4>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
-          <div><label style="font-size:0.8rem;color:#555;font-weight:600;">Base</label><input type="text" id="edit-comp-base" class="form-input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" /></div>
-          <div><label style="font-size:0.8rem;color:#555;font-weight:600;">Nitrogen (N)</label><input type="text" id="edit-comp-n" class="form-input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" /></div>
-          <div><label style="font-size:0.8rem;color:#555;font-weight:600;">Phosphate (P₂O₅)</label><input type="text" id="edit-comp-p" class="form-input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" /></div>
-          <div><label style="font-size:0.8rem;color:#555;font-weight:600;">Potash (K₂O)</label><input type="text" id="edit-comp-k" class="form-input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" /></div>
+        <!-- DYNAMIC COMPOSITION FIELDS -->
+        <div style="border-top:1px solid #eee;margin-top:16px;padding-top:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="font-family:Poppins,sans-serif;color:var(--dark-green);margin:0;font-size:0.95rem;">🧪 Composition Fields</h4>
+            <button type="button" class="btn btn-outline" style="padding:4px 10px;font-size:0.78rem;border-color:var(--dark-green);color:var(--dark-green);" onclick="createDynamicFieldRow('edit-comp-rows', '', '', 'Parameter (e.g. Base)', 'Value (e.g. PM Base Organic Manure)')">+ Add Field</button>
+          </div>
+          <div id="edit-comp-rows" style="margin-bottom:14px;"></div>
         </div>
 
-        <h4 style="font-family:Poppins,sans-serif;color:var(--dark-green);margin:16px 0 8px;font-size:0.95rem;">📋 Specifications</h4>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
-          <div><label style="font-size:0.8rem;color:#555;font-weight:600;">C:N Ratio</label><input type="text" id="edit-spec-cn" class="form-input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" /></div>
-          <div><label style="font-size:0.8rem;color:#555;font-weight:600;">pH Range</label><input type="text" id="edit-spec-ph" class="form-input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" /></div>
+        <!-- DYNAMIC SPECIFICATION FIELDS -->
+        <div style="border-top:1px solid #eee;margin-top:12px;padding-top:12px;margin-bottom:20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="font-family:Poppins,sans-serif;color:var(--dark-green);margin:0;font-size:0.95rem;">📋 Specification Fields</h4>
+            <button type="button" class="btn btn-outline" style="padding:4px 10px;font-size:0.78rem;border-color:var(--dark-green);color:var(--dark-green);" onclick="createDynamicFieldRow('edit-spec-rows', '', '', 'Specification (e.g. C:N Ratio)', 'Value (e.g. < 20)')">+ Add Field</button>
+          </div>
+          <div id="edit-spec-rows" style="margin-bottom:14px;"></div>
         </div>
 
         <div style="display:flex;justify-content:flex-end;gap:12px;border-top:1.5px solid var(--border);padding-top:16px;">
@@ -353,12 +308,30 @@
           document.getElementById('spec-weight').textContent = cleanW + ' ' + currentUnit;
         }
 
-        if (data.compBase && document.getElementById('comp-base')) document.getElementById('comp-base').textContent = data.compBase;
-        if (data.compN && document.getElementById('comp-n')) document.getElementById('comp-n').textContent = data.compN;
-        if (data.compP && document.getElementById('comp-p')) document.getElementById('comp-p').textContent = data.compP;
-        if (data.compK && document.getElementById('comp-k')) document.getElementById('comp-k').textContent = data.compK;
-        if (data.specCn && document.getElementById('spec-cn')) document.getElementById('spec-cn').textContent = data.specCn;
-        if (data.specPh && document.getElementById('spec-ph')) document.getElementById('spec-ph').textContent = data.specPh;
+        // Dynamic compositions
+        let comps = data.compositions;
+        if (!Array.isArray(comps) || comps.length === 0) {
+          comps = [];
+          if (data.compBase) comps.push({ label: 'Base', value: data.compBase });
+          if (data.compN) comps.push({ label: 'Nitrogen (N)', value: data.compN });
+          if (data.compP) comps.push({ label: 'Phosphate (P₂O₅)', value: data.compP });
+          if (data.compK) comps.push({ label: 'Potash (K₂O)', value: data.compK });
+        }
+        if (comps.length > 0) {
+          const compContainer = document.getElementById('comp-card-rows');
+          if (compContainer) {
+            compContainer.innerHTML = comps.map(c => `<div class="comp-row"><span class="comp-label">${c.label}</span><span class="comp-value">${c.value}</span></div>`).join('');
+          }
+        }
+
+        // Dynamic specifications
+        let specs = data.specifications;
+        if (Array.isArray(specs) && specs.length > 0) {
+          const specContainer = document.getElementById('spec-card-rows');
+          if (specContainer) {
+            specContainer.innerHTML = specs.map(s => `<div class="comp-row"><span class="comp-label">${s.label}</span><span class="comp-value">${s.value}</span></div>`).join('');
+          }
+        }
 
         // Images
         const logoImg = document.getElementById('product-logo-img');
@@ -390,12 +363,6 @@
       const pBadge = (data && data.badge) ? data.badge : 'ORGANIC';
       const pDesc = (data && data.desc) ? data.desc : '';
       const pImg = (data && (data.imgFront || data.img)) ? (data.imgFront || data.img) : '';
-      const pCompBase = (data && data.compBase) ? data.compBase : 'PM Base Organic Manure';
-      const pCompN = (data && data.compN) ? data.compN : '0.5%';
-      const pCompP = (data && data.compP) ? data.compP : '0.5%';
-      const pCompK = (data && data.compK) ? data.compK : '0.5%';
-      const pSpecCn = (data && data.specCn) ? data.specCn : '< 20';
-      const pSpecPh = (data && data.specPh) ? data.specPh : '6.5 – 7.5';
 
       const qrParams = new URLSearchParams();
       qrParams.set('slug', PRODUCT_SLUG || pName.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
@@ -408,12 +375,6 @@
       if (pImg && !pImg.startsWith('data:') && !pImg.startsWith('../')) {
         qrParams.set('img', pImg);
       }
-      qrParams.set('compBase', pCompBase);
-      qrParams.set('compN', pCompN);
-      qrParams.set('compP', pCompP);
-      qrParams.set('compK', pCompK);
-      qrParams.set('specCn', pSpecCn);
-      qrParams.set('specPh', pSpecPh);
 
       const targetUrl = baseDomain + '/products/detail.html?' + qrParams.toString();
 
@@ -453,19 +414,33 @@
           document.getElementById('edit-img-front').value = logoImg.dataset.front || logoImg.src;
         }
 
-        const compBase = document.getElementById('comp-base');
-        const compN = document.getElementById('comp-n');
-        const compP = document.getElementById('comp-p');
-        const compK = document.getElementById('comp-k');
-        const specCn = document.getElementById('spec-cn');
-        const specPh = document.getElementById('spec-ph');
+        const saved = localStorage.getItem('pc_product_' + PRODUCT_SLUG);
+        let data = saved ? JSON.parse(saved) : null;
 
-        if (compBase && document.getElementById('edit-comp-base')) document.getElementById('edit-comp-base').value = compBase.textContent.trim();
-        if (compN && document.getElementById('edit-comp-n')) document.getElementById('edit-comp-n').value = compN.textContent.trim();
-        if (compP && document.getElementById('edit-comp-p')) document.getElementById('edit-comp-p').value = compP.textContent.trim();
-        if (compK && document.getElementById('edit-comp-k')) document.getElementById('edit-comp-k').value = compK.textContent.trim();
-        if (specCn && document.getElementById('edit-spec-cn')) document.getElementById('edit-spec-cn').value = specCn.textContent.trim();
-        if (specPh && document.getElementById('edit-spec-ph')) document.getElementById('edit-spec-ph').value = specPh.textContent.trim();
+        let comps = (data && data.compositions) ? data.compositions : [];
+        if (!Array.isArray(comps) || comps.length === 0) {
+          comps = [
+            { label: 'Base', value: (data && data.compBase) || 'PM Base Organic Manure' },
+            { label: 'Nitrogen (N)', value: (data && data.compN) || '0.5%' },
+            { label: 'Phosphate (P₂O₅)', value: (data && data.compP) || '0.5%' },
+            { label: 'Potash (K₂O)', value: (data && data.compK) || '0.5%' }
+          ];
+        }
+
+        let specs = (data && data.specifications) ? data.specifications : [];
+        if (!Array.isArray(specs) || specs.length === 0) {
+          specs = [
+            { label: 'C:N Ratio', value: (data && data.specCn) || '< 20' },
+            { label: 'pH Range', value: (data && data.specPh) || '6.5 – 7.5' },
+            { label: 'MRP Price', value: '₹' + ((data && data.mrp) || '0') },
+            { label: 'Bag Weight / Size', value: ((data && data.weight) || '0') + ' KG' },
+            { label: 'Usage Scope', value: 'Only For Agriculture' }
+          ];
+        }
+
+        populateDynamicFields('edit-comp-rows', comps, [], 'Parameter (e.g. Base)', 'Value (e.g. PM Base Organic Manure)');
+        populateDynamicFields('edit-spec-rows', specs, [], 'Specification (e.g. C:N Ratio)', 'Value (e.g. < 20)');
+
       } catch(e) {}
 
       const modal = document.getElementById('edit-product-modal');
@@ -492,14 +467,11 @@
       const weight = document.getElementById('edit-weight') ? document.getElementById('edit-weight').value.trim() : '';
       const unit = document.getElementById('edit-unit') ? document.getElementById('edit-unit').value : 'KG';
       const imgFront = document.getElementById('edit-img-front') ? document.getElementById('edit-img-front').value.trim() : '';
-      const compBase = document.getElementById('edit-comp-base') ? document.getElementById('edit-comp-base').value.trim() : '';
-      const compN = document.getElementById('edit-comp-n') ? document.getElementById('edit-comp-n').value.trim() : '';
-      const compP = document.getElementById('edit-comp-p') ? document.getElementById('edit-comp-p').value.trim() : '';
-      const compK = document.getElementById('edit-comp-k') ? document.getElementById('edit-comp-k').value.trim() : '';
-      const specCn = document.getElementById('edit-spec-cn') ? document.getElementById('edit-spec-cn').value.trim() : '';
-      const specPh = document.getElementById('edit-spec-ph') ? document.getElementById('edit-spec-ph').value.trim() : '';
 
-      const data = { name, badge, desc, mrp, weight, unit, imgFront, compBase, compN, compP, compK, specCn, specPh };
+      const compositions = getDynamicFieldsData('edit-comp-rows');
+      const specifications = getDynamicFieldsData('edit-spec-rows');
+
+      const data = { name, badge, desc, mrp, weight, unit, imgFront, compositions, specifications };
 
       if (PRODUCT_SLUG) {
         localStorage.setItem('pc_product_' + PRODUCT_SLUG, JSON.stringify(data));
@@ -512,7 +484,7 @@
           let customList = JSON.parse(savedCustom);
           const idx = customList.findIndex(p => p.slug === PRODUCT_SLUG || String(p.id) === PRODUCT_SLUG);
           if (idx > -1) {
-            customList[idx] = { ...customList[idx], name, badge, desc, mrp: parseInt(mrp) || customList[idx].mrp, weight, img: imgFront || customList[idx].img };
+            customList[idx] = { ...customList[idx], name, badge, desc, mrp: parseInt(mrp) || customList[idx].mrp, weight, img: imgFront || customList[idx].img, compositions, specifications };
             localStorage.setItem('pc_custom_products', JSON.stringify(customList));
           }
         }
@@ -528,12 +500,6 @@
       params.set('badge', badge);
       params.set('desc', desc);
       if (imgFront) params.set('img', imgFront);
-      if (compBase) params.set('compBase', compBase);
-      if (compN) params.set('compN', compN);
-      if (compP) params.set('compP', compP);
-      if (compK) params.set('compK', compK);
-      if (specCn) params.set('specCn', specCn);
-      if (specPh) params.set('specPh', specPh);
 
       window.location.href = 'detail.html?' + params.toString();
     }

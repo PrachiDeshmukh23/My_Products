@@ -28,8 +28,6 @@
       <div class="header-inner">
         <a href="../products.html" class="back-link" id="back-to-home">← Back to Products</a>
         <div class="ph-brand" style="display:flex;align-items:center;gap:16px;">
-          <button id="admin-edit-btn" onclick="openProductEditModal()" style="background:#ffffff;color:#1F5E2E;border:2px solid #ffffff;font-family:Poppins,sans-serif;font-weight:700;padding:8px 20px;border-radius:50px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.25);display:inline-flex;align-items:center;gap:6px;font-size:0.9rem;transition:transform 0.2s ease;">✏️ Edit Product</button>
-          <button id="admin-delete-btn" onclick="deleteCurrentProduct()" style="background:#dc3545;color:#ffffff;border:2px solid #dc3545;font-family:Poppins,sans-serif;font-weight:700;padding:8px 18px;border-radius:50px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.25);display:inline-flex;align-items:center;gap:6px;font-size:0.88rem;">🗑️ Delete Product</button>
           <img src="../public/images/plantcare-logo-new.png" alt="PlantCare Logo" class="ph-logo" />
         </div>
       </div>
@@ -61,20 +59,24 @@
   <section class="product-info-section">
     <div class="container">
       <div class="info-grid">
-        <div class="info-card">
+        <div class="info-card" id="comp-card-wrap">
           <div class="info-card-title"><span class="info-card-icon">🧪</span> Composition</div>
-          <div class="comp-row"><span class="comp-label">Moisture</span><span class="comp-value" id="comp-base">≤ 25%</span></div>
-          <div class="comp-row"><span class="comp-label">Organic Carbon</span><span class="comp-value" id="comp-n">≥ 14%</span></div>
-          <div class="comp-row"><span class="comp-label">Nitrogen</span><span class="comp-value" id="comp-p">≥ 0.5%</span></div>
-          <div class="comp-row"><span class="comp-label">Phosphate</span><span class="comp-value" id="comp-k">≥ 0.5%</span></div>
+          <div id="comp-card-rows">
+            <div class="comp-row"><span class="comp-label">Moisture</span><span class="comp-value">≤ 25%</span></div>
+            <div class="comp-row"><span class="comp-label">Organic Carbon</span><span class="comp-value">≥ 14%</span></div>
+            <div class="comp-row"><span class="comp-label">Nitrogen</span><span class="comp-value">≥ 0.5%</span></div>
+            <div class="comp-row"><span class="comp-label">Phosphate</span><span class="comp-value">≥ 0.5%</span></div>
+          </div>
         </div>
-        <div class="info-card">
+        <div class="info-card" id="spec-card-wrap">
           <div class="info-card-title"><span class="info-card-icon">📋</span> Specifications</div>
-          <div class="comp-row"><span class="comp-label">C:N Ratio</span><span class="comp-value" id="spec-cn">&lt; 20</span></div>
-          <div class="comp-row"><span class="comp-label">pH Range</span><span class="comp-value" id="spec-ph">6.5 – 7.5</span></div>
-          <div class="comp-row"><span class="comp-label">MRP</span><span class="comp-value" id="spec-price">₹1,460</span></div>
-          <div class="comp-row"><span class="comp-label">Bag Weight</span><span class="comp-value" id="spec-weight">50.100 KG</span></div>
-          <div class="comp-row"><span class="comp-label">Use</span><span class="comp-value">Only For Agriculture</span></div>
+          <div id="spec-card-rows">
+            <div class="comp-row"><span class="comp-label">C:N Ratio</span><span class="comp-value">&lt; 20</span></div>
+            <div class="comp-row"><span class="comp-label">pH Range</span><span class="comp-value">6.5 – 7.5</span></div>
+            <div class="comp-row"><span class="comp-label">MRP</span><span class="comp-value" id="spec-price">₹1,460</span></div>
+            <div class="comp-row"><span class="comp-label">Bag Weight</span><span class="comp-value" id="spec-weight">50.100 KG</span></div>
+            <div class="comp-row"><span class="comp-label">Use</span><span class="comp-value">Only For Agriculture</span></div>
+          </div>
         </div>
         <div class="info-card full-width-card">
           <div class="info-card-title"><span class="info-card-icon">🏢</span> Company &amp; License Information</div>
@@ -185,18 +187,22 @@
           </div>
         </div>
 
-        <h4 style="font-family:Poppins,sans-serif;color:var(--dark-green);margin:16px 0 8px;font-size:0.95rem;">🧪 Composition</h4>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
-          <div><label style="font-size:0.8rem;color:#555;font-weight:600;">Moisture</label><input type="text" id="edit-comp-base" class="form-input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" /></div>
-          <div><label style="font-size:0.8rem;color:#555;font-weight:600;">Organic Carbon</label><input type="text" id="edit-comp-n" class="form-input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" /></div>
-          <div><label style="font-size:0.8rem;color:#555;font-weight:600;">Nitrogen</label><input type="text" id="edit-comp-p" class="form-input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" /></div>
-          <div><label style="font-size:0.8rem;color:#555;font-weight:600;">Phosphate</label><input type="text" id="edit-comp-k" class="form-input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" /></div>
+        <!-- DYNAMIC COMPOSITION FIELDS -->
+        <div style="border-top:1px solid #eee;margin-top:16px;padding-top:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="font-family:Poppins,sans-serif;color:var(--dark-green);margin:0;font-size:0.95rem;">🧪 Composition Fields</h4>
+            <button type="button" class="btn btn-outline" style="padding:4px 10px;font-size:0.78rem;border-color:var(--dark-green);color:var(--dark-green);" onclick="createDynamicFieldRow('edit-comp-rows', '', '', 'Parameter (e.g. Moisture)', 'Value (e.g. ≤ 25%)')">+ Add Field</button>
+          </div>
+          <div id="edit-comp-rows" style="margin-bottom:14px;"></div>
         </div>
 
-        <h4 style="font-family:Poppins,sans-serif;color:var(--dark-green);margin:16px 0 8px;font-size:0.95rem;">📋 Specifications</h4>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
-          <div><label style="font-size:0.8rem;color:#555;font-weight:600;">C:N Ratio</label><input type="text" id="edit-spec-cn" class="form-input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" /></div>
-          <div><label style="font-size:0.8rem;color:#555;font-weight:600;">pH Range</label><input type="text" id="edit-spec-ph" class="form-input" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;" /></div>
+        <!-- DYNAMIC SPECIFICATION FIELDS -->
+        <div style="border-top:1px solid #eee;margin-top:12px;padding-top:12px;margin-bottom:20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h4 style="font-family:Poppins,sans-serif;color:var(--dark-green);margin:0;font-size:0.95rem;">📋 Specification Fields</h4>
+            <button type="button" class="btn btn-outline" style="padding:4px 10px;font-size:0.78rem;border-color:var(--dark-green);color:var(--dark-green);" onclick="createDynamicFieldRow('edit-spec-rows', '', '', 'Specification (e.g. C:N Ratio)', 'Value (e.g. < 20)')">+ Add Field</button>
+          </div>
+          <div id="edit-spec-rows" style="margin-bottom:14px;"></div>
         </div>
 
         <div style="display:flex;justify-content:flex-end;gap:12px;border-top:1.5px solid var(--border);padding-top:16px;">
@@ -220,48 +226,70 @@
 
     function loadSavedProductData() {
       const saved = localStorage.getItem('pc_product_' + PRODUCT_SLUG);
+      let data = null;
       if (saved) {
-        try {
-          const data = JSON.parse(saved);
-          
-          if (data.imgFront) {
-            const logoImg = document.getElementById('product-logo-img');
-            if (logoImg) { logoImg.src = data.imgFront; logoImg.dataset.front = data.imgFront; }
+        try { data = JSON.parse(saved); } catch(e) {}
+      }
+
+      if (data) {
+        if (data.imgFront) {
+          const logoImg = document.getElementById('product-logo-img');
+          if (logoImg) { logoImg.src = data.imgFront; logoImg.dataset.front = data.imgFront; }
+        }
+        if (data.imgBack) {
+          const logoImg = document.getElementById('product-logo-img');
+          if (logoImg) { logoImg.dataset.back = data.imgBack; }
+        }
+        if (data.name) {
+          document.getElementById('p-name').textContent = data.name;
+          document.getElementById('page-title').textContent = data.name + ' – PlantCare Fertilizers';
+          PRODUCT_NAME = data.name;
+        }
+        if (data.badge) document.getElementById('p-badge').textContent = data.badge;
+        if (data.desc) document.getElementById('p-desc').textContent = data.desc;
+        if (data.mrp) {
+          const cleanMrp = String(data.mrp).replace(/[^0-9.]/g, '');
+          document.getElementById('p-price').textContent = '₹' + Number(cleanMrp).toLocaleString();
+          const sp = document.getElementById('spec-price');
+          if (sp) sp.textContent = '₹' + Number(cleanMrp).toLocaleString();
+        }
+        if (data.weight) {
+          const cleanW = String(data.weight).replace(/Bag/i,'').replace(/KG/i,'').trim();
+          document.getElementById('p-weight').textContent = cleanW + ' KG Bag';
+          const sw = document.getElementById('spec-weight');
+          if (sw) sw.textContent = cleanW + ' KG';
+        }
+
+        // Render dynamic Compositions
+        let comps = data.compositions;
+        if (!Array.isArray(comps) || comps.length === 0) {
+          comps = [];
+          if (data.compBase) comps.push({ label: 'Moisture', value: data.compBase });
+          if (data.compN) comps.push({ label: 'Organic Carbon', value: data.compN });
+          if (data.compP) comps.push({ label: 'Nitrogen', value: data.compP });
+          if (data.compK) comps.push({ label: 'Phosphate', value: data.compK });
+        }
+        if (comps.length > 0) {
+          const compContainer = document.getElementById('comp-card-rows');
+          if (compContainer) {
+            compContainer.innerHTML = comps.map(c => `<div class="comp-row"><span class="comp-label">${c.label}</span><span class="comp-value">${c.value}</span></div>`).join('');
           }
-          if (data.imgBack) {
-            const logoImg = document.getElementById('product-logo-img');
-            if (logoImg) { logoImg.dataset.back = data.imgBack; }
+        }
+
+        // Render dynamic Specifications
+        let specs = data.specifications;
+        if (Array.isArray(specs) && specs.length > 0) {
+          const specContainer = document.getElementById('spec-card-rows');
+          if (specContainer) {
+            specContainer.innerHTML = specs.map(s => `<div class="comp-row"><span class="comp-label">${s.label}</span><span class="comp-value">${s.value}</span></div>`).join('');
           }
-          if (data.name) {
-            document.getElementById('p-name').textContent = data.name;
-            document.getElementById('page-title').textContent = data.name + ' – PlantCare Fertilizers';
-            PRODUCT_NAME = data.name;
-          }
-          if (data.badge) document.getElementById('p-badge').textContent = data.badge;
-          if (data.desc) document.getElementById('p-desc').textContent = data.desc;
-          if (data.mrp) {
-            const cleanMrp = String(data.mrp).replace(/[^0-9.]/g, '');
-            document.getElementById('p-price').textContent = '₹' + Number(cleanMrp).toLocaleString();
-            document.getElementById('spec-price').textContent = '₹' + Number(cleanMrp).toLocaleString();
-          }
-          if (data.weight) {
-            const cleanW = String(data.weight).replace(/Bag/i,'').replace(/KG/i,'').trim();
-            document.getElementById('p-weight').textContent = cleanW + ' KG Bag';
-            document.getElementById('spec-weight').textContent = cleanW + ' KG';
-          }
-          if (data.compBase) document.getElementById('comp-base').textContent = data.compBase;
-          if (data.compN) document.getElementById('comp-n').textContent = data.compN;
-          if (data.compP) document.getElementById('comp-p').textContent = data.compP;
-          if (data.compK) document.getElementById('comp-k').textContent = data.compK;
-          if (data.specCn) document.getElementById('spec-cn').textContent = data.specCn;
-          if (data.specPh) document.getElementById('spec-ph').textContent = data.specPh;
-          
-          const waLink = document.getElementById('btn-order-whatsapp');
-          if (waLink) {
-            const waText = encodeURIComponent(`Hello PlantCare, I want to order ${data.name || PRODUCT_NAME} (₹${data.mrp || '1,460'} / ${data.weight || '50.100'} KG). Please share details.`);
-            waLink.href = `https://wa.me/917666046941?text=${waText}`;
-          }
-        } catch(e) {}
+        }
+
+        const waLink = document.getElementById('btn-order-whatsapp');
+        if (waLink) {
+          const waText = encodeURIComponent(`Hello PlantCare, I want to order ${data.name || PRODUCT_NAME} (₹${data.mrp || '1,460'} / ${data.weight || '50.100'} KG). Please share details.`);
+          waLink.href = `https://wa.me/917666046941?text=${waText}`;
+        }
       }
     }
 
@@ -272,9 +300,8 @@
         const descElem = document.getElementById('p-desc');
         const priceElem = document.getElementById('p-price');
         const weightElem = document.getElementById('p-weight');
-
-        
         const logoImg = document.getElementById('product-logo-img');
+
         if (logoImg && document.getElementById('edit-img-front')) {
           document.getElementById('edit-img-front').value = logoImg.dataset.front || logoImg.src;
         }
@@ -294,19 +321,33 @@
           document.getElementById('edit-weight').value = rawWeight;
         }
 
-        const compBase = document.getElementById('comp-base');
-        const compN = document.getElementById('comp-n');
-        const compP = document.getElementById('comp-p');
-        const compK = document.getElementById('comp-k');
-        const specCn = document.getElementById('spec-cn');
-        const specPh = document.getElementById('spec-ph');
+        const saved = localStorage.getItem('pc_product_' + PRODUCT_SLUG);
+        let data = saved ? JSON.parse(saved) : {};
+        
+        let comps = data.compositions;
+        if (!Array.isArray(comps) || comps.length === 0) {
+          comps = [
+            { label: 'Moisture', value: data.compBase || '≤ 25%' },
+            { label: 'Organic Carbon', value: data.compN || '≥ 14%' },
+            { label: 'Nitrogen', value: data.compP || '≥ 0.5%' },
+            { label: 'Phosphate', value: data.compK || '≥ 0.5%' }
+          ];
+        }
 
-        if (compBase && document.getElementById('edit-comp-base')) document.getElementById('edit-comp-base').value = compBase.textContent.trim();
-        if (compN && document.getElementById('edit-comp-n')) document.getElementById('edit-comp-n').value = compN.textContent.trim();
-        if (compP && document.getElementById('edit-comp-p')) document.getElementById('edit-comp-p').value = compP.textContent.trim();
-        if (compK && document.getElementById('edit-comp-k')) document.getElementById('edit-comp-k').value = compK.textContent.trim();
-        if (specCn && document.getElementById('edit-spec-cn')) document.getElementById('edit-spec-cn').value = specCn.textContent.trim();
-        if (specPh && document.getElementById('edit-spec-ph')) document.getElementById('edit-spec-ph').value = specPh.textContent.trim();
+        let specs = data.specifications;
+        if (!Array.isArray(specs) || specs.length === 0) {
+          specs = [
+            { label: 'C:N Ratio', value: data.specCn || '< 20' },
+            { label: 'pH Range', value: data.specPh || '6.5 – 7.5' },
+            { label: 'MRP', value: '₹' + (data.mrp || '1,460') },
+            { label: 'Bag Weight', value: (data.weight || '50.100') + ' KG' },
+            { label: 'Use', value: 'Only For Agriculture' }
+          ];
+        }
+
+        populateDynamicFields('edit-comp-rows', comps, [], 'Parameter (e.g. Moisture)', 'Value (e.g. ≤ 25%)');
+        populateDynamicFields('edit-spec-rows', specs, [], 'Specification (e.g. C:N Ratio)', 'Value (e.g. < 20)');
+
       } catch(e) {
         console.error('Error populating edit modal:', e);
       }
@@ -333,16 +374,14 @@
       const desc = document.getElementById('edit-desc') ? document.getElementById('edit-desc').value.trim() : '';
       const mrp = document.getElementById('edit-mrp') ? document.getElementById('edit-mrp').value.trim() : '';
       const weight = document.getElementById('edit-weight') ? document.getElementById('edit-weight').value.trim() : '';
-      const compBase = document.getElementById('edit-comp-base') ? document.getElementById('edit-comp-base').value.trim() : '';
-      const compN = document.getElementById('edit-comp-n') ? document.getElementById('edit-comp-n').value.trim() : '';
-      const compP = document.getElementById('edit-comp-p') ? document.getElementById('edit-comp-p').value.trim() : '';
-      const compK = document.getElementById('edit-comp-k') ? document.getElementById('edit-comp-k').value.trim() : '';
-      const specCn = document.getElementById('edit-spec-cn') ? document.getElementById('edit-spec-cn').value.trim() : '';
-      const specPh = document.getElementById('edit-spec-ph') ? document.getElementById('edit-spec-ph').value.trim() : '';
 
       const imgFront = document.getElementById('edit-img-front') ? document.getElementById('edit-img-front').value.trim() : '';
       const imgBack = document.getElementById('edit-img-back') ? document.getElementById('edit-img-back').value.trim() : '';
-      const data = { name, badge, desc, mrp, weight, imgFront, imgBack, compBase, compN, compP, compK, specCn, specPh };
+
+      const compositions = getDynamicFieldsData('edit-comp-rows');
+      const specifications = getDynamicFieldsData('edit-spec-rows');
+
+      const data = { name, badge, desc, mrp, weight, imgFront, imgBack, compositions, specifications };
 
       localStorage.setItem('pc_product_' + PRODUCT_SLUG, JSON.stringify(data));
 
@@ -355,6 +394,8 @@
           if (desc) products[idx].desc = desc;
           if (mrp) products[idx].mrp = parseInt(mrp) || products[idx].mrp;
           if (weight) products[idx].weight = parseInt(weight) || products[idx].weight;
+          products[idx].compositions = compositions;
+          products[idx].specifications = specifications;
           localStorage.setItem('pc_products', JSON.stringify(products));
         }
       } catch(e) {}
