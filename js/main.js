@@ -142,8 +142,12 @@ function renderCustomProducts() {
     let qExtraParams = '';
     try {
       const savedDetail = localStorage.getItem('pc_product_' + p.slug);
-      if (savedDetail) {
-        const detail = JSON.parse(savedDetail);
+      let detail = null;
+      if (savedDetail) { try { detail = JSON.parse(savedDetail); } catch(e) {} }
+      if (!detail) detail = p;
+      if (detail) {
+        if (detail.compositions && Array.isArray(detail.compositions)) qExtraParams += '&compositions=' + encodeURIComponent(JSON.stringify(detail.compositions));
+        if (detail.specifications && Array.isArray(detail.specifications)) qExtraParams += '&specifications=' + encodeURIComponent(JSON.stringify(detail.specifications));
         if (detail.compBase) qExtraParams += '&compBase=' + encodeURIComponent(detail.compBase);
         if (detail.compN) qExtraParams += '&compN=' + encodeURIComponent(detail.compN);
         if (detail.compP) qExtraParams += '&compP=' + encodeURIComponent(detail.compP);

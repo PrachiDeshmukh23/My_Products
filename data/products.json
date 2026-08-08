@@ -25,7 +25,7 @@
     "slug": "sugarcane-special",
     "img": "../public/images/sugarcane-special-front.png",
     "scans": 41,
-    "updatedAt": "2026-08-07T12:30:38.275Z"
+    "updatedAt": "2026-08-08T10:27:33.294Z"
   },
   {
     "id": 2,
@@ -36,7 +36,7 @@
     "slug": "onion-corn",
     "img": "../public/images/onion-maize-front.png",
     "scans": 70,
-    "updatedAt": "2026-08-07T12:30:38.285Z"
+    "updatedAt": "2026-08-08T10:27:33.298Z"
   },
   {
     "id": 3,
@@ -47,7 +47,7 @@
     "slug": "soybean-cotton",
     "img": "../public/images/soybean-cotton-front.png",
     "scans": 39,
-    "updatedAt": "2026-08-07T12:30:38.290Z"
+    "updatedAt": "2026-08-08T10:27:33.305Z"
   },
   {
     "id": 4,
@@ -58,6 +58,6 @@
     "slug": "crop-shakti",
     "img": "../public/images/crop-shakti-front.png",
     "scans": 100,
-    "updatedAt": "2026-08-07T12:30:38.303Z"
+    "updatedAt": "2026-08-08T10:27:33.310Z"
   }
 ]

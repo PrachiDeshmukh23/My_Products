@@ -151,11 +151,17 @@
             <label class="form-label" style="display:block;font-weight:600;margin-bottom:4px;font-size:0.85rem;color:var(--text-dark);">Weight / Size &amp; Unit</label>
             <div style="display:flex;gap:6px;">
               <input type="text" id="edit-weight" name="edit-product-weight-no-autofill" class="form-input" autocomplete="off" style="flex:1;padding:10px;border:1.5px solid var(--border);border-radius:8px;" required />
-              <select id="edit-unit" class="form-input" style="width:85px;padding:10px 4px;border:1.5px solid var(--border);border-radius:8px;font-weight:700;background:#fff;cursor:pointer;">
-                <option value="KG">KG</option>
-                <option value="ML">ML</option>
-                <option value="L">L</option>
-                <option value="GM">GM</option>
+              <select id="edit-unit" class="form-input" style="width:145px;padding:10px 4px;border:1.5px solid var(--border);border-radius:8px;font-weight:700;background:#fff;cursor:pointer;">
+                <option value="KG">Bag Weight (KG)</option>
+                <option value="Bottle (1 Ltr)">Bottle (1 Ltr)</option>
+                <option value="Bottle (500 ML)">Bottle (500 ML)</option>
+                <option value="Bottle (250 ML)">Bottle (250 ML)</option>
+                <option value="Bottle">Bottle</option>
+                <option value="Ltr">Ltr (Liter)</option>
+                <option value="ML">ML (Milliliter)</option>
+                <option value="GM">GM (Gram)</option>
+                <option value="Can">Can</option>
+                <option value="Pouch">Pouch</option>
               </select>
             </div>
           </div>
@@ -207,7 +213,30 @@
     async function loadSavedProductData() {
       let data = null;
 
-      // 1. Try URL parameters first (Universal for QR scanning on any device!)
+      // 1. First prioritize stored product data (local storage & server endpoint) if PRODUCT_SLUG exists
+      if (PRODUCT_SLUG) {
+        const saved = localStorage.getItem('pc_product_' + PRODUCT_SLUG);
+        if (saved) {
+          try { data = JSON.parse(saved); } catch(e) {}
+        }
+        if (!data) {
+          try {
+            const customSaved = localStorage.getItem('pc_custom_products');
+            if (customSaved) {
+              const list = JSON.parse(customSaved);
+              data = list.find(p => p.slug === PRODUCT_SLUG || String(p.id) === PRODUCT_SLUG);
+            }
+          } catch(e) {}
+        }
+        if (!data) {
+          try {
+            const response = await fetch('/api/products/' + encodeURIComponent(PRODUCT_SLUG));
+            if (response.ok) data = await response.json();
+          } catch (e) {}
+        }
+      }
+
+      // 2. Parse URL Parameters
       const qName = urlParams.get('name');
       const qMrp = urlParams.get('mrp');
       const qWeight = urlParams.get('weight');
@@ -215,14 +244,29 @@
       const qBadge = urlParams.get('badge') || 'ORGANIC';
       const qDesc = urlParams.get('desc');
       const qImg = urlParams.get('img');
-      const qCompBase = urlParams.get('compBase');
-      const qCompN = urlParams.get('compN');
-      const qCompP = urlParams.get('compP');
-      const qCompK = urlParams.get('compK');
-      const qSpecCn = urlParams.get('specCn');
-      const qSpecPh = urlParams.get('specPh');
+      const qComps = urlParams.get('compositions');
+      const qSpecs = urlParams.get('specifications');
 
-      if (qName || qMrp) {
+      let queryComps = null;
+      let querySpecs = null;
+      if (qComps) { try { queryComps = JSON.parse(decodeURIComponent(qComps)); } catch(e) {} }
+      if (qSpecs) { try { querySpecs = JSON.parse(decodeURIComponent(qSpecs)); } catch(e) {} }
+
+      if (data) {
+        // Merge query parameters if present, while preserving stored compositions & specifications
+        data = {
+          ...data,
+          name: qName || data.name,
+          mrp: qMrp || data.mrp,
+          weight: qWeight || data.weight,
+          unit: urlParams.has('unit') ? qUnit : (data.unit || 'KG'),
+          badge: qBadge || data.badge,
+          desc: qDesc || data.desc,
+          imgFront: qImg || data.imgFront || data.img,
+          compositions: (data.compositions && data.compositions.length > 0) ? data.compositions : (queryComps || data.compositions),
+          specifications: (data.specifications && data.specifications.length > 0) ? data.specifications : (querySpecs || data.specifications)
+        };
+      } else if (qName || qMrp) {
         data = {
           name: qName || 'Product',
           mrp: qMrp || '0',
@@ -232,42 +276,19 @@
           desc: qDesc || 'High quality organic agricultural fertilizer by PlantCare Fertilizers Pvt. Ltd.',
           imgFront: qImg || '../public/images/plantcare-logo-new.png',
           imgBack: qImg || '../public/images/plantcare-logo-new.png',
-          compBase: qCompBase || 'PM Base Organic Manure',
-          compN: qCompN || '0.5%', compP: qCompP || '0.5%', compK: qCompK || '0.5%',
-          specCn: qSpecCn || '< 20', specPh: qSpecPh || '6.5 – 7.5'
+          compositions: queryComps,
+          specifications: querySpecs,
+          compBase: urlParams.get('compBase'),
+          compN: urlParams.get('compN'),
+          compP: urlParams.get('compP'),
+          compK: urlParams.get('compK'),
+          specCn: urlParams.get('specCn'),
+          specPh: urlParams.get('specPh')
         };
       }
 
-      // 2. Load the shared catalogue. This is what makes newly added products
-      // available when a QR code is scanned on a different phone.
-      if (!data && PRODUCT_SLUG) {
-        try {
-          const response = await fetch('/api/products/' + encodeURIComponent(PRODUCT_SLUG));
-          if (response.ok) data = await response.json();
-        } catch (e) {}
-      }
-
-      // 3. Try pc_product_<slug> from localStorage
-      if (!data && PRODUCT_SLUG) {
-        const saved = localStorage.getItem('pc_product_' + PRODUCT_SLUG);
-        if (saved) {
-          try { data = JSON.parse(saved); } catch(e) {}
-        }
-      }
-
-      // 4. Try pc_custom_products from localStorage
-      if (!data && PRODUCT_SLUG) {
-        try {
-          const customSaved = localStorage.getItem('pc_custom_products');
-          if (customSaved) {
-            const list = JSON.parse(customSaved);
-            data = list.find(p => p.slug === PRODUCT_SLUG || String(p.id) === PRODUCT_SLUG);
-          }
-        } catch(e) {}
-      }
-
-      // 5. Auto-load latest custom product if no slug and no params
-      if (!data && !PRODUCT_SLUG) {
+      // 3. Fallback to latest custom product if still no data
+      if (!data) {
         try {
           const customSaved = localStorage.getItem('pc_custom_products');
           if (customSaved) {
@@ -276,8 +297,6 @@
               const latestProduct = list[list.length - 1];
               PRODUCT_SLUG = latestProduct.slug || String(latestProduct.id);
               data = latestProduct;
-
-              // Check pc_product_<slug> for composition/spec
               const richData = localStorage.getItem('pc_product_' + PRODUCT_SLUG);
               if (richData) {
                 try { data = { ...data, ...JSON.parse(richData) }; } catch(e) {}
@@ -290,7 +309,7 @@
       if (data) {
         if (data.name) {
           document.getElementById('p-name').textContent = data.name;
-          document.getElementById('page-title').textContent = data.name + ' – PlantCare Fertilizers';
+          document.getElementById('page-title') && (document.getElementById('page-title').textContent = data.name + ' – PlantCare Fertilizers');
           PRODUCT_NAME = data.name;
         }
         if (data.badge) document.getElementById('p-badge').textContent = data.badge;
@@ -301,14 +320,28 @@
           document.getElementById('spec-price').textContent = '₹' + Number(cleanMrp).toLocaleString();
         }
         if (data.weight) {
-          const cleanW = String(data.weight).replace(/Bag/i,'').replace(/KG/i,'').trim();
+          const rawWeight = String(data.weight).trim();
           const currentUnit = data.unit || 'KG';
-          const containerText = (currentUnit === 'ML' || currentUnit === 'L') ? 'Bottle' : 'Bag';
-          document.getElementById('p-weight').textContent = cleanW + ' ' + currentUnit + ' ' + containerText;
-          document.getElementById('spec-weight').textContent = cleanW + ' ' + currentUnit;
+          let displayBadge = rawWeight;
+          const lowerUnit = currentUnit.toLowerCase();
+
+          if (!rawWeight.toLowerCase().includes(lowerUnit)) {
+            displayBadge += ' ' + currentUnit;
+          }
+
+          if (!lowerUnit.includes('bottle') && !lowerUnit.includes('bag') && !lowerUnit.includes('can') && !lowerUnit.includes('pouch')) {
+            if (lowerUnit.includes('ml') || lowerUnit.includes('ltr') || lowerUnit === 'l') {
+              displayBadge += ' Bottle';
+            } else {
+              displayBadge += ' Bag';
+            }
+          }
+
+          document.getElementById('p-weight').textContent = displayBadge;
+          document.getElementById('spec-weight').textContent = rawWeight + ' ' + currentUnit;
         }
 
-        // Dynamic compositions
+        // Render Compositions
         let comps = data.compositions;
         if (!Array.isArray(comps) || comps.length === 0) {
           comps = [];
@@ -317,15 +350,20 @@
           if (data.compP) comps.push({ label: 'Phosphate (P₂O₅)', value: data.compP });
           if (data.compK) comps.push({ label: 'Potash (K₂O)', value: data.compK });
         }
-        if (comps.length > 0) {
+        if (Array.isArray(comps) && comps.length > 0) {
           const compContainer = document.getElementById('comp-card-rows');
           if (compContainer) {
             compContainer.innerHTML = comps.map(c => `<div class="comp-row"><span class="comp-label">${c.label}</span><span class="comp-value">${c.value}</span></div>`).join('');
           }
         }
 
-        // Dynamic specifications
+        // Render Specifications
         let specs = data.specifications;
+        if (!Array.isArray(specs) || specs.length === 0) {
+          specs = [];
+          if (data.specCn) specs.push({ label: 'C:N Ratio', value: data.specCn });
+          if (data.specPh) specs.push({ label: 'pH Range', value: data.specPh });
+        }
         if (Array.isArray(specs) && specs.length > 0) {
           const specContainer = document.getElementById('spec-card-rows');
           if (specContainer) {

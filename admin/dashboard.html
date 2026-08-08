@@ -122,7 +122,15 @@
 <!-- ADD/EDIT MODAL -->
 <div class="modal-overlay" id="product-modal">
   <div class="modal" style="max-height:90vh;overflow-y:auto;">
-    <h3 class="modal-title" id="modal-title">Add Product</h3>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #eee;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button type="button" onclick="closeModal()" class="btn btn-outline" style="padding:6px 12px;font-size:0.85rem;border-color:var(--border);color:var(--dark-green);display:inline-flex;align-items:center;gap:6px;border-radius:8px;font-weight:600;cursor:pointer;" title="Back / Close">
+          ← Back
+        </button>
+        <h3 class="modal-title" id="modal-title" style="margin:0;font-size:1.25rem;">Add Product</h3>
+      </div>
+      <button type="button" onclick="closeModal()" style="background:none;border:none;font-size:1.3rem;color:#7a9880;cursor:pointer;padding:4px 8px;line-height:1;" title="Close">✕</button>
+    </div>
     <div class="form-group">
       <label class="form-label">Product Name</label>
       <input type="text" id="modal-name" name="admin-product-name-no-autofill" class="form-input" placeholder="e.g. Sugarcane Special" autocomplete="new-password" />
@@ -136,8 +144,22 @@
       <input type="number" id="modal-mrp" name="admin-product-mrp-no-autofill" class="form-input" placeholder="e.g. 1480" autocomplete="off" />
     </div>
     <div class="form-group">
-      <label class="form-label">Bag Weight (KG)</label>
-      <input type="number" id="modal-weight" name="admin-product-weight-no-autofill" class="form-input" placeholder="e.g. 50" autocomplete="off" />
+      <label class="form-label">Bag Weight / Bottle Packaging &amp; Unit</label>
+      <div style="display:flex;gap:8px;">
+        <input type="text" id="modal-weight" name="admin-product-weight-no-autofill" class="form-input" placeholder="e.g. 50 or 1 or 500" style="flex:1;" autocomplete="off" />
+        <select id="modal-unit" class="form-input" style="width:170px;font-weight:600;background:#fff;cursor:pointer;">
+          <option value="KG">Bag Weight (KG)</option>
+          <option value="Bottle (1 Ltr)">Bottle (1 Ltr)</option>
+          <option value="Bottle (500 ML)">Bottle (500 ML)</option>
+          <option value="Bottle (250 ML)">Bottle (250 ML)</option>
+          <option value="Bottle">Bottle</option>
+          <option value="Ltr">Ltr (Liter)</option>
+          <option value="ML">ML (Milliliter)</option>
+          <option value="GM">GM (Gram)</option>
+          <option value="Can">Can</option>
+          <option value="Pouch">Pouch</option>
+        </select>
+      </div>
     </div>
     <div class="form-group">
       <label class="form-label">Product URL Slug</label>
@@ -185,7 +207,7 @@ function getProducts() {
     if (customStored) {
       const customList = JSON.parse(customStored);
       customList.forEach(cp => {
-        if (!products.some(p => p.slug === cp.slug || String(p.id) === String(cp.id))) {
+        if (!products.some(p => String(p.id) === String(cp.id))) {
           products.push({ ...cp, scans: cp.scans || 0 });
         }
       });
@@ -232,19 +254,26 @@ function renderDashboard() {
   if (el) el.textContent = totalScans;
   const tbody = document.getElementById('dashboard-table-body');
   if (tbody) {
-    tbody.innerHTML = products.map(p => `
-      <tr>
-        <td><strong>${p.name}</strong></td>
-        <td><img src="${p.img || '../public/images/plantcare-logo-new.png'}" class="product-thumb" alt="${p.name}" /></td>
-        <td>₹${Number(p.mrp || 0).toLocaleString()}</td>
-        <td>${p.weight} ${p.unit || 'KG'}</td>
-        <td><span class="badge-active">Active</span></td>
-        <td>
-          <button class="action-btn edit" onclick="openEditModal(${p.id})">Edit</button>
-          <button class="action-btn delete" style="background:#dc3545;color:#fff;margin-left:4px;" onclick="deleteProduct(${p.id})">Delete</button>
-        </td>
-      </tr>
-    `).join('');
+    tbody.innerHTML = products.map(p => {
+      const safeId = String(p.id || p.slug || '').replace(/'/g, "\\'");
+      const safeName = String(p.name || 'Product').replace(/"/g, '&quot;');
+      const safeImg = p.img || '../public/images/plantcare-logo-new.png';
+      const safeMrp = Number(p.mrp || 0).toLocaleString();
+      const safeWeight = (p.weight || '0') + ' ' + (p.unit || 'KG');
+      return `
+        <tr>
+          <td><strong>${safeName}</strong></td>
+          <td><img src="${safeImg}" class="product-thumb" alt="${safeName}" /></td>
+          <td>₹${safeMrp}</td>
+          <td>${safeWeight}</td>
+          <td><span class="badge-active">Active</span></td>
+          <td>
+            <button class="action-btn edit" onclick="openEditModal('${safeId}')">Edit</button>
+            <button class="action-btn delete" style="background:#dc3545;color:#fff;margin-left:4px;" onclick="deleteProduct('${safeId}')">Delete</button>
+          </td>
+        </tr>
+      `;
+    }).join('');
   }
 }
 
@@ -252,19 +281,28 @@ function renderProducts() {
   const products = getProducts();
   const tbody = document.getElementById('products-table-body');
   if (tbody) {
-    tbody.innerHTML = products.map(p => `
-      <tr>
-        <td><img src="${p.img || '../public/images/plantcare-logo-new.png'}" class="product-thumb" alt="${p.name}" /></td>
-        <td><strong>${p.name}</strong><br/><span style="font-size:0.78rem;color:#7a9880;">${(p.desc || '').substring(0,50)}...</span></td>
-        <td>₹${Number(p.mrp || 0).toLocaleString()}</td>
-        <td>${p.weight} ${p.unit || 'KG'}</td>
-        <td style="font-size:0.78rem;color:var(--sky-blue);">...com/products/${p.slug}</td>
-        <td>
-          <button class="action-btn edit" onclick="openEditModal(${p.id})">Edit</button>
-          <button class="action-btn delete" style="background:#dc3545;color:#fff;margin-left:4px;" onclick="deleteProduct(${p.id})">Delete</button>
-        </td>
-      </tr>
-    `).join('');
+    tbody.innerHTML = products.map(p => {
+      const safeId = String(p.id || p.slug || '').replace(/'/g, "\\'");
+      const safeName = String(p.name || 'Product').replace(/"/g, '&quot;');
+      const safeDesc = String(p.desc || '');
+      const safeImg = p.img || '../public/images/plantcare-logo-new.png';
+      const safeMrp = Number(p.mrp || 0).toLocaleString();
+      const safeWeight = (p.weight || '0') + ' ' + (p.unit || 'KG');
+      const safeSlug = p.slug || '';
+      return `
+        <tr>
+          <td><img src="${safeImg}" class="product-thumb" alt="${safeName}" /></td>
+          <td><strong>${safeName}</strong><br/><span style="font-size:0.78rem;color:#7a9880;">${safeDesc.substring(0,50)}...</span></td>
+          <td>₹${safeMrp}</td>
+          <td>${safeWeight}</td>
+          <td style="font-size:0.78rem;color:var(--sky-blue);">/products/${safeSlug}</td>
+          <td>
+            <button class="action-btn edit" onclick="openEditModal('${safeId}')">Edit</button>
+            <button class="action-btn delete" style="background:#dc3545;color:#fff;margin-left:4px;" onclick="deleteProduct('${safeId}')">Delete</button>
+          </td>
+        </tr>
+      `;
+    }).join('');
   }
 }
 
@@ -287,7 +325,7 @@ function renderQR() {
 
       return `
         <div class="info-card" style="text-align:center;padding:20px;">
-          <div class="info-card-title" style="justify-content:center;font-weight:700;font-size:1.05rem;">${p.name}</div>
+          <div class="info-card-title" style="justify-content:center;font-weight:700;font-size:1.05rem;">${p.name} (${p.weight} ${p.unit || 'KG'})</div>
           <div class="qr-canvas-wrap" style="margin:16px auto;display:inline-flex;background:#fff;padding:12px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.08);border:1px solid #e2ece3;">
             <canvas id="qr-${p.id}" width="160" height="160" style="display:none;"></canvas>
             <img id="qr-img-${p.id}" src="${qrApiUrl}" alt="${p.name} QR Code" style="width:160px;height:160px;display:block;border-radius:6px;" />
@@ -332,7 +370,7 @@ function renderAnalytics() {
     statsDiv.innerHTML = products.map(p => `
       <div class="stat-card">
         <div class="stat-card-number">${p.scans || 0}</div>
-        <div class="stat-card-label">${p.name} Scans</div>
+        <div class="stat-card-label">${p.name} (${p.weight} ${p.unit || 'KG'}) Scans</div>
       </div>
     `).join('') + `<div class="stat-card"><div class="stat-card-number">${totalScans}</div><div class="stat-card-label">Total Scans</div></div>`;
   }
@@ -341,8 +379,8 @@ function renderAnalytics() {
   if (tbody) {
     tbody.innerHTML = products.map(p => `
       <tr>
-        <td><strong>${p.name}</strong></td>
-        <td style="font-size:0.8rem;color:var(--sky-blue);">platcare.mywebz.in/products/${p.slug}</td>
+        <td><strong>${p.name}</strong> (${p.weight} ${p.unit || 'KG'})</td>
+        <td style="font-size:0.8rem;color:var(--sky-blue);">/products/${p.slug}</td>
         <td><strong>${p.scans || 0}</strong></td>
         <td style="color:#7a9880;font-size:0.82rem;">Just now</td>
       </tr>
@@ -394,19 +432,20 @@ function openAddModal() {
   document.getElementById('modal-desc').value = '';
   document.getElementById('modal-mrp').value = '';
   document.getElementById('modal-weight').value = '';
+  if (document.getElementById('modal-unit')) document.getElementById('modal-unit').value = 'KG';
   document.getElementById('modal-slug').value = '';
 
   populateDynamicFields('admin-comp-rows', [], [
-    { label: 'Potassium Humate', value: '6 - 8%' },
-    { label: 'Amino Acid', value: '1.5 - 2%' },
-    { label: 'Seaweed Extract', value: '2%' },
-    { label: 'Fulvic Acid', value: '2%' }
+    { label: 'Potassium Humate', value: '' },
+    { label: 'Amino Acid', value: '' },
+    { label: 'Seaweed Extract', value: '' },
+    { label: 'Fulvic Acid', value: '' }
   ], 'Parameter (e.g. Potassium Humate)', 'Value (e.g. 6 - 8%)');
 
   populateDynamicFields('admin-spec-rows', [], [
-    { label: 'MRP', value: '₹1,500' },
-    { label: 'Bag Weight', value: '50.000 KG' },
-    { label: 'Use', value: 'Only For Agriculture' }
+    { label: 'MRP', value: '' },
+    { label: 'Bag Weight', value: '' },
+    { label: 'Use', value: '' }
   ], 'Specification (e.g. C:N Ratio)', 'Value (e.g. < 20)');
 
   document.getElementById('product-modal').classList.add('open');
@@ -414,14 +453,15 @@ function openAddModal() {
 
 function openEditModal(id) {
   const products = getProducts();
-  const p = products.find(x => x.id === id);
+  const p = products.find(x => String(x.id) === String(id));
   if (!p) return;
-  editId = id;
+  editId = p.id;
   document.getElementById('modal-title').textContent = 'Edit Product';
   document.getElementById('modal-name').value = p.name || '';
   document.getElementById('modal-desc').value = p.desc || '';
   document.getElementById('modal-mrp').value = p.mrp || '';
   document.getElementById('modal-weight').value = p.weight || '';
+  if (document.getElementById('modal-unit')) document.getElementById('modal-unit').value = p.unit || 'KG';
   document.getElementById('modal-slug').value = p.slug || '';
 
   // Get composition data (support legacy fields fallback)
@@ -434,8 +474,8 @@ function openEditModal(id) {
     if (p.compK) comps.push({ label: 'Potash / Fulvic Acid', value: p.compK });
     if (comps.length === 0) {
       comps = [
-        { label: 'Potassium Humate', value: '6 - 8%' },
-        { label: 'Amino Acid', value: '1.5 - 2%' }
+        { label: 'Potassium Humate', value: '' },
+        { label: 'Amino Acid', value: '' }
       ];
     }
   }
@@ -445,7 +485,8 @@ function openEditModal(id) {
   if (!Array.isArray(specs) || specs.length === 0) {
     specs = [];
     if (p.mrp) specs.push({ label: 'MRP', value: '₹' + p.mrp });
-    if (p.weight) specs.push({ label: 'Bag Weight', value: p.weight + ' ' + (p.unit || 'KG') });
+    const specLabel = (p.unit && p.unit.toLowerCase().includes('bottle')) ? 'Bottle Packaging' : 'Bag Weight';
+    if (p.weight) specs.push({ label: specLabel, value: p.weight + ' ' + (p.unit || 'KG') });
     if (p.specCn) specs.push({ label: 'C:N Ratio', value: p.specCn });
     if (p.specPh) specs.push({ label: 'pH Value', value: p.specPh });
     specs.push({ label: 'Use', value: 'Only For Agriculture' });
@@ -464,17 +505,34 @@ async function saveProduct() {
   const desc = document.getElementById('modal-desc').value.trim();
   const mrp = parseInt(document.getElementById('modal-mrp').value) || 0;
   const weight = document.getElementById('modal-weight').value.trim();
-  const slug = document.getElementById('modal-slug').value.trim().toLowerCase().replace(/\s+/g,'-') || name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const unit = document.getElementById('modal-unit') ? document.getElementById('modal-unit').value : 'KG';
+  
+  let rawSlug = document.getElementById('modal-slug').value.trim().toLowerCase().replace(/\s+/g,'-') || name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  const products = getProducts();
+  let slug = rawSlug;
+  
+  if (!editId) {
+    let suffix = 1;
+    while (products.some(p => p.slug === slug)) {
+      const cleanW = weight ? weight.toString().toLowerCase().replace(/[^a-z0-9]/g,'') : '';
+      const cleanU = unit ? unit.toString().toLowerCase().replace(/[^a-z0-9]/g,'') : '';
+      slug = `${rawSlug}-${cleanW}${cleanU || suffix}`;
+      if (products.some(p => p.slug === slug)) {
+        slug = `${rawSlug}-${suffix}`;
+      }
+      suffix++;
+    }
+  }
+
   if (!name || !slug) { showToast('Name and slug are required'); return; }
 
   const compositions = getDynamicFieldsData('admin-comp-rows');
   const specifications = getDynamicFieldsData('admin-spec-rows');
 
-  const products = getProducts();
-  const existingProd = editId ? products.find(p => p.id === editId) : null;
+  const existingProd = editId ? products.find(p => p.id === editId || String(p.id) === String(editId)) : null;
   const newProd = {
     id: editId || Date.now(),
-    name, desc, mrp, weight, unit: 'KG', badge: 'ORGANIC', slug,
+    name, desc, mrp, weight, unit, badge: 'ORGANIC', slug,
     img: (existingProd && existingProd.img) || '../public/images/plantcare-logo-new.png',
     scans: (existingProd && existingProd.scans) || 0,
     compositions,
@@ -482,7 +540,7 @@ async function saveProduct() {
   };
 
   if (editId) {
-    const idx = products.findIndex(p => p.id === editId);
+    const idx = products.findIndex(p => p.id === editId || String(p.id) === String(editId));
     if (idx > -1) { products[idx] = { ...products[idx], ...newProd }; }
   } else {
     products.push(newProd);
@@ -495,7 +553,9 @@ async function saveProduct() {
     let customList = [];
     const saved = localStorage.getItem('pc_custom_products');
     if (saved) customList = JSON.parse(saved);
-    const idx = customList.findIndex(p => p.slug === slug || p.id === newProd.id);
+    const idx = editId 
+      ? customList.findIndex(p => String(p.id) === String(editId))
+      : customList.findIndex(p => String(p.id) === String(newProd.id));
     if (idx > -1) {
       customList[idx] = { ...customList[idx], ...newProd };
     } else {
