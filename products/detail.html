@@ -18,7 +18,7 @@
       <div class="header-inner">
         <a href="../products.html" class="back-link" id="back-to-home">← Back to Products</a>
         <div class="ph-brand" style="display:flex;align-items:center;gap:12px;">
-          <img src="../public/images/plantcare-logo-new.png" alt="PlantCare Logo" class="ph-logo" />
+          <img src="/images/plantcare-logo-new.png" alt="PlantCare Logo" class="ph-logo" />
         </div>
       </div>
     </div>
@@ -29,7 +29,7 @@
     <div class="container">
       <div class="product-hero-inner">
         <div class="product-logo-wrap product-image-card">
-          <img id="product-logo-img" src="../public/images/plantcare-logo-new.png" alt="Product Image" class="product-logo-img product-toggle-image" data-front="../public/images/plantcare-logo-new.png" data-back="../public/images/plantcare-logo-new.png" />
+          <img id="product-logo-img" src="/images/plantcare-logo-new.png" alt="Product Image" class="product-logo-img product-toggle-image" data-front="/images/plantcare-logo-new.png" data-back="/images/plantcare-logo-new.png" />
           <button class="image-swap-btn" type="button" aria-label="Show back side image" title="Swap image" data-image-toggle>⇄</button>
         </div>
         <div class="product-title-block">
@@ -99,7 +99,7 @@
     <div class="container">
       <div class="footer-grid-qr">
         <div class="footer-brand">
-          <img src="../public/images/plantcare-logo.png" alt="PlantCare Logo" class="footer-logo" />
+          <img src="/images/plantcare-logo.png" alt="PlantCare Logo" class="footer-logo" />
           <p class="footer-brand-name">PlantCare Fertilizers Pvt. Ltd.</p>
           <p class="footer-brand-desc">Premium organic fertilizers for sustainable Indian agriculture.</p>
         </div>
@@ -193,7 +193,7 @@
 
         <div style="display:flex;justify-content:flex-end;gap:12px;border-top:1.5px solid var(--border);padding-top:16px;">
           <button type="button" onclick="closeProductEditModal()" class="btn btn-outline" style="padding:10px 20px;border-radius:8px;">Cancel</button>
-          <button type="submit" class="btn btn-primary" style="padding:10px 24px;border-radius:8px;">Save Changes →</button>
+          <button type="submit" id="detail-save-btn" class="btn btn-primary" style="padding:10px 24px;border-radius:8px;">Save Changes →</button>
         </div>
       </form>
     </div>
@@ -203,8 +203,80 @@
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     let PRODUCT_SLUG = urlParams.get('slug') || '';
-    let PRODUCT_NAME = 'Product Details';
     let QR_API = '';
+    let CURRENT_PRODUCT_DATA = null;
+
+    function cacheCanonicalProduct(product) {
+      if (!product || !product.slug) return;
+      localStorage.setItem('pc_product_' + product.slug, JSON.stringify(product));
+
+      try {
+        const products = JSON.parse(localStorage.getItem('pc_products') || '[]');
+        const nextProducts = products.filter(item =>
+          item.slug !== product.slug && String(item.id) !== String(product.id)
+        );
+        nextProducts.push(product);
+        localStorage.setItem('pc_products', JSON.stringify(nextProducts));
+
+        const customProducts = JSON.parse(localStorage.getItem('pc_custom_products') || '[]');
+        const nextCustomProducts = customProducts.filter(item =>
+          item.slug !== product.slug && String(item.id) !== String(product.id)
+        );
+        nextCustomProducts.push(product);
+        localStorage.setItem('pc_custom_products', JSON.stringify(nextCustomProducts));
+      } catch(e) {}
+    }
+
+    function resolveImageUrl(imgSrc) {
+      if (!imgSrc) return '/images/plantcare-logo-new.png';
+      const str = String(imgSrc).trim();
+      if (str.startsWith('data:') || str.startsWith('http://') || str.startsWith('https://')) {
+        return str;
+      }
+      const clean = str
+        .replace(/^(\.\.\/)+/, '')
+        .replace(/^\/+/, '')
+        .replace(/^public\//, '');
+      const imagePath = '/' + clean;
+      // Uploaded files may have returned a cached 404 before the latest
+      // deployment. Versioning forces QR scans to request the live image.
+      return imagePath + (imagePath.includes('?') ? '&' : '?') + 'v=20260810-qr-images';
+    }
+
+    function waitForProductImage(img) {
+      if (!img || (img.complete && img.naturalWidth > 0)) return Promise.resolve();
+      return new Promise(resolve => {
+        const done = () => resolve();
+        img.addEventListener('load', done, { once: true });
+        img.addEventListener('error', done, { once: true });
+        setTimeout(done, 1200);
+      });
+    }
+
+    async function makeQrPreviewFromImage(img) {
+      try {
+        await waitForProductImage(img);
+        if (!img || !img.naturalWidth || img.src.includes('plantcare-logo-new')) return '';
+        const maxDim = 56;
+        let width = img.naturalWidth;
+        let height = img.naturalHeight;
+        if (width > height && width > maxDim) {
+          height = Math.round((height * maxDim) / width);
+          width = maxDim;
+        } else if (height > maxDim) {
+          width = Math.round((width * maxDim) / height);
+          height = maxDim;
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        const preview = canvas.toDataURL('image/webp', 0.20);
+        return preview.length <= 2400 ? preview : '';
+      } catch(e) {
+        return '';
+      }
+    }
 
     document.addEventListener('DOMContentLoaded', () => {
       loadSavedProductData();
@@ -212,14 +284,35 @@
 
     async function loadSavedProductData() {
       let data = null;
+      let loadedFromSharedDb = false;
+      let apiUnavailable = false;
 
-      // 1. First prioritize stored product data (local storage & server endpoint) if PRODUCT_SLUG exists
+      // The shared DB is authoritative. Browser data is used only when the
+      // product API cannot be reached at all.
       if (PRODUCT_SLUG) {
-        const saved = localStorage.getItem('pc_product_' + PRODUCT_SLUG);
-        if (saved) {
-          try { data = JSON.parse(saved); } catch(e) {}
+        try {
+          const response = await fetch('/api/products/' + encodeURIComponent(PRODUCT_SLUG), {
+            cache: 'no-store',
+            headers: { 'Cache-Control': 'no-cache' }
+          });
+          if (response.ok) {
+            data = await response.json();
+            loadedFromSharedDb = true;
+            cacheCanonicalProduct(data);
+          } else if (response.status >= 500) {
+            apiUnavailable = true;
+          }
+        } catch (e) {
+          apiUnavailable = true;
         }
-        if (!data) {
+
+        if (!data && apiUnavailable) {
+          const saved = localStorage.getItem('pc_product_' + PRODUCT_SLUG);
+          if (saved) {
+            try { data = JSON.parse(saved); } catch(e) {}
+          }
+        }
+        if (!data && apiUnavailable) {
           try {
             const customSaved = localStorage.getItem('pc_custom_products');
             if (customSaved) {
@@ -228,10 +321,13 @@
             }
           } catch(e) {}
         }
-        if (!data) {
+        if (!data && apiUnavailable) {
           try {
-            const response = await fetch('/api/products/' + encodeURIComponent(PRODUCT_SLUG));
-            if (response.ok) data = await response.json();
+            const response = await fetch('../data/products.json', { cache: 'no-store' });
+            if (response.ok) {
+              const products = await response.json();
+              data = products.find(p => p.slug === PRODUCT_SLUG || String(p.id) === PRODUCT_SLUG) || null;
+            }
           } catch (e) {}
         }
       }
@@ -244,6 +340,8 @@
       const qBadge = urlParams.get('badge') || 'ORGANIC';
       const qDesc = urlParams.get('desc');
       const qImg = urlParams.get('img');
+      const qBackImg = urlParams.get('backImg');
+      const qPreviewImg = urlParams.get('previewImg');
       const qComps = urlParams.get('compositions');
       const qSpecs = urlParams.get('specifications');
 
@@ -252,8 +350,15 @@
       if (qComps) { try { queryComps = JSON.parse(decodeURIComponent(qComps)); } catch(e) {} }
       if (qSpecs) { try { querySpecs = JSON.parse(decodeURIComponent(qSpecs)); } catch(e) {} }
 
-      if (data) {
-        // Merge query parameters if present, while preserving stored compositions & specifications
+      if (data && loadedFromSharedDb) {
+        data = {
+          ...data,
+          imgFront: data.imgFront || data.img,
+          imgBack: data.imgBack || data.imgFront || data.img,
+          compositions: data.compositions || [],
+          specifications: data.specifications || []
+        };
+      } else if (data) {
         data = {
           ...data,
           name: qName || data.name,
@@ -262,11 +367,12 @@
           unit: urlParams.has('unit') ? qUnit : (data.unit || 'KG'),
           badge: qBadge || data.badge,
           desc: qDesc || data.desc,
-          imgFront: qImg || data.imgFront || data.img,
-          compositions: (data.compositions && data.compositions.length > 0) ? data.compositions : (queryComps || data.compositions),
-          specifications: (data.specifications && data.specifications.length > 0) ? data.specifications : (querySpecs || data.specifications)
+          imgFront: data.imgFront || data.img || qImg,
+          imgBack: data.imgBack || qBackImg,
+          compositions: (queryComps && Array.isArray(queryComps) && queryComps.length > 0) ? queryComps : (data.compositions || []),
+          specifications: (querySpecs && Array.isArray(querySpecs) && querySpecs.length > 0) ? querySpecs : (data.specifications || [])
         };
-      } else if (qName || qMrp) {
+      } else if ((apiUnavailable || !PRODUCT_SLUG) && (qName || qMrp)) {
         data = {
           name: qName || 'Product',
           mrp: qMrp || '0',
@@ -274,8 +380,9 @@
           unit: qUnit,
           badge: qBadge,
           desc: qDesc || 'High quality organic agricultural fertilizer by PlantCare Fertilizers Pvt. Ltd.',
-          imgFront: qImg || '../public/images/plantcare-logo-new.png',
-          imgBack: qImg || '../public/images/plantcare-logo-new.png',
+          imgFront: qImg || '/images/plantcare-logo-new.png',
+          imgBack: qBackImg || qImg || '/images/plantcare-logo-new.png',
+          qrPreview: qPreviewImg || '',
           compositions: queryComps,
           specifications: querySpecs,
           compBase: urlParams.get('compBase'),
@@ -288,7 +395,7 @@
       }
 
       // 3. Fallback to latest custom product if still no data
-      if (!data) {
+      if (!data && apiUnavailable) {
         try {
           const customSaved = localStorage.getItem('pc_custom_products');
           if (customSaved) {
@@ -307,6 +414,7 @@
       }
 
       if (data) {
+        CURRENT_PRODUCT_DATA = data;
         if (data.name) {
           document.getElementById('p-name').textContent = data.name;
           document.getElementById('page-title') && (document.getElementById('page-title').textContent = data.name + ' – PlantCare Fertilizers');
@@ -373,12 +481,25 @@
 
         // Images
         const logoImg = document.getElementById('product-logo-img');
-        const frontImg = data.imgFront || data.img || '../public/images/plantcare-logo-new.png';
-        const backImg = data.imgBack || frontImg;
+        const rawFront = data.imgFront || data.img || qImg;
+        const frontImg = resolveImageUrl(rawFront);
+        const backImg = data.imgBack ? resolveImageUrl(data.imgBack) : frontImg;
         if (logoImg) {
-          logoImg.src = frontImg.startsWith('public/') ? '../' + frontImg : frontImg;
-          logoImg.dataset.front = logoImg.src;
-          logoImg.dataset.back = backImg.startsWith('public/') ? '../' + backImg : backImg;
+          delete logoImg.dataset.previewAttempted;
+          logoImg.src = frontImg;
+          logoImg.dataset.front = frontImg;
+          logoImg.dataset.back = backImg;
+          logoImg.onerror = function () {
+            // Never leave the scan page with a broken image icon.
+            const previewImg = String((data && data.qrPreview) || qPreviewImg || '').trim();
+            if (!this.dataset.previewAttempted && previewImg.startsWith('data:image/') && previewImg.length <= 2400) {
+              this.dataset.previewAttempted = 'true';
+              this.src = previewImg;
+              return;
+            }
+            this.onerror = null;
+            this.src = '/images/plantcare-logo-new.png?v=20260810-qr-images';
+          };
         }
 
         // WhatsApp link
@@ -394,27 +515,8 @@
         ? window.getPlantCareQrBaseUrl()
         : window.location.origin;
 
-      const pName = (data && data.name) ? data.name : PRODUCT_NAME;
-      const pMrp = (data && data.mrp) ? data.mrp : '';
-      const pWeight = (data && data.weight) ? data.weight : '';
-      const pUnit = (data && data.unit) ? data.unit : 'KG';
-      const pBadge = (data && data.badge) ? data.badge : 'ORGANIC';
-      const pDesc = (data && data.desc) ? data.desc : '';
-      const pImg = (data && (data.imgFront || data.img)) ? (data.imgFront || data.img) : '';
-
-      const qrParams = new URLSearchParams();
-      qrParams.set('slug', PRODUCT_SLUG || pName.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
-      qrParams.set('name', pName);
-      qrParams.set('mrp', pMrp);
-      qrParams.set('weight', pWeight);
-      qrParams.set('unit', pUnit);
-      qrParams.set('badge', pBadge);
-      qrParams.set('desc', pDesc);
-      if (pImg && !pImg.startsWith('data:') && !pImg.startsWith('../')) {
-        qrParams.set('img', pImg);
-      }
-
-      const targetUrl = baseDomain + '/products/detail.html?' + qrParams.toString();
+      const qrSlug = PRODUCT_SLUG || ((data && data.slug) ? data.slug : '');
+      const targetUrl = baseDomain + '/products/detail?slug=' + encodeURIComponent(qrSlug);
 
       QR_API = 'https://api.qrserver.com/v1/create-qr-code/?size=800x800&data=' + encodeURIComponent(targetUrl) + '&color=1F5E2E&bgcolor=FFFFFF&margin=15';
       const qrImg = document.getElementById('qr-image');
@@ -453,7 +555,8 @@
         }
 
         const saved = localStorage.getItem('pc_product_' + PRODUCT_SLUG);
-        let data = saved ? JSON.parse(saved) : null;
+        let data = CURRENT_PRODUCT_DATA;
+        if (!data && saved) data = JSON.parse(saved);
 
         let comps = (data && data.compositions) ? data.compositions : [];
         if (!Array.isArray(comps) || comps.length === 0) {
@@ -496,7 +599,7 @@
       }
     }
 
-    function saveProductEdit(e) {
+    async function saveProductEdit(e) {
       if (e) e.preventDefault();
       const name = document.getElementById('edit-name') ? document.getElementById('edit-name').value.trim() : '';
       const badge = document.getElementById('edit-badge') ? document.getElementById('edit-badge').value.trim() : '';
@@ -504,42 +607,88 @@
       const mrp = document.getElementById('edit-mrp') ? document.getElementById('edit-mrp').value.trim() : '';
       const weight = document.getElementById('edit-weight') ? document.getElementById('edit-weight').value.trim() : '';
       const unit = document.getElementById('edit-unit') ? document.getElementById('edit-unit').value : 'KG';
-      const imgFront = document.getElementById('edit-img-front') ? document.getElementById('edit-img-front').value.trim() : '';
+      let imgFront = document.getElementById('edit-img-front') ? document.getElementById('edit-img-front').value.trim() : '';
 
       const compositions = getDynamicFieldsData('edit-comp-rows');
       const specifications = getDynamicFieldsData('edit-spec-rows');
 
-      const data = { name, badge, desc, mrp, weight, unit, imgFront, compositions, specifications };
+      const slug = PRODUCT_SLUG || name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      const currentFront = CURRENT_PRODUCT_DATA
+        ? (CURRENT_PRODUCT_DATA.imgFront || CURRENT_PRODUCT_DATA.img || '')
+        : '';
+      const imageChanged = Boolean(currentFront && imgFront !== currentFront);
+      const imgBack = CURRENT_PRODUCT_DATA && !imageChanged
+        ? (CURRENT_PRODUCT_DATA.imgBack || imgFront)
+        : '';
+      const data = {
+        id: CURRENT_PRODUCT_DATA && CURRENT_PRODUCT_DATA.id,
+        slug,
+        name,
+        badge,
+        desc,
+        mrp,
+        weight,
+        unit,
+        img: imgFront,
+        imgFront,
+        imgBack,
+        qrImg: '',
+        scans: (CURRENT_PRODUCT_DATA && CURRENT_PRODUCT_DATA.scans) || 0,
+        compositions,
+        specifications
+      };
 
-      if (PRODUCT_SLUG) {
-        localStorage.setItem('pc_product_' + PRODUCT_SLUG, JSON.stringify(data));
+      let token = sessionStorage.getItem('pc_admin_api_token') || '';
+      if (!token) {
+        token = (prompt('Enter Admin Cloud Sync Token to save this product online:') || '').trim();
+        if (token) sessionStorage.setItem('pc_admin_api_token', token);
+      }
+      if (!token) {
+        showToast('Cloud sync token is required. Product was not changed.');
+        return;
       }
 
-      // Update custom products list in localStorage
+      const saveButton = document.getElementById('detail-save-btn');
+      const originalButtonText = saveButton ? saveButton.textContent : 'Save Changes';
+      if (saveButton) {
+        saveButton.disabled = true;
+        saveButton.textContent = 'Saving online...';
+      }
+
       try {
-        const savedCustom = localStorage.getItem('pc_custom_products');
-        if (savedCustom) {
-          let customList = JSON.parse(savedCustom);
-          const idx = customList.findIndex(p => p.slug === PRODUCT_SLUG || String(p.id) === PRODUCT_SLUG);
-          if (idx > -1) {
-            customList[idx] = { ...customList[idx], name, badge, desc, mrp: parseInt(mrp) || customList[idx].mrp, weight, img: imgFront || customList[idx].img, compositions, specifications };
-            localStorage.setItem('pc_custom_products', JSON.stringify(customList));
-          }
+        const response = await fetch('/api/products', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-admin-token': token
+          },
+          body: JSON.stringify(data)
+        });
+        if (!response.ok) {
+          let errorMessage = 'Cloud save failed. Product was not changed.';
+          try {
+            const errorData = await response.json();
+            errorMessage = errorData.setup || errorData.error || errorMessage;
+          } catch(e) {}
+          throw new Error(errorMessage);
         }
-      } catch(err) {}
 
-      // Update URL parameters & reload to show changes
-      const params = new URLSearchParams();
-      params.set('slug', PRODUCT_SLUG || name.toLowerCase().replace(/[^a-z0-9]+/g, '-'));
-      params.set('name', name);
-      params.set('mrp', mrp);
-      params.set('weight', weight);
-      params.set('unit', unit);
-      params.set('badge', badge);
-      params.set('desc', desc);
-      if (imgFront) params.set('img', imgFront);
+        const savedOnServer = await response.json();
+        if (!savedOnServer || !savedOnServer.slug || !savedOnServer.imgFront) {
+          throw new Error('The cloud returned an incomplete product. Product was not changed locally.');
+        }
 
-      window.location.href = 'detail.html?' + params.toString();
+        cacheCanonicalProduct(savedOnServer);
+        CURRENT_PRODUCT_DATA = savedOnServer;
+        window.location.href = 'detail.html?slug=' + encodeURIComponent(savedOnServer.slug);
+      } catch (err) {
+        showToast(err.message || 'Cloud save failed. Product was not changed.');
+      } finally {
+        if (saveButton) {
+          saveButton.disabled = false;
+          saveButton.textContent = originalButtonText;
+        }
+      }
     }
 
     function deleteCurrentProduct() {

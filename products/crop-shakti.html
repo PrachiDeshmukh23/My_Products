@@ -9,13 +9,13 @@
   <meta property="og:type" content="product" />
   <meta property="og:title" content="Crop Shakti – PlantCare Fertilizers" />
   <meta property="og:description" content="💪 Advanced organic growth promoter with humates, amino acids & seaweed extract. MRP ₹1,560 | 25 KG Bag" />
-  <meta property="og:image" content="https://my-products-sepia.vercel.app/public/images/crop-shakti-front.png" />
+  <meta property="og:image" content="https://my-products-sepia.vercel.app/images/crop-shakti-front.png" />
   <meta property="og:url" content="https://my-products-sepia.vercel.app/products/crop-shakti" />
   <meta property="og:site_name" content="PlantCare Fertilizers Pvt. Ltd." />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Crop Shakti – PlantCare Fertilizers" />
   <meta name="twitter:description" content="💪 Advanced organic growth promoter. MRP ₹1,560 | 25 KG Bag" />
-  <meta name="twitter:image" content="https://my-products-sepia.vercel.app/public/images/crop-shakti-front.png" />
+  <meta name="twitter:image" content="https://my-products-sepia.vercel.app/images/crop-shakti-front.png" />
   <link rel="stylesheet" href="../css/global.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
@@ -28,7 +28,7 @@
       <div class="header-inner">
         <a href="../products.html" class="back-link" id="back-to-home">← Back to Products</a>
         <div class="ph-brand" style="display:flex;align-items:center;gap:16px;">
-          <img src="../public/images/plantcare-logo-new.png" alt="PlantCare Logo" class="ph-logo" />
+          <img src="/images/plantcare-logo-new.png" alt="PlantCare Logo" class="ph-logo" />
         </div>
       </div>
     </div>
@@ -39,7 +39,7 @@
     <div class="container">
       <div class="product-hero-inner">
         <div class="product-logo-wrap product-image-card">
-          <img id="product-logo-img" src="../public/images/crop-shakti-front.png" alt="Crop Shakti" class="product-logo-img product-toggle-image" data-front="../public/images/crop-shakti-front.png" data-back="../public/images/crop-shakti-back.png" />
+          <img id="product-logo-img" src="/images/crop-shakti-front.png" alt="Crop Shakti" class="product-logo-img product-toggle-image" data-front="/images/crop-shakti-front.png" data-back="/images/crop-shakti-back.png" />
           <button class="image-swap-btn" type="button" aria-label="Show back side image" title="Swap image" data-image-toggle>⇄</button>
         </div>
         <div class="product-title-block">
@@ -107,7 +107,7 @@
     <div class="container">
       <div class="footer-grid-qr">
         <div class="footer-brand">
-          <img src="../public/images/plantcare-logo.png" alt="PlantCare Logo" class="footer-logo" />
+          <img src="/images/plantcare-logo.png" alt="PlantCare Logo" class="footer-logo" />
           <p class="footer-brand-name">PlantCare Fertilizers Pvt. Ltd.</p>
           <p class="footer-brand-desc">Premium organic fertilizers for sustainable Indian agriculture.</p>
         </div>
@@ -119,13 +119,13 @@
           <div class="qr-canvas-wrap">
             <img
               id="qr-image"
-              src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=https://my-products-sepia.vercel.app/products/crop-shakti&color=1F5E2E&bgcolor=FFFFFF&margin=12"
+              src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=https://my-products-sepia.vercel.app/products/detail?slug=crop-shakti&color=1F5E2E&bgcolor=FFFFFF&margin=12"
               alt="Crop Shakti QR Code"
               width="260" height="260"
               style="border-radius:10px;display:block;"
             />
           </div>
-          <p class="qr-url-display">my-products-sepia.vercel.app/products/crop-shakti</p>
+          <p class="qr-url-display">my-products-sepia.vercel.app/products/detail?slug=crop-shakti</p>
           <button class="footer-qr-btn" id="footer-download-qr" onclick="downloadQR()">⬇ Download QR</button>
         </div>
       </div>
@@ -223,13 +223,44 @@
     });
 
     function loadSavedProductData() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const qName = urlParams.get('name');
+      const qMrp = urlParams.get('mrp');
+      const qWeight = urlParams.get('weight');
+      const qDesc = urlParams.get('desc');
+      const qBadge = urlParams.get('badge');
+      const qComps = urlParams.get('compositions');
+      const qSpecs = urlParams.get('specifications');
+      let queryComps = null;
+      let querySpecs = null;
+      if (qComps) { try { queryComps = JSON.parse(decodeURIComponent(qComps)); } catch(e) {} }
+      if (qSpecs) { try { querySpecs = JSON.parse(decodeURIComponent(qSpecs)); } catch(e) {} }
+
       const saved = localStorage.getItem('pc_product_' + PRODUCT_SLUG);
       let data = null;
       if (saved) {
         try { data = JSON.parse(saved); } catch(e) {}
       }
+      if (!data && (qName || qMrp || queryComps || querySpecs)) {
+        data = {
+          name: qName || PRODUCT_NAME,
+          mrp: qMrp,
+          weight: qWeight,
+          desc: qDesc,
+          badge: qBadge,
+          compositions: queryComps,
+          specifications: querySpecs
+        };
+      }
 
       if (data) {
+        if (qName) data.name = qName;
+        if (qMrp) data.mrp = qMrp;
+        if (qWeight) data.weight = qWeight;
+        if (qDesc) data.desc = qDesc;
+        if (qBadge) data.badge = qBadge;
+        if (queryComps && Array.isArray(queryComps) && queryComps.length > 0) data.compositions = queryComps;
+        if (querySpecs && Array.isArray(querySpecs) && querySpecs.length > 0) data.specifications = querySpecs;
         if (data.imgFront) {
           const logoImg = document.getElementById('product-logo-img');
           if (logoImg) { logoImg.src = data.imgFront; logoImg.dataset.front = data.imgFront; }

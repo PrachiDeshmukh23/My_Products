@@ -21,37 +21,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
   checkDeletedProducts();
   renderCustomProducts();
-  syncStoredProductsToServer();
 });
 
-async function saveProductToServer(product) {
-  const response = await fetch('/api/products', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(product)
-  });
-  if (!response.ok) throw new Error('Could not save product to the shared catalogue');
-  return response.json();
+function resolveProductImageUrl(imgSrc) {
+  if (!imgSrc) return '/images/plantcare-logo-new.png';
+  const value = String(imgSrc).trim();
+  if (value.startsWith('data:') || value.startsWith('http://') || value.startsWith('https://')) return value;
+  const clean = value
+    .replace(/^(\.\.\/)+/, '')
+    .replace(/^\/+/, '')
+    .replace(/^public\//, '');
+  return '/' + clean;
+}
+window.resolveProductImageUrl = resolveProductImageUrl;
+
+async function getSharedProducts() {
+  try {
+    const response = await fetch('/api/products', { cache: 'no-store' });
+    if (response.ok) return await response.json();
+  } catch (error) {
+    // A static production deployment has no local Node API. It still ships
+    // the catalogue JSON, so use that as the public read-only fallback.
+  }
+  try {
+    const response = await fetch('/data/products.json', { cache: 'no-store' });
+    return response.ok ? await response.json() : [];
+  } catch (error) { return []; }
 }
 
 async function deleteProductFromServer(slug) {
-  const response = await fetch('/api/products/' + encodeURIComponent(slug), { method: 'DELETE' });
+  const token = sessionStorage.getItem('pc_admin_api_token') || localStorage.getItem('pc_admin_api_token') || '';
+  const response = await fetch('/api/products/' + encodeURIComponent(slug), {
+    method: 'DELETE',
+    headers: token ? { 'x-admin-token': token } : {}
+  });
   if (!response.ok && response.status !== 404) throw new Error('Could not remove product from the shared catalogue');
-}
-
-async function syncStoredProductsToServer() {
-  try {
-    const stored = JSON.parse(localStorage.getItem('pc_custom_products') || '[]');
-    const completeProducts = stored.map(product => {
-      try {
-        const detail = JSON.parse(localStorage.getItem('pc_product_' + product.slug) || '{}');
-        return { ...product, ...detail, slug: product.slug, id: product.id };
-      } catch { return product; }
-    });
-    await Promise.all(completeProducts.map(product => saveProductToServer(product)));
-  } catch (error) {
-    console.warn('Shared product catalogue sync skipped:', error);
-  }
 }
 
 // Toast notification utility
@@ -120,43 +124,39 @@ window.createDynamicFieldRow = createDynamicFieldRow;
 window.getDynamicFieldsData = getDynamicFieldsData;
 window.populateDynamicFields = populateDynamicFields;
 
-function renderCustomProducts() {
+async function renderCustomProducts() {
   const grid = document.querySelector('.products-grid');
   if (!grid) return;
 
-  let customProducts = [];
+  let localProducts = [];
   try {
     const saved = localStorage.getItem('pc_custom_products');
-    if (saved) customProducts = JSON.parse(saved);
+    if (saved) localProducts = JSON.parse(saved);
   } catch(e) {}
+
+  // The shared DB is authoritative. Browser data is only an offline fallback
+  // and must never override a newer cloud image.
+  const sharedProducts = await getSharedProducts();
+  const customProducts = sharedProducts.length ? sharedProducts : localProducts;
 
   // Remove previously appended custom cards
   grid.querySelectorAll('.custom-added-card').forEach(el => el.remove());
 
   customProducts.forEach(p => {
+    const existingCard = p.slug ? document.getElementById('card-' + p.slug) : null;
+    if (existingCard) {
+      const existingImage = existingCard.querySelector('.card-image');
+      if (existingImage && (p.img || p.imgFront)) {
+        existingImage.src = resolveProductImageUrl(p.imgFront || p.img);
+        existingImage.alt = p.name || existingImage.alt;
+      }
+      return;
+    }
     const card = document.createElement('div');
     card.className = 'product-card custom-added-card';
     const isInsideSubfolder = window.location.pathname.includes('/products/');
-    const imgPath = isInsideSubfolder ? (p.img.startsWith('public/') ? '../' + p.img : p.img) : p.img;
-    const qBaseParams = '?slug=' + p.slug + '&name=' + encodeURIComponent(p.name) + '&mrp=' + encodeURIComponent(p.mrp) + '&weight=' + encodeURIComponent(p.weight) + '&unit=' + encodeURIComponent(p.unit || 'KG') + '&badge=' + encodeURIComponent(p.badge || 'ORGANIC') + '&desc=' + encodeURIComponent(p.desc || '');
-    let qExtraParams = '';
-    try {
-      const savedDetail = localStorage.getItem('pc_product_' + p.slug);
-      let detail = null;
-      if (savedDetail) { try { detail = JSON.parse(savedDetail); } catch(e) {} }
-      if (!detail) detail = p;
-      if (detail) {
-        if (detail.compositions && Array.isArray(detail.compositions)) qExtraParams += '&compositions=' + encodeURIComponent(JSON.stringify(detail.compositions));
-        if (detail.specifications && Array.isArray(detail.specifications)) qExtraParams += '&specifications=' + encodeURIComponent(JSON.stringify(detail.specifications));
-        if (detail.compBase) qExtraParams += '&compBase=' + encodeURIComponent(detail.compBase);
-        if (detail.compN) qExtraParams += '&compN=' + encodeURIComponent(detail.compN);
-        if (detail.compP) qExtraParams += '&compP=' + encodeURIComponent(detail.compP);
-        if (detail.compK) qExtraParams += '&compK=' + encodeURIComponent(detail.compK);
-        if (detail.specCn) qExtraParams += '&specCn=' + encodeURIComponent(detail.specCn);
-        if (detail.specPh) qExtraParams += '&specPh=' + encodeURIComponent(detail.specPh);
-      }
-    } catch(e) {}
-    const qParams = qBaseParams + qExtraParams;
+    const imgPath = resolveProductImageUrl(p.imgFront || p.img);
+    const qParams = '?slug=' + encodeURIComponent(p.slug || p.id);
     const detailPath = isInsideSubfolder ? 'detail.html' + qParams : 'products/detail.html' + qParams;
 
     card.innerHTML = `
@@ -184,18 +184,11 @@ function renderCustomProducts() {
   });
 }
 
-function showProductQRModal(name, slug, isStatic, encodedQParams) {
+function showProductQRModal(name, slug) {
   let baseDomain = window.getPlantCareQrBaseUrl
     ? window.getPlantCareQrBaseUrl()
     : window.location.origin;
-  if (isStatic) {
-    targetUrl = baseDomain + '/products/' + slug;
-  } else if (encodedQParams) {
-    const qParams = decodeURIComponent(encodedQParams);
-    targetUrl = baseDomain + '/products/detail.html' + qParams;
-  } else {
-    targetUrl = baseDomain + '/products/detail.html?slug=' + slug;
-  }
+  const targetUrl = baseDomain + '/products/detail?slug=' + encodeURIComponent(slug);
 
   const qrApiUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=' + encodeURIComponent(targetUrl) + '&color=1F5E2E&bgcolor=FFFFFF&margin=15';
 

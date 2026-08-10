@@ -20,7 +20,7 @@
   <!-- SIDEBAR -->
   <aside class="admin-sidebar">
     <div class="sidebar-brand">
-      <img src="../public/images/plantcare-logo-new.png" alt="Logo" class="sidebar-logo" />
+      <img src="/images/plantcare-logo-new.png" alt="Logo" class="sidebar-logo" />
       <div>
         <div class="sidebar-title">PlantCare</div>
         <div class="sidebar-subtitle">Admin Panel</div>
@@ -166,6 +166,30 @@
       <input type="text" id="modal-slug" name="admin-product-slug-no-autofill" class="form-input" placeholder="e.g. sugarcane-special" autocomplete="off" />
     </div>
 
+    <!-- PRODUCT PHOTO FIELD -->
+    <div class="form-group" style="margin-top:16px;">
+      <label class="form-label" style="font-weight:700;color:var(--dark-green);">📷 Product Photo</label>
+      <div style="display:flex;flex-direction:column;gap:10px;background:#F4FDF6;padding:14px;border:1.5px dashed #B8E4C3;border-radius:10px;">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+          <label for="modal-img-file" class="btn btn-outline" style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;font-size:0.85rem;border-color:var(--dark-green);color:var(--dark-green);background:#fff;font-weight:600;box-shadow:0 2px 4px rgba(0,0,0,0.04);">
+            📂 Choose Photo / Upload Image
+          </label>
+          <input type="file" id="modal-img-file" accept="image/*" style="display:none;" onchange="handleProductImageFile(event)" />
+          <span style="font-size:0.8rem;color:#555;font-weight:500;">or paste image URL below:</span>
+        </div>
+        <input type="text" id="modal-img-url" class="form-input" placeholder="e.g. https://domain.com/photo.png or /images/sample.png" oninput="handleProductImageUrlInput(this.value)" autocomplete="off" style="background:#fff;" />
+
+        <div id="modal-img-preview-wrap" style="display:none;align-items:center;gap:12px;margin-top:4px;padding:10px;background:#fff;border:1px solid #cce5d0;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.03);">
+          <img id="modal-img-preview" src="" alt="Product Preview" style="width:65px;height:65px;object-fit:contain;border-radius:6px;border:1px solid #ddd;background:#fff;padding:2px;" />
+          <div style="flex:1;overflow:hidden;">
+            <div style="font-size:0.85rem;font-weight:700;color:var(--dark-green);margin-bottom:2px;" id="modal-img-status">Image Selected</div>
+            <div style="font-size:0.75rem;color:#666;word-break:break-all;" id="modal-img-info"></div>
+          </div>
+          <button type="button" onclick="clearProductImage()" style="background:#dc3545;color:#fff;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.78rem;font-weight:700;" title="Remove Photo">Remove</button>
+        </div>
+      </div>
+    </div>
+
     <!-- DYNAMIC COMPOSITION FIELDS -->
     <div style="border-top:1px solid #eee;margin-top:16px;padding-top:12px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
@@ -193,10 +217,10 @@
 
 <script>
 const DEFAULT_PRODUCTS = [
-  { id:1, name:'Sugarcane Special', desc:'Organic fertilizer specially developed for Sugarcane crops for healthy root growth and higher yield.', mrp:1480, weight:50, slug:'sugarcane-special', img:'../public/images/sugarcane-special-front.png', scans: Math.floor(Math.random()*120)+30 },
-  { id:2, name:'Onion & Corn', desc:'Organic nutrient fertilizer for Onion and Corn crops to improve productivity and soil health.', mrp:1460, weight:50, slug:'onion-corn', img:'../public/images/onion-maize-front.png', scans: Math.floor(Math.random()*90)+20 },
-  { id:3, name:'Soybean & Cotton', desc:'Microbial organic fertilizer for Soybean and Cotton crops supporting nutrient absorption and root development.', mrp:1490, weight:50, slug:'soybean-cotton', img:'../public/images/soybean-cotton-front.png', scans: Math.floor(Math.random()*80)+15 },
-  { id:4, name:'Crop Shakti', desc:'Advanced organic growth promoter enriched with humates, amino acids, seaweed extract, and fulvic acid.', mrp:1560, weight:25, slug:'crop-shakti', img:'../public/images/crop-shakti-front.png', scans: Math.floor(Math.random()*100)+40 }
+  { id:1, name:'Sugarcane Special', desc:'Organic fertilizer specially developed for Sugarcane crops for healthy root growth and higher yield.', mrp:1480, weight:50, slug:'sugarcane-special', img:'/images/sugarcane-special-front.png', scans: Math.floor(Math.random()*120)+30 },
+  { id:2, name:'Onion & Corn', desc:'Organic nutrient fertilizer for Onion and Corn crops to improve productivity and soil health.', mrp:1460, weight:50, slug:'onion-corn', img:'/images/onion-maize-front.png', scans: Math.floor(Math.random()*90)+20 },
+  { id:3, name:'Soybean & Cotton', desc:'Microbial organic fertilizer for Soybean and Cotton crops supporting nutrient absorption and root development.', mrp:1490, weight:50, slug:'soybean-cotton', img:'/images/soybean-cotton-front.png', scans: Math.floor(Math.random()*80)+15 },
+  { id:4, name:'Crop Shakti', desc:'Advanced organic growth promoter enriched with humates, amino acids, seaweed extract, and fulvic acid.', mrp:1560, weight:25, slug:'crop-shakti', img:'/images/crop-shakti-front.png', scans: Math.floor(Math.random()*100)+40 }
 ];
 
 function getProducts() {
@@ -217,6 +241,26 @@ function getProducts() {
 }
 function saveProducts(products) {
   localStorage.setItem('pc_products', JSON.stringify(products));
+}
+
+function replaceCloudProductCache(products) {
+  const canonicalProducts = Array.isArray(products) ? products : [];
+  const defaultSlugs = new Set(DEFAULT_PRODUCTS.map(product => product.slug));
+
+  saveProducts(canonicalProducts);
+  localStorage.setItem(
+    'pc_custom_products',
+    JSON.stringify(canonicalProducts.filter(product => !defaultSlugs.has(product.slug)))
+  );
+
+  Object.keys(localStorage).forEach(key => {
+    if (key.startsWith('pc_product_')) localStorage.removeItem(key);
+  });
+  canonicalProducts.forEach(product => {
+    if (product && product.slug) {
+      localStorage.setItem('pc_product_' + product.slug, JSON.stringify(product));
+    }
+  });
 }
 
 let editId = null;
@@ -257,7 +301,7 @@ function renderDashboard() {
     tbody.innerHTML = products.map(p => {
       const safeId = String(p.id || p.slug || '').replace(/'/g, "\\'");
       const safeName = String(p.name || 'Product').replace(/"/g, '&quot;');
-      const safeImg = p.img || '../public/images/plantcare-logo-new.png';
+      const safeImg = window.resolveProductImageUrl ? window.resolveProductImageUrl(p.imgFront || p.img) : (p.img || '/images/plantcare-logo-new.png');
       const safeMrp = Number(p.mrp || 0).toLocaleString();
       const safeWeight = (p.weight || '0') + ' ' + (p.unit || 'KG');
       return `
@@ -285,7 +329,7 @@ function renderProducts() {
       const safeId = String(p.id || p.slug || '').replace(/'/g, "\\'");
       const safeName = String(p.name || 'Product').replace(/"/g, '&quot;');
       const safeDesc = String(p.desc || '');
-      const safeImg = p.img || '../public/images/plantcare-logo-new.png';
+      const safeImg = window.resolveProductImageUrl ? window.resolveProductImageUrl(p.imgFront || p.img) : (p.img || '/images/plantcare-logo-new.png');
       const safeMrp = Number(p.mrp || 0).toLocaleString();
       const safeWeight = (p.weight || '0') + ' ' + (p.unit || 'KG');
       const safeSlug = p.slug || '';
@@ -306,6 +350,13 @@ function renderProducts() {
   }
 }
 
+function getAdminProductQrUrl(p, baseDomain) {
+  baseDomain = baseDomain || (window.getPlantCareQrBaseUrl ? window.getPlantCareQrBaseUrl() : window.location.origin);
+  if (!p) return baseDomain;
+  const slug = p.slug || String(p.id || '');
+  return baseDomain + '/products/detail?slug=' + encodeURIComponent(slug);
+}
+
 function renderQR() {
   const products = getProducts();
   const grid = document.getElementById('qr-grid');
@@ -315,11 +366,7 @@ function renderQR() {
 
   if (grid) {
     grid.innerHTML = products.map(p => {
-      const isStaticSlug = ['sugarcane-special', 'onion-corn', 'soybean-cotton', 'crop-shakti'].includes(p.slug);
-      const targetUrl = isStaticSlug
-        ? baseDomain + '/products/' + p.slug
-        : baseDomain + '/products/detail.html?slug=' + p.slug + '&name=' + encodeURIComponent(p.name) + '&mrp=' + encodeURIComponent(p.mrp) + '&weight=' + encodeURIComponent(p.weight);
-
+      const targetUrl = getAdminProductQrUrl(p, baseDomain);
       const qrApiUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=' + encodeURIComponent(targetUrl) + '&color=1F5E2E&bgcolor=FFFFFF&margin=10';
       const safeId = String(p.id).replace(/'/g, "\\'");
 
@@ -333,7 +380,7 @@ function renderQR() {
           <p style="font-size:0.75rem;color:#7a9880;margin:8px 0 16px;word-break:break-all;font-family:monospace;">${targetUrl}</p>
           <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
             <button class="action-btn qr" onclick="downloadAdminQR('${safeId}','${p.slug}')">⬇ PNG</button>
-            <button class="action-btn edit" onclick="copyProductLink('${p.slug}', '${encodeURIComponent(p.name)}', '${p.mrp}', '${p.weight}')">🔗 Copy</button>
+            <button class="action-btn edit" onclick="copyProductLink('${p.slug}')">🔗 Copy</button>
           </div>
         </div>
       `;
@@ -342,10 +389,7 @@ function renderQR() {
 
   setTimeout(() => {
     products.forEach(p => {
-      const isStaticSlug = ['sugarcane-special', 'onion-corn', 'soybean-cotton', 'crop-shakti'].includes(p.slug);
-      const targetUrl = isStaticSlug
-        ? baseDomain + '/products/' + p.slug
-        : baseDomain + '/products/detail.html?slug=' + p.slug + '&name=' + encodeURIComponent(p.name) + '&mrp=' + encodeURIComponent(p.mrp) + '&weight=' + encodeURIComponent(p.weight);
+      const targetUrl = getAdminProductQrUrl(p, baseDomain);
       const canvasElem = document.getElementById('qr-' + p.id);
       if (canvasElem && typeof QRCode !== 'undefined' && QRCode.toCanvas) {
         QRCode.toCanvas(canvasElem, targetUrl, { width: 300, margin: 2, color: { dark: '#1F5E2E', light: '#FFFFFF' } }, function (error) {
@@ -414,15 +458,137 @@ function downloadAdminQR(id, slug) {
   }
 }
 
-function copyProductLink(slug, name, mrp, weight) {
-  let baseDomain = window.getPlantCareQrBaseUrl
-    ? window.getPlantCareQrBaseUrl()
-    : window.location.origin;
-  const isStaticSlug = ['sugarcane-special', 'onion-corn', 'soybean-cotton', 'crop-shakti'].includes(slug);
-  const link = isStaticSlug
-    ? baseDomain + '/products/' + slug
-    : baseDomain + '/products/detail.html?slug=' + slug + '&name=' + name + '&mrp=' + mrp + '&weight=' + weight;
+function copyProductLink(slug) {
+  const products = getProducts();
+  const p = products.find(x => x.slug === slug || String(x.id) === String(slug)) || { slug };
+  const link = getAdminProductQrUrl(p);
   navigator.clipboard.writeText(link).then(() => showToast('Link copied!'));
+}
+
+let currentModalImageData = '';
+let currentModalQrImageData = '';
+
+function handleProductImageFile(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      const maxDim = 600;
+      let width = img.width;
+      let height = img.height;
+      if (width > maxDim || height > maxDim) {
+        if (width > height) {
+          height = Math.round((height * maxDim) / width);
+          width = maxDim;
+        } else {
+          width = Math.round((width * maxDim) / height);
+          height = maxDim;
+        }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+      currentModalImageData = dataUrl;
+
+      // Generate ultra-compact micro JPEG for QR code payload (~1 KB)
+      try {
+        const qrCanvas = document.createElement('canvas');
+        const qrMaxDim = 56;
+        let qW = img.width || 56;
+        let qH = img.height || 56;
+        if (qW > qH) {
+          if (qW > qrMaxDim) { qH = Math.round((qH * qrMaxDim) / qW); qW = qrMaxDim; }
+        } else {
+          if (qH > qrMaxDim) { qW = Math.round((qW * qrMaxDim) / qH); qH = qrMaxDim; }
+        }
+        qrCanvas.width = qW;
+        qrCanvas.height = qH;
+        const qrCtx = qrCanvas.getContext('2d');
+        qrCtx.drawImage(img, 0, 0, qW, qH);
+        currentModalQrImageData = qrCanvas.toDataURL('image/webp', 0.20);
+      } catch(e) {
+        currentModalQrImageData = dataUrl.length < 2200 ? dataUrl : '';
+      }
+
+      const preview = document.getElementById('modal-img-preview');
+      const wrap = document.getElementById('modal-img-preview-wrap');
+      const status = document.getElementById('modal-img-status');
+      const info = document.getElementById('modal-img-info');
+
+      if (preview) preview.src = dataUrl;
+      if (wrap) wrap.style.display = 'flex';
+      if (status) status.textContent = 'Uploaded & Optimized Photo';
+      if (info) info.textContent = `${file.name} (${Math.round(dataUrl.length / 1024)} KB)`;
+
+      const urlInput = document.getElementById('modal-img-url');
+      if (urlInput) urlInput.value = '';
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleProductImageUrlInput(val) {
+  const cleaned = val ? val.trim() : '';
+  currentModalImageData = cleaned;
+  currentModalQrImageData = '';
+  const preview = document.getElementById('modal-img-preview');
+  const wrap = document.getElementById('modal-img-preview-wrap');
+  const status = document.getElementById('modal-img-status');
+  const info = document.getElementById('modal-img-info');
+  const fileInput = document.getElementById('modal-img-file');
+
+  if (cleaned) {
+    if (preview) preview.src = cleaned;
+    if (wrap) wrap.style.display = 'flex';
+    if (status) status.textContent = 'Image URL';
+    if (info) info.textContent = cleaned;
+    if (fileInput) fileInput.value = '';
+  } else {
+    if (wrap) wrap.style.display = 'none';
+  }
+}
+
+function clearProductImage() {
+  currentModalImageData = '';
+  currentModalQrImageData = '';
+  const fileInput = document.getElementById('modal-img-file');
+  const urlInput = document.getElementById('modal-img-url');
+  const wrap = document.getElementById('modal-img-preview-wrap');
+  const preview = document.getElementById('modal-img-preview');
+  if (fileInput) fileInput.value = '';
+  if (urlInput) urlInput.value = '';
+  if (preview) preview.src = '';
+  if (wrap) wrap.style.display = 'none';
+}
+
+function setProductImageInModal(imgSrc) {
+  clearProductImage();
+  if (!imgSrc) return;
+  currentModalImageData = imgSrc;
+  const preview = document.getElementById('modal-img-preview');
+  const wrap = document.getElementById('modal-img-preview-wrap');
+  const status = document.getElementById('modal-img-status');
+  const info = document.getElementById('modal-img-info');
+  const urlInput = document.getElementById('modal-img-url');
+
+  if (imgSrc.startsWith('data:')) {
+    if (preview) preview.src = imgSrc;
+    if (wrap) wrap.style.display = 'flex';
+    if (status) status.textContent = 'Uploaded Photo';
+    if (info) info.textContent = `Image Data (${Math.round(imgSrc.length / 1024)} KB)`;
+  } else {
+    if (urlInput) urlInput.value = imgSrc;
+    if (preview) preview.src = imgSrc;
+    if (wrap) wrap.style.display = 'flex';
+    if (status) status.textContent = 'Product Image URL';
+    if (info) info.textContent = imgSrc;
+  }
 }
 
 function openAddModal() {
@@ -434,6 +600,7 @@ function openAddModal() {
   document.getElementById('modal-weight').value = '';
   if (document.getElementById('modal-unit')) document.getElementById('modal-unit').value = 'KG';
   document.getElementById('modal-slug').value = '';
+  clearProductImage();
 
   populateDynamicFields('admin-comp-rows', [], [
     { label: 'Potassium Humate', value: '' },
@@ -463,6 +630,7 @@ function openEditModal(id) {
   document.getElementById('modal-weight').value = p.weight || '';
   if (document.getElementById('modal-unit')) document.getElementById('modal-unit').value = p.unit || 'KG';
   document.getElementById('modal-slug').value = p.slug || '';
+  setProductImageInModal(p.imgFront || p.img || '');
 
   // Get composition data (support legacy fields fallback)
   let comps = p.compositions;
@@ -530,55 +698,76 @@ async function saveProduct() {
   const specifications = getDynamicFieldsData('admin-spec-rows');
 
   const existingProd = editId ? products.find(p => p.id === editId || String(p.id) === String(editId)) : null;
+  const imgUrlVal = document.getElementById('modal-img-url') ? document.getElementById('modal-img-url').value.trim() : '';
+  const existingFront = existingProd ? (existingProd.imgFront || existingProd.img || '') : '';
+  const finalImg = currentModalImageData || imgUrlVal || existingFront || '/images/plantcare-logo-new.png';
+  const imageChanged = Boolean(existingProd && existingFront && finalImg !== existingFront);
+  const finalBackImg = existingProd && !imageChanged
+    ? (existingProd.imgBack || finalImg)
+    : '';
+
   const newProd = {
     id: editId || Date.now(),
     name, desc, mrp, weight, unit, badge: 'ORGANIC', slug,
-    img: (existingProd && existingProd.img) || '../public/images/plantcare-logo-new.png',
+    img: finalImg,
+    imgFront: finalImg,
+    imgBack: finalBackImg,
+    qrImg: '',
     scans: (existingProd && existingProd.scans) || 0,
     compositions,
     specifications
   };
 
-  if (editId) {
-    const idx = products.findIndex(p => p.id === editId || String(p.id) === String(editId));
-    if (idx > -1) { products[idx] = { ...products[idx], ...newProd }; }
-  } else {
-    products.push(newProd);
+  const saveButton = document.getElementById('modal-save-btn');
+  const originalButtonText = saveButton ? saveButton.textContent : 'Save Product';
+  if (saveButton) {
+    saveButton.disabled = true;
+    saveButton.textContent = 'Saving online...';
   }
 
-  saveProducts(products);
-
-  // Sync to pc_custom_products for website view
   try {
-    let customList = [];
-    const saved = localStorage.getItem('pc_custom_products');
-    if (saved) customList = JSON.parse(saved);
-    const idx = editId 
-      ? customList.findIndex(p => String(p.id) === String(editId))
-      : customList.findIndex(p => String(p.id) === String(newProd.id));
-    if (idx > -1) {
-      customList[idx] = { ...customList[idx], ...newProd };
-    } else {
-      customList.push(newProd);
-    }
-    localStorage.setItem('pc_custom_products', JSON.stringify(customList));
-  } catch(e) {}
-
-  localStorage.setItem('pc_product_' + slug, JSON.stringify(newProd));
-  try {
+    const headers = adminApiHeaders(true);
+    if (!headers['x-admin-token']) throw new Error('Cloud sync token is required. Product was not saved.');
     const response = await fetch('/api/products', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify(newProd)
     });
-    if (!response.ok) throw new Error('Shared catalogue save failed');
+    if (!response.ok) {
+      let errorMessage = 'Shared catalogue save failed';
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.setup || errorData.error || errorMessage;
+      } catch(e) {}
+      throw new Error(errorMessage);
+    }
+
+    const savedOnServer = await response.json();
+    if (!savedOnServer || !savedOnServer.slug || !savedOnServer.imgFront) {
+      throw new Error('The cloud returned an incomplete product. Product was not saved locally.');
+    }
+
+    const nextProducts = products.filter(product =>
+      product.slug !== savedOnServer.slug &&
+      String(product.id) !== String(savedOnServer.id) &&
+      (!existingProd || product.slug !== existingProd.slug)
+    );
+    nextProducts.push(savedOnServer);
+    replaceCloudProductCache(nextProducts);
+
+    closeModal();
+    renderDashboard();
+    renderProducts();
+    renderQR();
+    showToast((editId ? 'Product updated!' : 'Product added!') + ' Latest image saved online.');
   } catch (error) {
-    showToast('Saved on this computer, but shared catalogue sync failed.');
+    showToast(error.message || 'Cloud save failed. Product was not changed.');
+  } finally {
+    if (saveButton) {
+      saveButton.disabled = false;
+      saveButton.textContent = originalButtonText;
+    }
   }
-  closeModal();
-  renderDashboard();
-  renderProducts();
-  showToast(editId ? 'Product updated!' : 'Product added!');
 }
 
 async function deleteProduct(id) {
@@ -599,7 +788,12 @@ async function deleteProduct(id) {
 
   if (deleted && deleted.slug) {
     localStorage.removeItem('pc_product_' + deleted.slug);
-    try { await fetch('/api/products/' + encodeURIComponent(deleted.slug), { method: 'DELETE' }); } catch (error) {}
+    try {
+      const headers = adminApiHeaders(false);
+      if (headers['x-admin-token']) {
+        await fetch('/api/products/' + encodeURIComponent(deleted.slug), { method: 'DELETE', headers });
+      }
+    } catch (error) {}
   }
   renderDashboard();
   renderProducts();
@@ -613,17 +807,38 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
+function getAdminApiToken() {
+  return sessionStorage.getItem('pc_admin_api_token') || '';
+}
+
+function ensureAdminApiToken() {
+  let token = getAdminApiToken();
+  if (token) return token;
+  token = prompt('Enter Admin Cloud Sync Token to save products/images online:') || '';
+  token = token.trim();
+  if (token) sessionStorage.setItem('pc_admin_api_token', token);
+  return token;
+}
+
+function adminApiHeaders(withJson = false) {
+  const token = ensureAdminApiToken();
+  const headers = withJson ? { 'Content-Type': 'application/json' } : {};
+  if (token) headers['x-admin-token'] = token;
+  return headers;
+}
+
 async function syncDashboardProductsToServer() {
   try {
-    await Promise.all(getProducts().map(async product => {
-      await fetch('/api/products', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(product)
-      });
-    }));
+    const response = await fetch('/api/products', { cache: 'no-store' });
+    if (!response.ok) throw new Error('Could not load the shared cloud catalogue.');
+    const serverProducts = await response.json();
+    replaceCloudProductCache(serverProducts);
+    renderDashboard();
+    renderProducts();
+    renderQR();
   } catch (error) {
-    console.warn('Shared product catalogue sync skipped:', error);
+    console.warn('Shared product catalogue load failed:', error);
+    showToast('Cloud catalogue could not be loaded. Saving is disabled until it reconnects.');
   }
 }
 

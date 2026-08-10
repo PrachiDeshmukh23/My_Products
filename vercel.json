@@ -2,6 +2,8 @@
   "outputDirectory": ".",
   "cleanUrls": true,
   "rewrites": [
+    { "source": "/images/:path*", "destination": "/public/images/:path*" },
+    { "source": "/uploads/:path*", "destination": "/public/uploads/:path*" },
     { "source": "/products", "destination": "/products.html" },
     { "source": "/product", "destination": "/products.html" },
     { "source": "/products.html", "destination": "/products.html" },
