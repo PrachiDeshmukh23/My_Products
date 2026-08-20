@@ -13,7 +13,30 @@
 </head>
 <body>
 <script>
-  if (!sessionStorage.getItem('pc_admin')) window.location.href = 'login.html';
+  function ensureAdminSession() {
+    if (sessionStorage.getItem('pc_admin') !== '1') {
+      window.location.replace('login.html');
+      return false;
+    }
+    return true;
+  }
+
+  async function logout() {
+    try {
+      await fetch('/api/admin/session', { method: 'DELETE', credentials: 'same-origin' });
+    } catch (error) {
+      // The browser session is cleared below even if the server is unavailable.
+    } finally {
+      sessionStorage.removeItem('pc_admin');
+      sessionStorage.removeItem('pc_admin_api_token');
+      localStorage.removeItem('pc_admin');
+      localStorage.removeItem('pc_admin_api_token');
+      window.location.replace('login.html');
+    }
+  }
+
+  ensureAdminSession();
+  window.addEventListener('pageshow', ensureAdminSession);
 </script>
 
 <div class="admin-layout">
@@ -44,7 +67,7 @@
       </a>
     </nav>
     <div class="sidebar-logout">
-      <button class="btn btn-outline" style="width:100%;color:#fff;border-color:rgba(255,255,255,0.3);" id="logout-btn" onclick="logout()">Logout</button>
+      <button type="button" class="btn btn-outline" style="width:100%;color:#fff;border-color:rgba(255,255,255,0.3);" id="logout-btn" onclick="logout()">Logout</button>
     </div>
   </aside>
 
@@ -54,7 +77,7 @@
       <span class="admin-topbar-title" id="topbar-title">Dashboard</span>
       <div style="display:flex;align-items:center;gap:12px;">
         <span style="font-size:0.85rem;color:#7a9880;">Welcome, Admin</span>
-        <button onclick="logout()" class="mobile-logout-btn" style="background:#dc3545;color:#fff;border:none;padding:6px 14px;border-radius:50px;font-size:0.78rem;font-weight:700;cursor:pointer;">Logout</button>
+        <button type="button" onclick="logout()" class="mobile-logout-btn" style="background:#dc3545;color:#fff;border:none;padding:6px 14px;border-radius:50px;font-size:0.78rem;font-weight:700;cursor:pointer;">Logout</button>
       </div>
     </div>
     <div class="admin-content">
@@ -62,8 +85,8 @@
       <!-- DASHBOARD -->
       <section class="admin-section active" id="section-dashboard">
         <div class="stats-row">
-          <div class="stat-card"><div class="stat-card-number">4</div><div class="stat-card-label">Total Products</div></div>
-          <div class="stat-card"><div class="stat-card-number">4</div><div class="stat-card-label">QR Codes Active</div></div>
+          <div class="stat-card"><div class="stat-card-number" id="total-products">0</div><div class="stat-card-label">Total Products</div></div>
+          <div class="stat-card"><div class="stat-card-number" id="total-qr-codes">0</div><div class="stat-card-label">QR Codes Active</div></div>
           <div class="stat-card"><div class="stat-card-number" id="total-scans">0</div><div class="stat-card-label">Total QR Scans</div></div>
           <div class="stat-card"><div class="stat-card-number">✅</div><div class="stat-card-label">License Valid</div></div>
         </div>
@@ -161,11 +184,6 @@
         </select>
       </div>
     </div>
-    <div class="form-group">
-      <label class="form-label">Product URL Slug</label>
-      <input type="text" id="modal-slug" name="admin-product-slug-no-autofill" class="form-input" placeholder="e.g. sugarcane-special" autocomplete="off" />
-    </div>
-
     <!-- PRODUCT PHOTO FIELD -->
     <div class="form-group" style="margin-top:16px;">
       <label class="form-label" style="font-weight:700;color:var(--dark-green);">📷 Product Photo</label>
@@ -223,30 +241,34 @@ const DEFAULT_PRODUCTS = [
   { id:4, name:'Crop Shakti', desc:'Advanced organic growth promoter enriched with humates, amino acids, seaweed extract, and fulvic acid.', mrp:1560, weight:25, slug:'crop-shakti', img:'/images/crop-shakti-front.png', scans: Math.floor(Math.random()*100)+40 }
 ];
 
+// Deleted rows must never be restored from the browser Back/Forward cache.
+window.addEventListener('pageshow', event => {
+  if (event.persisted) window.location.reload();
+});
+
+let adminProducts = [...DEFAULT_PRODUCTS];
+
+function clearStaleAdminProductCache() {
+  localStorage.removeItem('pc_products');
+  localStorage.removeItem('pc_custom_products');
+  Object.keys(localStorage).forEach(key => {
+    if (key.startsWith('pc_product_')) localStorage.removeItem(key);
+  });
+}
+
 function getProducts() {
-  const stored = localStorage.getItem('pc_products');
-  let products = stored ? JSON.parse(stored) : [...DEFAULT_PRODUCTS];
-  try {
-    const customStored = localStorage.getItem('pc_custom_products');
-    if (customStored) {
-      const customList = JSON.parse(customStored);
-      customList.forEach(cp => {
-        if (!products.some(p => String(p.id) === String(cp.id))) {
-          products.push({ ...cp, scans: cp.scans || 0 });
-        }
-      });
-    }
-  } catch(e) {}
-  return products;
+  return [...adminProducts];
 }
 function saveProducts(products) {
-  localStorage.setItem('pc_products', JSON.stringify(products));
+  adminProducts = Array.isArray(products) ? [...products] : [];
+  localStorage.setItem('pc_products', JSON.stringify(adminProducts));
 }
 
 function replaceCloudProductCache(products) {
   const canonicalProducts = Array.isArray(products) ? products : [];
   const defaultSlugs = new Set(DEFAULT_PRODUCTS.map(product => product.slug));
 
+  clearStaleAdminProductCache();
   saveProducts(canonicalProducts);
   localStorage.setItem(
     'pc_custom_products',
@@ -294,6 +316,11 @@ window.showSection = showSection;
 function renderDashboard() {
   const products = getProducts();
   const totalScans = products.reduce((a,p) => a + (p.scans || 0), 0);
+  const productCount = products.length;
+  const productCountEl = document.getElementById('total-products');
+  const qrCountEl = document.getElementById('total-qr-codes');
+  if (productCountEl) productCountEl.textContent = productCount;
+  if (qrCountEl) qrCountEl.textContent = productCount;
   const el = document.getElementById('total-scans');
   if (el) el.textContent = totalScans;
   const tbody = document.getElementById('dashboard-table-body');
@@ -599,7 +626,6 @@ function openAddModal() {
   document.getElementById('modal-mrp').value = '';
   document.getElementById('modal-weight').value = '';
   if (document.getElementById('modal-unit')) document.getElementById('modal-unit').value = 'KG';
-  document.getElementById('modal-slug').value = '';
   clearProductImage();
 
   populateDynamicFields('admin-comp-rows', [], [
@@ -629,7 +655,6 @@ function openEditModal(id) {
   document.getElementById('modal-mrp').value = p.mrp || '';
   document.getElementById('modal-weight').value = p.weight || '';
   if (document.getElementById('modal-unit')) document.getElementById('modal-unit').value = p.unit || 'KG';
-  document.getElementById('modal-slug').value = p.slug || '';
   setProductImageInModal(p.imgFront || p.img || '');
 
   // Get composition data (support legacy fields fallback)
@@ -668,6 +693,14 @@ function openEditModal(id) {
 
 function closeModal() { document.getElementById('product-modal').classList.remove('open'); }
 
+function createProductSlug(name) {
+  return String(name || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 async function saveProduct() {
   const name = document.getElementById('modal-name').value.trim();
   const desc = document.getElementById('modal-desc').value.trim();
@@ -675,8 +708,9 @@ async function saveProduct() {
   const weight = document.getElementById('modal-weight').value.trim();
   const unit = document.getElementById('modal-unit') ? document.getElementById('modal-unit').value : 'KG';
   
-  let rawSlug = document.getElementById('modal-slug').value.trim().toLowerCase().replace(/\s+/g,'-') || name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
   const products = getProducts();
+  const existingProd = editId ? products.find(p => p.id === editId || String(p.id) === String(editId)) : null;
+  const rawSlug = (existingProd && existingProd.slug) || createProductSlug(name);
   let slug = rawSlug;
   
   if (!editId) {
@@ -692,12 +726,11 @@ async function saveProduct() {
     }
   }
 
-  if (!name || !slug) { showToast('Name and slug are required'); return; }
+  if (!name || !slug) { showToast('Product name is required'); return; }
 
   const compositions = getDynamicFieldsData('admin-comp-rows');
   const specifications = getDynamicFieldsData('admin-spec-rows');
 
-  const existingProd = editId ? products.find(p => p.id === editId || String(p.id) === String(editId)) : null;
   const imgUrlVal = document.getElementById('modal-img-url') ? document.getElementById('modal-img-url').value.trim() : '';
   const existingFront = existingProd ? (existingProd.imgFront || existingProd.img || '') : '';
   const finalImg = currentModalImageData || imgUrlVal || existingFront || '/images/plantcare-logo-new.png';
@@ -726,11 +759,10 @@ async function saveProduct() {
   }
 
   try {
-    const headers = adminApiHeaders(true);
-    if (!headers['x-admin-token']) throw new Error('Cloud sync token is required. Product was not saved.');
     const response = await fetch('/api/products', {
       method: 'POST',
-      headers,
+      credentials: 'same-origin',
+      headers: adminApiHeaders(true),
       body: JSON.stringify(newProd)
     });
     if (!response.ok) {
@@ -774,30 +806,29 @@ async function deleteProduct(id) {
   if (!confirm('Delete this product?')) return;
   const products = getProducts();
   const deleted = products.find(p => p.id === id || String(p.id) === String(id));
-  const updated = products.filter(p => p.id !== id && String(p.id) !== String(id));
-  saveProducts(updated);
+  if (!deleted || !deleted.slug) return;
 
   try {
-    const savedCustom = localStorage.getItem('pc_custom_products');
-    if (savedCustom) {
-      let customList = JSON.parse(savedCustom);
-      customList = customList.filter(p => p.id !== id && String(p.id) !== String(id));
-      localStorage.setItem('pc_custom_products', JSON.stringify(customList));
+    const response = await fetch('/api/products/' + encodeURIComponent(deleted.slug), {
+      method: 'DELETE',
+      credentials: 'same-origin',
+      headers: adminApiHeaders(false)
+    });
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}));
+      throw new Error(data.error || 'Product could not be deleted online.');
     }
-  } catch(e) {}
 
-  if (deleted && deleted.slug) {
+    const updated = products.filter(p => p.id !== id && String(p.id) !== String(id));
+    replaceCloudProductCache(updated);
     localStorage.removeItem('pc_product_' + deleted.slug);
-    try {
-      const headers = adminApiHeaders(false);
-      if (headers['x-admin-token']) {
-        await fetch('/api/products/' + encodeURIComponent(deleted.slug), { method: 'DELETE', headers });
-      }
-    } catch (error) {}
+    renderDashboard();
+    renderProducts();
+    renderQR();
+    showToast('Product deleted online.');
+  } catch (error) {
+    showToast(error.message || 'Product could not be deleted.');
   }
-  renderDashboard();
-  renderProducts();
-  showToast('Product deleted');
 }
 
 function showToast(msg) {
@@ -807,24 +838,8 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-function getAdminApiToken() {
-  return sessionStorage.getItem('pc_admin_api_token') || '';
-}
-
-function ensureAdminApiToken() {
-  let token = getAdminApiToken();
-  if (token) return token;
-  token = prompt('Enter Admin Cloud Sync Token to save products/images online:') || '';
-  token = token.trim();
-  if (token) sessionStorage.setItem('pc_admin_api_token', token);
-  return token;
-}
-
 function adminApiHeaders(withJson = false) {
-  const token = ensureAdminApiToken();
-  const headers = withJson ? { 'Content-Type': 'application/json' } : {};
-  if (token) headers['x-admin-token'] = token;
-  return headers;
+  return withJson ? { 'Content-Type': 'application/json' } : {};
 }
 
 async function syncDashboardProductsToServer() {
@@ -860,7 +875,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// Init
+// Init: Admin never renders obsolete browser catalogue data. It starts with
+// the approved products and immediately replaces them with the cloud catalogue.
+clearStaleAdminProductCache();
+saveProducts(DEFAULT_PRODUCTS);
 showSection('dashboard');
 syncDashboardProductsToServer();
 </script>

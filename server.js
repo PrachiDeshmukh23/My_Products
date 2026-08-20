@@ -40,7 +40,10 @@ function readProducts() {
 async function readSharedProducts() {
   if (cloudStore && process.env.BLOB_READ_WRITE_TOKEN) {
     try {
-      const products = await cloudStore.getProducts();
+      const products = await Promise.race([
+        cloudStore.getProducts(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Cloud catalogue timeout')), 5000))
+      ]);
       if (Array.isArray(products) && products.length) return products;
     } catch(e) {}
   }
@@ -52,6 +55,9 @@ function getAdminHeaderToken(req) {
 }
 
 function hasValidAdminToken(req) {
+  if (cloudStore && typeof cloudStore.hasValidAdminSession === 'function' && cloudStore.hasValidAdminSession(req)) {
+    return true;
+  }
   return Boolean(process.env.ADMIN_API_TOKEN && getAdminHeaderToken(req) === process.env.ADMIN_API_TOKEN);
 }
 
@@ -79,7 +85,9 @@ function writeProducts(products) {
 }
 
 function sendJson(res, status, body) {
-  res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
+  res.statusCode = status;
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-store');
   res.end(JSON.stringify(body));
 }
 
@@ -193,6 +201,33 @@ const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
   const pathname = url.pathname;
 
+  if (pathname === '/api/admin/session') {
+    if (!cloudStore) return sendJson(res, 503, { error: 'Admin session is not available.' });
+    if (req.method === 'GET') {
+      return sendJson(res, 200, { authenticated: cloudStore.hasValidAdminSession(req) });
+    }
+    if (req.method === 'POST') {
+      try {
+        const body = await readBody(req);
+        if (!cloudStore.hasValidAdminCredentials(body.username, body.password)) {
+          return sendJson(res, 401, { error: 'Invalid username or password.' });
+        }
+        if (!cloudStore.setAdminSession(req, res, body.username)) {
+          return sendJson(res, 503, { error: 'Admin session is not configured.' });
+        }
+        return sendJson(res, 200, { authenticated: true });
+      } catch (error) {
+        return sendJson(res, 400, { error: 'Login could not be completed.' });
+      }
+    }
+    if (req.method === 'DELETE') {
+      cloudStore.clearAdminSession(req, res);
+      return sendJson(res, 200, { authenticated: false });
+    }
+    res.setHeader('Allow', 'GET, POST, DELETE');
+    return sendJson(res, 405, { error: 'Method not allowed' });
+  }
+
   if (pathname === '/api/products' && req.method === 'GET') return sendJson(res, 200, await readSharedProducts());
   if (pathname.startsWith('/api/products/') && req.method === 'GET') {
     const slug = decodeURIComponent(pathname.slice('/api/products/'.length));
@@ -200,7 +235,7 @@ const server = http.createServer(async (req, res) => {
     return product ? sendJson(res, 200, product) : sendJson(res, 404, { error: 'Product not found' });
   }
   if (pathname.startsWith('/api/products/') && req.method === 'DELETE') {
-    if (!hasValidAdminToken(req)) return sendJson(res, 401, { error: 'Admin cloud sync token required' });
+    if (!hasValidAdminToken(req)) return sendJson(res, 401, { error: 'Admin login is required' });
     const slug = decodeURIComponent(pathname.slice('/api/products/'.length));
     if (!cloudStore || !process.env.BLOB_READ_WRITE_TOKEN) {
       return sendJson(res, 503, { error: 'Cloud product storage is not configured' });
@@ -211,7 +246,7 @@ const server = http.createServer(async (req, res) => {
   if (pathname === '/api/products' && req.method === 'POST') {
     try {
       const rawProduct = await readBody(req);
-      if (!hasValidAdminToken(req)) return sendJson(res, 401, { error: 'Admin cloud sync token required' });
+      if (!hasValidAdminToken(req)) return sendJson(res, 401, { error: 'Admin login is required' });
       if (!cloudStore || !process.env.BLOB_READ_WRITE_TOKEN) {
         return sendJson(res, 503, { error: 'Cloud product storage is not configured' });
       }
@@ -225,7 +260,19 @@ const server = http.createServer(async (req, res) => {
   if (!file) return res.end('Forbidden');
   fs.stat(file, (error, stat) => {
     if (error || !stat.isFile()) return res.writeHead(404).end('Not found');
-    res.writeHead(200, { 'Content-Type': contentTypes[path.extname(file).toLowerCase()] || 'application/octet-stream', 'Cache-Control': path.extname(file) === '.html' ? 'no-cache' : 'public, max-age=3600' });
+    const isHtml = path.extname(file).toLowerCase() === '.html';
+    const isAdminPage = isHtml && (pathname === '/admin' || pathname.startsWith('/admin/'));
+    const headers = {
+      'Content-Type': contentTypes[path.extname(file).toLowerCase()] || 'application/octet-stream',
+      'Cache-Control': isAdminPage
+        ? 'private, no-store, no-cache, max-age=0, must-revalidate'
+        : (isHtml ? 'no-store, no-cache, max-age=0, must-revalidate' : 'public, max-age=3600')
+    };
+    if (isAdminPage) {
+      headers.Pragma = 'no-cache';
+      headers.Expires = '0';
+    }
+    res.writeHead(200, headers);
     fs.createReadStream(file).pipe(res);
   });
 });

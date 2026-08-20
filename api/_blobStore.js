@@ -1,16 +1,84 @@
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { get, list, put } = require('@vercel/blob');
 
 const LEGACY_PRODUCTS_BLOB_PATH = 'plantcare/products.json';
 const CATALOG_BLOB_PREFIX = 'plantcare/catalog/';
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
+const ADMIN_SESSION_COOKIE = 'pc_admin_session';
+const ADMIN_SESSION_SECONDS = 8 * 60 * 60;
 
 function sendJson(res, status, data) {
   res.statusCode = status;
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.setHeader('Cache-Control', 'no-store');
   res.end(JSON.stringify(data));
+}
+
+function secureEqual(left, right) {
+  const leftBuffer = Buffer.from(String(left || ''));
+  const rightBuffer = Buffer.from(String(right || ''));
+  return leftBuffer.length === rightBuffer.length && crypto.timingSafeEqual(leftBuffer, rightBuffer);
+}
+
+function parseCookies(req) {
+  return String(req.headers.cookie || '').split(';').reduce((cookies, part) => {
+    const separator = part.indexOf('=');
+    if (separator < 0) return cookies;
+    const key = part.slice(0, separator).trim();
+    const value = part.slice(separator + 1).trim();
+    if (key) cookies[key] = value;
+    return cookies;
+  }, {});
+}
+
+function createAdminSession(username) {
+  const secret = process.env.ADMIN_API_TOKEN;
+  if (!secret) return '';
+  const payload = Buffer.from(JSON.stringify({
+    username: String(username || 'admin'),
+    expiresAt: Date.now() + (ADMIN_SESSION_SECONDS * 1000)
+  })).toString('base64url');
+  const signature = crypto.createHmac('sha256', secret).update(payload).digest('base64url');
+  return `${payload}.${signature}`;
+}
+
+function hasValidAdminSession(req) {
+  const value = parseCookies(req)[ADMIN_SESSION_COOKIE];
+  const secret = process.env.ADMIN_API_TOKEN;
+  if (!value || !secret) return false;
+
+  const [payload, signature, extra] = String(value).split('.');
+  if (!payload || !signature || extra) return false;
+  const expected = crypto.createHmac('sha256', secret).update(payload).digest('base64url');
+  if (!secureEqual(signature, expected)) return false;
+
+  try {
+    const session = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8'));
+    return Boolean(session.username && Number(session.expiresAt) > Date.now());
+  } catch (error) {
+    return false;
+  }
+}
+
+function setAdminSession(req, res, username) {
+  const session = createAdminSession(username);
+  if (!session) return false;
+  const secure = Boolean(process.env.VERCEL || process.env.NODE_ENV === 'production');
+  res.setHeader('Set-Cookie', `${ADMIN_SESSION_COOKIE}=${session}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${ADMIN_SESSION_SECONDS}${secure ? '; Secure' : ''}`);
+  return true;
+}
+
+function clearAdminSession(req, res) {
+  const secure = Boolean(process.env.VERCEL || process.env.NODE_ENV === 'production');
+  res.setHeader('Set-Cookie', `${ADMIN_SESSION_COOKIE}=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0${secure ? '; Secure' : ''}`);
+}
+
+function hasValidAdminCredentials(username, password) {
+  const expectedUsername = process.env.ADMIN_USERNAME || 'admin';
+  const expectedPassword = process.env.ADMIN_PASSWORD || 'plantcare2026';
+  return secureEqual(username, expectedUsername) && secureEqual(password, expectedPassword);
 }
 
 function requireAdminWrite(req, res) {
@@ -25,10 +93,11 @@ function requireAdminWrite(req, res) {
     return false;
   }
 
-  if (!received || received !== expected) {
+  if (hasValidAdminSession(req)) return true;
+
+  if (!received || !secureEqual(received, expected)) {
     sendJson(res, 401, {
-      error: 'Admin cloud sync token required.',
-      setup: 'Enter the Admin Cloud Sync Token in the admin panel before saving products online.'
+      error: 'Admin login is required to save products online.'
     });
     return false;
   }
@@ -267,6 +336,10 @@ async function prepareProduct(input) {
 module.exports = {
   sendJson,
   requireAdminWrite,
+  hasValidAdminSession,
+  hasValidAdminCredentials,
+  setAdminSession,
+  clearAdminSession,
   readJsonBody,
   getProducts,
   saveProducts,

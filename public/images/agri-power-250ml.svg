@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1100" viewBox="0 0 900 1100" role="img" aria-labelledby="title desc">
+  <title id="title">Agri Power crop nutrients, 250 millilitre</title>
+  <desc id="desc">PlantCare Agri Power micronutrient crop nutrition, 250 millilitre pack.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f5fff0"/><stop offset="1" stop-color="#d9f3bd"/></linearGradient>
+    <linearGradient id="green" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1f5e2e"/><stop offset="1" stop-color="#4e972f"/></linearGradient>
+  </defs>
+  <rect width="900" height="1100" fill="url(#background)"/>
+  <rect x="42" y="42" width="816" height="1016" rx="46" fill="#ffffff" stroke="#1f5e2e" stroke-width="12"/>
+  <path d="M42 210h816v-122c0-25-21-46-46-46H88c-25 0-46 21-46 46z" fill="url(#green)"/>
+  <text x="450" y="118" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700" text-anchor="middle">PlantCare Fertilizers</text>
+  <text x="450" y="166" fill="#d9f3bd" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700" text-anchor="middle" letter-spacing="3">NOURISHING GROWTH, NATURALLY</text>
+  <g transform="translate(450 340)">
+    <circle r="102" fill="#ecf9dd" stroke="#8dcb3a" stroke-width="10"/>
+    <path d="M0 78C-59 33-72-38-24-78c61 28 79 106 24 156z" fill="#8dcb3a"/>
+    <path d="M-18 58C5 14 22-25 40-55M-10 29l-40-16M3 3l37-28" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/>
+    <path d="M-85-64c25 15 35 52 13 78-25-15-35-52-13-78zM-42-100c23 10 38 39 23 65-23-10-38-39-23-65z" fill="#54b6de"/>
+  </g>
+  <text x="450" y="510" fill="#1f5e2e" font-family="Arial, Helvetica, sans-serif" font-size="92" font-weight="800" text-anchor="middle">AGRI POWER</text>
+  <text x="450" y="560" fill="#477e36" font-family="Arial, Helvetica, sans-serif" font-size="33" font-weight="700" text-anchor="middle" letter-spacing="2">MICRONUTRIENT CROP NUTRIENTS</text>
+  <rect x="180" y="602" width="540" height="70" rx="35" fill="#1f5e2e"/>
+  <text x="450" y="648" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="33" font-weight="700" text-anchor="middle">BALANCED CROP NUTRITION</text>
+  <text x="450" y="742" fill="#1f5e2e" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" text-anchor="middle">Fe · Zn · Cu · B · Mn</text>
+  <text x="450" y="787" fill="#556b51" font-family="Arial, Helvetica, sans-serif" font-size="28" text-anchor="middle">Essential micronutrients for plant development</text>
+  <line x1="138" y1="838" x2="762" y2="838" stroke="#c5e5a9" stroke-width="4"/>
+  <text x="450" y="905" fill="#1f5e2e" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="800" text-anchor="middle">250 ML</text>
+  <text x="450" y="952" fill="#556b51" font-family="Arial, Helvetica, sans-serif" font-size="25" text-anchor="middle">Only for agricultural use</text>
+  <rect x="42" y="1008" width="816" height="50" fill="#1f5e2e"/>
+</svg>

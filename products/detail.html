@@ -206,25 +206,34 @@
     let QR_API = '';
     let CURRENT_PRODUCT_DATA = null;
 
+    // Prevent browser Back/Forward restoration from showing details or an
+    // image that belonged to a product deleted after the page was opened.
+    window.addEventListener('pageshow', event => {
+      if (event.persisted) window.location.reload();
+    });
+
+    function removeCachedProduct(slug) {
+      if (!slug) return;
+      localStorage.removeItem('pc_product_' + slug);
+      ['pc_products', 'pc_custom_products'].forEach(key => {
+        try {
+          const products = JSON.parse(localStorage.getItem(key) || '[]');
+          if (!Array.isArray(products)) return;
+          localStorage.setItem(key, JSON.stringify(products.filter(product =>
+            product.slug !== slug && String(product.id) !== String(slug)
+          )));
+        } catch (error) {}
+      });
+    }
+
     function cacheCanonicalProduct(product) {
-      if (!product || !product.slug) return;
-      localStorage.setItem('pc_product_' + product.slug, JSON.stringify(product));
-
-      try {
-        const products = JSON.parse(localStorage.getItem('pc_products') || '[]');
-        const nextProducts = products.filter(item =>
-          item.slug !== product.slug && String(item.id) !== String(product.id)
-        );
-        nextProducts.push(product);
-        localStorage.setItem('pc_products', JSON.stringify(nextProducts));
-
-        const customProducts = JSON.parse(localStorage.getItem('pc_custom_products') || '[]');
-        const nextCustomProducts = customProducts.filter(item =>
-          item.slug !== product.slug && String(item.id) !== String(product.id)
-        );
-        nextCustomProducts.push(product);
-        localStorage.setItem('pc_custom_products', JSON.stringify(nextCustomProducts));
-      } catch(e) {}
+      // Live product data is rendered in memory only. Do not keep it in
+      // localStorage: a product may be edited or deleted after this scan.
+      Object.keys(localStorage).forEach(key => {
+        if (key === 'pc_products' || key === 'pc_custom_products' || key.startsWith('pc_product_')) {
+          localStorage.removeItem(key);
+        }
+      });
     }
 
     function resolveImageUrl(imgSrc) {
@@ -299,6 +308,10 @@
             data = await response.json();
             loadedFromSharedDb = true;
             cacheCanonicalProduct(data);
+          } else if (response.status === 404) {
+            removeCachedProduct(PRODUCT_SLUG);
+            window.location.replace('/products');
+            return;
           } else if (response.status >= 500) {
             apiUnavailable = true;
           }
@@ -306,21 +319,6 @@
           apiUnavailable = true;
         }
 
-        if (!data && apiUnavailable) {
-          const saved = localStorage.getItem('pc_product_' + PRODUCT_SLUG);
-          if (saved) {
-            try { data = JSON.parse(saved); } catch(e) {}
-          }
-        }
-        if (!data && apiUnavailable) {
-          try {
-            const customSaved = localStorage.getItem('pc_custom_products');
-            if (customSaved) {
-              const list = JSON.parse(customSaved);
-              data = list.find(p => p.slug === PRODUCT_SLUG || String(p.id) === PRODUCT_SLUG);
-            }
-          } catch(e) {}
-        }
         if (!data && apiUnavailable) {
           try {
             const response = await fetch('../data/products.json', { cache: 'no-store' });
@@ -394,25 +392,6 @@
         };
       }
 
-      // 3. Fallback to latest custom product if still no data
-      if (!data && apiUnavailable) {
-        try {
-          const customSaved = localStorage.getItem('pc_custom_products');
-          if (customSaved) {
-            const list = JSON.parse(customSaved);
-            if (list.length > 0) {
-              const latestProduct = list[list.length - 1];
-              PRODUCT_SLUG = latestProduct.slug || String(latestProduct.id);
-              data = latestProduct;
-              const richData = localStorage.getItem('pc_product_' + PRODUCT_SLUG);
-              if (richData) {
-                try { data = { ...data, ...JSON.parse(richData) }; } catch(e) {}
-              }
-            }
-          }
-        } catch(e) {}
-      }
-
       if (data) {
         CURRENT_PRODUCT_DATA = data;
         if (data.name) {
@@ -438,9 +417,9 @@
           }
 
           if (!lowerUnit.includes('bottle') && !lowerUnit.includes('bag') && !lowerUnit.includes('can') && !lowerUnit.includes('pouch')) {
-            if (lowerUnit.includes('ml') || lowerUnit.includes('ltr') || lowerUnit === 'l') {
+            if (lowerUnit.includes('ml')) {
               displayBadge += ' Bottle';
-            } else {
+            } else if (!lowerUnit.includes('ltr') && lowerUnit !== 'l') {
               displayBadge += ' Bag';
             }
           }
@@ -505,7 +484,7 @@
         // WhatsApp link
         const waLink = document.getElementById('btn-order-whatsapp');
         if (waLink) {
-          const waText = encodeURIComponent(`Hello PlantCare, I want to order ${data.name || PRODUCT_NAME} (₹${data.mrp || ''} / ${data.weight || ''} KG). Please share details.`);
+          const waText = encodeURIComponent(`Hello PlantCare, I want to order ${data.name || PRODUCT_NAME} (₹${data.mrp || ''} / ${data.weight || ''} ${data.unit || 'KG'}). Please share details.`);
           waLink.href = `https://wa.me/917666046941?text=${waText}`;
         }
       }
@@ -638,16 +617,6 @@
         specifications
       };
 
-      let token = sessionStorage.getItem('pc_admin_api_token') || '';
-      if (!token) {
-        token = (prompt('Enter Admin Cloud Sync Token to save this product online:') || '').trim();
-        if (token) sessionStorage.setItem('pc_admin_api_token', token);
-      }
-      if (!token) {
-        showToast('Cloud sync token is required. Product was not changed.');
-        return;
-      }
-
       const saveButton = document.getElementById('detail-save-btn');
       const originalButtonText = saveButton ? saveButton.textContent : 'Save Changes';
       if (saveButton) {
@@ -658,9 +627,9 @@
       try {
         const response = await fetch('/api/products', {
           method: 'POST',
+          credentials: 'same-origin',
           headers: {
-            'Content-Type': 'application/json',
-            'x-admin-token': token
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify(data)
         });
@@ -691,21 +660,26 @@
       }
     }
 
-    function deleteCurrentProduct() {
+    async function deleteCurrentProduct() {
       if (!confirm('Are you sure you want to delete this product?')) return;
-      if (PRODUCT_SLUG) {
-        localStorage.removeItem('pc_product_' + PRODUCT_SLUG);
-        try {
-          const savedCustom = localStorage.getItem('pc_custom_products');
-          if (savedCustom) {
-            let customList = JSON.parse(savedCustom);
-            const updated = customList.filter(p => p.slug !== PRODUCT_SLUG && String(p.id) !== PRODUCT_SLUG);
-            localStorage.setItem('pc_custom_products', JSON.stringify(updated));
-          }
-        } catch(e) {}
+      if (!PRODUCT_SLUG) return;
+
+      try {
+        const response = await fetch('/api/products/' + encodeURIComponent(PRODUCT_SLUG), {
+          method: 'DELETE',
+          credentials: 'same-origin'
+        });
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => ({}));
+          throw new Error(errorData.error || 'Product could not be deleted online.');
+        }
+
+        removeCachedProduct(PRODUCT_SLUG);
+        showToast('🗑️ Product deleted successfully!');
+        setTimeout(() => { window.location.href = '/products'; }, 700);
+      } catch (error) {
+        showToast(error.message || 'Product could not be deleted.');
       }
-      showToast('🗑️ Product deleted successfully!');
-      setTimeout(() => { window.location.href = '../products.html'; }, 1000);
     }
 
     function downloadQR() {

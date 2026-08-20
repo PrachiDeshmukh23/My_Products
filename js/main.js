@@ -1,5 +1,12 @@
 // PlantCare Fertilizers - Main JS
 
+// A page restored by the browser's Back/Forward cache may contain product
+// cards that were deleted after it was first opened. Reload it so the cloud
+// catalogue is fetched again.
+window.addEventListener('pageshow', event => {
+  if (event.persisted) window.location.reload();
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   const hamburger = document.getElementById('hamburger-btn');
   const nav = document.getElementById('main-nav');
@@ -19,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  clearBrowserProductCache();
   checkDeletedProducts();
   renderCustomProducts();
 });
@@ -38,22 +46,39 @@ window.resolveProductImageUrl = resolveProductImageUrl;
 async function getSharedProducts() {
   try {
     const response = await fetch('/api/products', { cache: 'no-store' });
-    if (response.ok) return await response.json();
+    if (response.ok) {
+      const products = await response.json();
+      clearBrowserProductCache();
+      return products;
+    }
   } catch (error) {
     // A static production deployment has no local Node API. It still ships
     // the catalogue JSON, so use that as the public read-only fallback.
   }
   try {
     const response = await fetch('/data/products.json', { cache: 'no-store' });
-    return response.ok ? await response.json() : [];
+    if (!response.ok) return [];
+    const products = await response.json();
+    clearBrowserProductCache();
+    return products;
   } catch (error) { return []; }
 }
 
+function clearBrowserProductCache() {
+  // The public site intentionally keeps no product catalogue in browser
+  // storage. This prevents deleted products and their old photos from ever
+  // being restored after a refresh, a scan, or Back/Forward navigation.
+  localStorage.removeItem('pc_products');
+  localStorage.removeItem('pc_custom_products');
+  Object.keys(localStorage).forEach(key => {
+    if (key.startsWith('pc_product_')) localStorage.removeItem(key);
+  });
+}
+
 async function deleteProductFromServer(slug) {
-  const token = sessionStorage.getItem('pc_admin_api_token') || localStorage.getItem('pc_admin_api_token') || '';
   const response = await fetch('/api/products/' + encodeURIComponent(slug), {
     method: 'DELETE',
-    headers: token ? { 'x-admin-token': token } : {}
+    credentials: 'same-origin'
   });
   if (!response.ok && response.status !== 404) throw new Error('Could not remove product from the shared catalogue');
 }

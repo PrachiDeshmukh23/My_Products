@@ -7,6 +7,12 @@
   <link rel="stylesheet" href="../css/global.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    .admin-secret-mask {
+      -webkit-text-security: disc;
+      text-security: disc;
+    }
+  </style>
 </head>
 <body>
   <div class="login-page">
@@ -16,38 +22,115 @@
         <h1 class="login-title">Admin Login</h1>
         <p class="login-sub">PlantCare Fertilizers Management</p>
       </div>
-      <form id="login-form" onsubmit="handleLogin(event)">
+      <form id="login-form" onsubmit="handleLogin(event)" autocomplete="off" data-form-type="other">
         <div class="form-group">
-          <label class="form-label" for="username">Username</label>
-          <input type="text" id="username" class="form-input" placeholder="Enter username" autocomplete="username" />
+          <label class="form-label" for="admin-identity-entry">Username</label>
+          <input type="text" id="admin-identity-entry" class="form-input" placeholder="Enter username" autocomplete="off" autocapitalize="none" spellcheck="false" data-lpignore="true" data-1p-ignore="true" readonly />
           <span class="form-error" id="username-error">Please enter username</span>
         </div>
         <div class="form-group">
-          <label class="form-label" for="password">Password</label>
-          <input type="password" id="password" class="form-input" placeholder="Enter password" autocomplete="current-password" />
+          <label class="form-label" for="admin-secret-entry">Password</label>
+          <input type="text" id="admin-secret-entry" class="form-input admin-secret-mask" placeholder="Enter password" autocomplete="off" autocapitalize="none" spellcheck="false" data-lpignore="true" data-1p-ignore="true" readonly />
           <span class="form-error" id="password-error">Please enter password</span>
         </div>
-        <div id="login-error" style="color:#ef4444;font-size:0.85rem;margin-bottom:12px;display:none;">Invalid credentials. Try admin / plantcare2026</div>
+        <div id="login-error" style="color:#ef4444;font-size:0.85rem;margin-bottom:12px;display:none;">Invalid username or password.</div>
         <button type="submit" class="btn btn-primary" id="login-btn" style="width:100%;padding:14px;border-radius:8px;font-size:1rem;">Login →</button>
       </form>
-      <p style="text-align:center;margin-top:16px;font-size:0.8rem;color:#7a9880;">Demo: admin / plantcare2026</p>
     </div>
   </div>
   <script>
-    function handleLogin(e) {
-      e.preventDefault();
-      const user = document.getElementById('username').value.trim();
-      const pass = document.getElementById('password').value.trim();
+    let loginInteractionStarted = false;
+    let credentialClearTimers = [];
+
+    function getVisibleCredentialFields() {
+      return [
+        document.getElementById('admin-identity-entry'),
+        document.getElementById('admin-secret-entry')
+      ];
+    }
+
+    function clearLoginFields(lockFields = true) {
+      const form = document.getElementById('login-form');
+      if (form) form.reset();
+
+      getVisibleCredentialFields().forEach(field => {
+        if (!field) return;
+        field.value = '';
+        if (lockFields) field.setAttribute('readonly', 'readonly');
+      });
+
       const errDiv = document.getElementById('login-error');
-      if (!user || !pass) { errDiv.style.display='block'; errDiv.textContent='Please fill all fields.'; return; }
-      if (user === 'admin' && pass === 'plantcare2026') {
-        sessionStorage.setItem('pc_admin', '1');
-        window.location.href = 'dashboard.html';
-      } else {
-        errDiv.style.display = 'block';
-        errDiv.textContent = 'Invalid credentials. Try admin / plantcare2026';
+      if (errDiv) errDiv.style.display = 'none';
+    }
+
+    function scheduleCredentialClear() {
+      credentialClearTimers.forEach(clearTimeout);
+      credentialClearTimers = [0, 100, 350, 800, 1500].map(delay => setTimeout(() => {
+        if (!loginInteractionStarted) clearLoginFields(true);
+      }, delay));
+    }
+
+    function unlockCredentialField(event) {
+      loginInteractionStarted = true;
+      const field = event.currentTarget;
+      if (field.hasAttribute('readonly')) {
+        field.value = '';
+        field.removeAttribute('readonly');
       }
     }
+
+    function resetLoginPage() {
+      loginInteractionStarted = false;
+      clearLoginFields(true);
+      scheduleCredentialClear();
+    }
+
+    function initializeCredentialProtection() {
+      getVisibleCredentialFields().forEach(field => {
+        field.addEventListener('pointerdown', unlockCredentialField);
+        field.addEventListener('focus', unlockCredentialField);
+        field.addEventListener('keydown', unlockCredentialField);
+      });
+      resetLoginPage();
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById('admin-identity-entry').value.trim();
+      const pass = document.getElementById('admin-secret-entry').value.trim();
+      const errDiv = document.getElementById('login-error');
+      if (!user || !pass) { errDiv.style.display='block'; errDiv.textContent='Please fill all fields.'; return; }
+
+      const loginButton = document.getElementById('login-btn');
+      const originalButtonText = loginButton.textContent;
+      loginButton.disabled = true;
+      loginButton.textContent = 'Logging in...';
+
+      try {
+        const response = await fetch('/api/admin/session', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: user, password: pass })
+        });
+        if (!response.ok) throw new Error('Invalid username or password.');
+        sessionStorage.setItem('pc_admin', '1');
+        window.location.replace('dashboard.html');
+      } catch (error) {
+        errDiv.style.display = 'block';
+        errDiv.textContent = error.message || 'Login could not be completed.';
+      } finally {
+        loginButton.disabled = false;
+        loginButton.textContent = originalButtonText;
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeCredentialProtection);
+    } else {
+      initializeCredentialProtection();
+    }
+    window.addEventListener('pageshow', resetLoginPage);
   </script>
 </body>
 </html>

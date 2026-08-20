@@ -1,71 +1,43 @@
 [
   {
-    "id": 1786346269780,
-    "name": "onion",
-    "badge": "ORGANIC",
-    "desc": "jkfhow",
+    "id": 1,
+    "name": "Sugarcane Special",
+    "desc": "Organic fertilizer specially developed for Sugarcane crops for healthy root growth and higher yield.",
     "mrp": 1480,
     "weight": "50",
-    "slug": "onion",
-    "img": "public/uploads/onion-main-1786346289377.jpg",
-    "compBase": "PM Base Organic Manure",
-    "compN": "0.5%",
-    "compP": "0.5%",
-    "compK": "0.5%",
-    "specCn": "< 20",
-    "specPh": "6.5 – 7.5",
-    "updatedAt": "2026-08-10T11:13:26.589Z",
+    "slug": "sugarcane-special",
+    "img": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/sugarcane-special-front-1787219052818-dfD1vUPgZYiwcysZpCm2xGyF1KZzhX.png",
+    "scans": 83,
+    "updatedAt": "2026-08-20T09:44:33.419Z",
+    "qrImg": "",
+    "imgFront": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/sugarcane-special-front-1787219052818-dfD1vUPgZYiwcysZpCm2xGyF1KZzhX.png",
+    "imgBack": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/sugarcane-special-back-1787219053012-20S2xyx0oErqBZSU6Wh9X5dOzRVQ9t.png",
     "unit": "KG",
-    "scans": 0,
+    "badge": "ORGANIC",
     "compositions": [
       {
         "label": "Potassium Humate",
-        "value": "6"
+        "value": ""
       },
       {
         "label": "Amino Acid",
-        "value": "6-8"
-      },
-      {
-        "label": "Seaweed Extract",
-        "value": "6-9"
-      },
-      {
-        "label": "Fulvic Acid",
-        "value": "6-10"
+        "value": ""
       }
     ],
     "specifications": [
       {
         "label": "MRP",
-        "value": "680"
+        "value": "₹1480"
       },
       {
         "label": "Bag Weight",
-        "value": "60"
+        "value": "50 KG"
       },
       {
         "label": "Use",
-        "value": "5"
+        "value": "Only For Agriculture"
       }
-    ],
-    "qrImg": "data:image/jpeg;base64,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",
-    "imgFront": "public/uploads/onion-main-1786346289377.jpg",
-    "imgBack": "public/uploads/onion-main-1786346289377.jpg"
-  },
-  {
-    "id": 1,
-    "name": "Sugarcane Special",
-    "desc": "Organic fertilizer specially developed for Sugarcane crops for healthy root growth and higher yield.",
-    "mrp": 1480,
-    "weight": 50,
-    "slug": "sugarcane-special",
-    "img": "/images/sugarcane-special-front.png",
-    "scans": 83,
-    "updatedAt": "2026-08-10T07:15:20.792Z",
-    "qrImg": "data:image/jpeg;base64,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",
-    "imgFront": "/images/sugarcane-special-front.png",
-    "imgBack": "/images/sugarcane-special-back.png"
+    ]
   },
   {
     "id": 2,
@@ -79,7 +51,8 @@
     "updatedAt": "2026-08-10T07:15:20.819Z",
     "qrImg": "data:image/jpeg;base64,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",
     "imgFront": "/images/onion-maize-front.png",
-    "imgBack": "/images/onion-maize-back.png"
+    "imgBack": "/images/onion-maize-back.png",
+    "unit": "KG"
   },
   {
     "id": 3,
@@ -93,7 +66,8 @@
     "updatedAt": "2026-08-10T07:15:20.856Z",
     "qrImg": "data:image/jpeg;base64,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",
     "imgFront": "/images/soybean-cotton-front.png",
-    "imgBack": "/images/soybean-cotton-back.png"
+    "imgBack": "/images/soybean-cotton-back.png",
+    "unit": "KG"
   },
   {
     "id": 4,
@@ -107,307 +81,22 @@
     "updatedAt": "2026-08-10T07:15:20.887Z",
     "qrImg": "data:image/jpeg;base64,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",
     "imgFront": "/images/crop-shakti-front.png",
-    "imgBack": "/images/crop-shakti-back.png"
+    "imgBack": "/images/crop-shakti-back.png",
+    "unit": "KG"
   },
   {
-    "id": 1786343138840,
-    "name": "onion",
-    "desc": "yrgfgeui",
-    "mrp": 2654,
-    "weight": "23",
-    "unit": "Can",
-    "badge": "ORGANIC",
-    "slug": "cusersomvideoscaptures",
-    "img": "public/uploads/cusersomvideoscaptures-main-1786347794463.jpg",
-    "scans": 0,
-    "compositions": [
-      {
-        "label": "Potassium Humate",
-        "value": "5"
-      },
-      {
-        "label": "Amino Acid",
-        "value": "5-5"
-      },
-      {
-        "label": "Seaweed Extract",
-        "value": "5-4"
-      },
-      {
-        "label": "Fulvic Acid",
-        "value": "5-6"
-      }
-    ],
-    "specifications": [
-      {
-        "label": "MRP",
-        "value": "9000"
-      },
-      {
-        "label": "Bag Weight",
-        "value": "34"
-      },
-      {
-        "label": "Use",
-        "value": "45"
-      }
-    ],
-    "updatedAt": "2026-08-10T11:13:26.595Z",
-    "qrImg": "data:image/jpeg;base64,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",
-    "imgFront": "public/uploads/cusersomvideoscaptures-main-1786347794463.jpg",
-    "imgBack": "public/uploads/cusersomvideoscaptures-main-1786347794463.jpg"
-  },
-  {
-    "id": 1786352586419,
-    "name": "sugar",
-    "desc": "gyehoe",
-    "mrp": 1500,
-    "weight": "60",
-    "unit": "Bottle (250 ML)",
-    "badge": "ORGANIC",
-    "slug": "sugar",
-    "img": "public/uploads/sugar-main-1786352586746.jpg",
-    "qrImg": "data:image/jpeg;base64,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",
-    "scans": 0,
-    "compositions": [
-      {
-        "label": "Potassium Humate",
-        "value": "6"
-      },
-      {
-        "label": "Amino Acid",
-        "value": "6-8"
-      },
-      {
-        "label": "Seaweed Extract",
-        "value": "7"
-      },
-      {
-        "label": "Fulvic Acid",
-        "value": "7"
-      }
-    ],
-    "specifications": [
-      {
-        "label": "MRP",
-        "value": "700"
-      },
-      {
-        "label": "Bag Weight",
-        "value": "70"
-      },
-      {
-        "label": "Use",
-        "value": "7"
-      }
-    ],
-    "imgFront": "public/uploads/sugar-main-1786352586746.jpg",
-    "updatedAt": "2026-08-10T11:13:26.600Z",
-    "imgBack": "public/uploads/sugar-main-1786352586746.jpg"
-  },
-  {
-    "id": 1786355483312,
-    "name": "onion",
-    "desc": "uhfrwiu",
-    "mrp": 3452,
-    "weight": "45",
-    "unit": "KG",
-    "badge": "ORGANIC",
-    "slug": "onion-45kg",
-    "img": "/uploads/onion-45kg-main-1786355483625.jpg",
-    "qrImg": "data:image/jpeg;base64,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",
-    "scans": 0,
-    "compositions": [
-      {
-        "label": "Potassium Humate",
-        "value": "4"
-      },
-      {
-        "label": "Amino Acid",
-        "value": "4-4"
-      },
-      {
-        "label": "Seaweed Extract",
-        "value": "6-8"
-      },
-      {
-        "label": "Fulvic Acid",
-        "value": "6-8"
-      }
-    ],
-    "specifications": [
-      {
-        "label": "MRP",
-        "value": "7"
-      },
-      {
-        "label": "Bag Weight",
-        "value": "7-3"
-      },
-      {
-        "label": "Use",
-        "value": "5-2"
-      }
-    ],
-    "imgFront": "/uploads/onion-45kg-main-1786355483625.jpg",
-    "updatedAt": "2026-08-10T11:13:26.603Z",
-    "imgBack": "/uploads/onion-45kg-main-1786355483625.jpg"
-  },
-  {
-    "id": 1786357563271,
-    "name": "mango",
-    "desc": "gfukili",
-    "mrp": 1500,
-    "weight": "40",
-    "unit": "KG",
-    "badge": "ORGANIC",
-    "slug": "mango",
-    "img": "/uploads/mango-main-1786357563584.jpg",
-    "qrImg": "data:image/webp;base64,UklGRkAFAABXRUJQVlA4WAoAAAAgAAAANwAANQAASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggUgMAAPAPAJ0BKjgANgA/NYazU68pJKKwHfwB4CaJbAC5kBOOyPjwrbPTNisZxwhs8sXTKs4/3be+GzmjIxxhFg949KDslwQlY6mZIbqPBnWWId4uBGJHiIrXueAKQSShudmhoXPDD0T29tJ5/PGxfxnyZ/f4GxD55/O/Ds6Jl6lfArea/i1/i6ZxugAA/cnlcFDPC2yG6NC9+k/N8m38tNo92WHfTvXqi05lxQ13GcBcf7FMACsHzHCn23+ZaXHloNe2ctcrcjFV/mGajDJz5zfsge3cojN01EOhuj7SArfBKR1dtCEG6wDMrdbdN48cBu8u0BdfPicktCnaR8g9esKXZaMvldsyczgAIp80tydviB1nS2W0PRTgwa2PSwM3fhdcGMW+UhuqCozNbzTPbVhHtjc8tSSUDDrXweBsHFw9HWQ/L5UHbnvLOZvoaYot3669id+CzoC8481WKAtCeJfydP6U5ci31Wm7ftzISpc6zKFPYZaUgphpPxmch30YRmnAcD05W37QPJeUvOiYiLMYmlyRT/yeISM8lF5uwh4Sdjh1CJup/1JO1AMEN0sgLk4zBpNSOwalayjcEZxMMCqxXuNu3cn5+wrjCfdgj0mwoLqAFcZrUsqSkYyPuJrY8F/x9eBjt2sOBuyes0d5x3Ll6r+C49vcgOqpb5QoLC//x9P7kkMtqFuU29fvkiv9uhsQwbz8ui0korw3z/NvzWYN/ZOLuNK/EFisvMxSXKB1n2jE5FPWdC6rc7hScM8OU9TRp6hC/60bc83dDJqX2CikA+xJ8kpT81bHIv6u+wwOg2XIN/YvaAtLRIt/JCPYTxfZ15coa/yQy+mB0CpJ+5vERkv4h+WbVRH87Syxt/ZZobnWm9dq2fMFJqKm1RgBxNydKH0mxeUI1biOuVr385szOLFNi9APUx6k4Zp9zV05v2/gvGdQovWBadsuYs2ecvnt2t12BJoVpiFXCmvXoOF59lbjmVUZkUhgX2ivCgpgtw8k2WenZxdAKUUmvFkP//yJBLqqe5I+SyatvIjlDeEBawrFbsyLzp3CH9dXTnM0hOthBPMtMxvB+MqTkBcKEhZkh1XR3eU2th0e+hN6jj6KhyWXlrGTFy3Dq0PchCsijv8/gAA=",
-    "scans": 0,
-    "compositions": [
-      {
-        "label": "Potassium Humate",
-        "value": "1-6"
-      },
-      {
-        "label": "Amino Acid",
-        "value": "1-9"
-      },
-      {
-        "label": "Seaweed Extract",
-        "value": "5"
-      },
-      {
-        "label": "Fulvic Acid",
-        "value": "7"
-      }
-    ],
-    "specifications": [
-      {
-        "label": "MRP",
-        "value": "1700"
-      },
-      {
-        "label": "Bag Weight",
-        "value": "60"
-      },
-      {
-        "label": "Use",
-        "value": "5"
-      }
-    ],
-    "imgFront": "/uploads/mango-main-1786357563584.jpg",
-    "updatedAt": "2026-08-10T11:13:26.607Z",
-    "imgBack": "/uploads/mango-main-1786357563584.jpg"
-  },
-  {
-    "id": 1786358032231,
-    "name": "benjal",
-    "desc": "wdhp",
-    "mrp": 450,
-    "weight": "40",
-    "unit": "KG",
-    "badge": "ORGANIC",
-    "slug": "benjal",
-    "img": "/uploads/benjal-main-1786358032556.jpg",
-    "qrImg": "data:image/webp;base64,UklGRjQEAABXRUJQVlA4WAoAAAAgAAAANwAALQAASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggRgIAAFALAJ0BKjgALgA/OYy3VC8qJSMtWZyR4CcJagDIj8NOkZCP0lsupEMDsb1zVPQQ5rbtvX+9jNlXb8TePkv71+R2jcWiQgk8zMnQZoNfLFvebj3w1+RvZFGg8EOKkhf67k/0gAD+w6X0lUrkmUND0Z72dq2sxsaE1IDyAadzNFcXEtCqD6zQWkK/kNAHGYS8yXBVPxI10Ts/eKDZa8pCS8soAvRV57Y2mS0KFgpVAjh/ArHslGbHsiicoT2Za8Uo6qAwuu73c6DMV3X2yCWzxQOilf8t8Vs0cxOQJOTjoFOfJ2ZmBFP/6VFC3cEzBSWnFy9TUE0H33RaS9dqyfHFcMYQ4v7G7Cdx1ZKJDDHkad/ZgiEMnjVq4g9d/HbciGgGc1aVEvfujBZ0xGWDmDYsFgJjR9L7YLULq8QPPvU4ht5P8xVoNCwhvWxbUy2Ik0cpQ/8fKRj3D/BXAOvCg2PTNWgFTs+bfR8RDkSsf/8B/5er1Lqul5Ns3Kg+kKpvRJeoMdOdMVTVkCaG87fWdYCba71J4J2pmdN0STFBZX/vtwrdqkcoqPIknHi22DeDXcSeU/dqCxLgACh0AIGFEmhMFx9THQ6DS2QP/8yCFp0ASs2rj90RnxjabMop7aEFwbwHc4U4LSK8cVUXnJ1AZuDdq0MFv8EY8atpaB5us79jpVs68igCFDd/yPbfVTUyQniwt5Cmi6hH2KbvvUlkVjrNI7NPSiBPPNZURx1+LmXpbTuHsox/L+5pbrPIM7igLHucSdb3/vQAAA==",
-    "scans": 0,
-    "compositions": [
-      {
-        "label": "Potassium Humate",
-        "value": "4"
-      },
-      {
-        "label": "Amino Acid",
-        "value": "6"
-      },
-      {
-        "label": "Seaweed Extract",
-        "value": "6"
-      },
-      {
-        "label": "Fulvic Acid",
-        "value": "8"
-      }
-    ],
-    "specifications": [
-      {
-        "label": "MRP",
-        "value": "500"
-      },
-      {
-        "label": "Bag Weight",
-        "value": "70"
-      },
-      {
-        "label": "Use",
-        "value": "44"
-      }
-    ],
-    "imgFront": "/uploads/benjal-main-1786358032556.jpg",
-    "updatedAt": "2026-08-10T11:13:26.610Z",
-    "imgBack": "/uploads/benjal-main-1786358032556.jpg"
-  },
-  {
-    "id": 1786358097100,
-    "name": "potato",
-    "desc": "wydpweru",
-    "mrp": 2000,
-    "weight": "40",
-    "unit": "Bottle (500 ML)",
-    "badge": "ORGANIC",
-    "slug": "potato",
-    "img": "/uploads/potato-main-1786358097425.jpg",
-    "qrImg": "data:image/webp;base64,UklGRgIDAABXRUJQVlA4WAoAAAAgAAAANwAAKQAASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggFAEAAFAHAJ0BKjgAKgA/OZK3Va8rJaMqu/z54CcJYgDN/zAQmUZ2IU6L2MJCgBTAcxp1yEQi0tlf4zAkkvnD4UpY+u9rqMAA/soYVlPUTh6JW8V4bAF5SVqZt2OelUB9FuJAE8QtOpPi12cwlRX7+TywyFHNesvr5m54gQsATpWxvT6qNAUM9ijMt8MgChvJKLakSrJyELkFzC6xCG3QCm6wOMRYYY8RbttXfYTu3u8SLvxdOsvUyw3AaMj+kZLR8468nR1HZCSNxEYXxYpaV0h0alTKTx33vWf0G691XACcg15X0OqlYdcOp6GbLWML8OSjegy0oXhsBwgC2dcz7RgfIWPTt8jr3mrHm8cQlWh2g0tRP+VQAA==",
-    "scans": 0,
-    "compositions": [
-      {
-        "label": "Potassium Humate",
-        "value": "5"
-      },
-      {
-        "label": "Amino Acid",
-        "value": "3"
-      },
-      {
-        "label": "Seaweed Extract",
-        "value": "3"
-      },
-      {
-        "label": "Fulvic Acid",
-        "value": "4"
-      }
-    ],
-    "specifications": [
-      {
-        "label": "MRP",
-        "value": "6000"
-      },
-      {
-        "label": "Bag Weight",
-        "value": "30"
-      },
-      {
-        "label": "Use",
-        "value": "2"
-      }
-    ],
-    "imgFront": "/uploads/potato-main-1786358097425.jpg",
-    "updatedAt": "2026-08-10T11:13:26.613Z",
-    "imgBack": "/uploads/potato-main-1786358097425.jpg"
-  },
-  {
-    "id": 1786360245634,
-    "name": "sugar",
-    "desc": "jfhIOWR",
-    "mrp": 1460,
+    "id": 1787219952118,
+    "name": "Onion & Corn",
+    "desc": "efea",
+    "mrp": 111,
     "weight": "50",
-    "unit": "KG",
+    "unit": "Bottle (1 Ltr)",
     "badge": "ORGANIC",
-    "slug": "sugar-50kg",
-    "img": "/uploads/sugar-50kg-main-1786360301185.jpg",
-    "qrImg": "data:image/webp;base64,UklGRlYDAABXRUJQVlA4WAoAAAAgAAAANwAAHQAASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggaAEAAHAIAJ0BKjgAHgA/OYi1VC8pJKMsDMngJwlAF96BfezUy4pQwU91BjDnmFmUrGlMP1tiICsmXCYq0r00CSvlKeQUds9N3c4tR1SN7CAA/pFFo6cLnfbG0rXQHeDhNlZoT9iXCuktuOt4LpCYDPjPXY6vgkANh/wjcO8GGgkfmmqUVAnrfgC2ztyghlaaz3WLY1ffA5Y4NoZ++1xXedXroEJER80wWCaFXoYI9CvhOpAWjFCygxAh0b7sPdL+2mEBfuJHoaZRYEsuStqPejKxT9IuT25zXNy0Kgj1U+kwAUCeHj8zCOsalLfkXOmtiF1uWQ2xS837u0W/kTKoX/tS/mO6rTLpUzSOCdR+6bOeyGCvQcjv4O2Z2lybWkPxWfAwn8ACub13g01WwEcrCK0fMCMRqcfEmYtXnBBUXRUZxe57N35W2zBEXy/JXMGMADgT4aloXg5jUGUqUWxABj8gtvrgJW1kVE4AAA==",
+    "slug": "onion-corn-50bottle1ltr",
+    "img": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/onion-corn-50bottle1ltr-front-1787219925149-SaFqUVDf30TROUnFPQsfuJceyL7uoQ.png",
+    "imgFront": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/onion-corn-50bottle1ltr-front-1787219925149-SaFqUVDf30TROUnFPQsfuJceyL7uoQ.png",
+    "imgBack": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/onion-corn-50bottle1ltr-front-1787219925149-SaFqUVDf30TROUnFPQsfuJceyL7uoQ.png",
+    "qrImg": "",
     "scans": 0,
     "compositions": [
       {
@@ -416,81 +105,283 @@
       },
       {
         "label": "Amino Acid",
-        "value": "4-7"
+        "value": "3"
       },
       {
         "label": "Seaweed Extract",
-        "value": "4-8"
+        "value": "44"
       },
       {
         "label": "Fulvic Acid",
-        "value": "4-9"
+        "value": "3"
       }
     ],
     "specifications": [
       {
         "label": "MRP",
-        "value": "1700"
+        "value": "111"
       },
       {
         "label": "Bag Weight",
-        "value": "60"
+        "value": "45"
       },
       {
         "label": "Use",
         "value": "5"
       }
     ],
-    "imgFront": "/uploads/sugar-50kg-main-1786360301185.jpg",
-    "updatedAt": "2026-08-10T11:13:26.617Z",
-    "imgBack": "/uploads/sugar-50kg-main-1786360301185.jpg"
+    "updatedAt": "2026-08-20T09:59:09.029Z"
   },
   {
-    "id": 1786360393355,
-    "name": "OOOO",
-    "desc": "SFGR",
-    "mrp": 9000,
-    "weight": "40",
-    "unit": "KG",
-    "badge": "ORGANIC",
-    "slug": "oooo",
-    "img": "/uploads/oooo-main-1786360393672.jpg",
-    "qrImg": "data:image/webp;base64,UklGRgIDAABXRUJQVlA4WAoAAAAgAAAANwAAHwAASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDggFAEAANAGAJ0BKjgAIAA/OYy/WC8opqOsGqgB4CcJY2ZAWeCuE48k8+086cQVvQPzNb30HbvSAMGjw4D/o9ZPfH3tIAD+56GkW3TB/3QujcjgPP4xxT5svpGw9P+gm0TFnLDFkKyEa7itR/vxPErJWdOjzVO8CaXFRLg5irchkJWKr04j5Ik/sEmm6bwA44An0f+EubIdnyjiZ3puMZFT6A4mPggV5vTJHbstbYdtzmSLIRKvUJhfG/0YqKb1WT18Bk7RB8X94YWPsQy6m8n8v1pOuCUq6DDsr1eUn0M8CWlrkmBgNY4Ieg5ier8esNo1aRCANVX+vv68xN3UOvVKm1DBMDnI7RkX54Fd/la7VQDgJwywpCQAAA==",
+    "id": 5,
+    "slug": "agri-power",
+    "name": "Agri Power",
+    "badge": "DRIP ONLY",
+    "desc": "Agri Power is a micronutrient crop-nutrition formulation for drip application. It supplies iron, zinc, copper, boron and manganese to support balanced crop development.",
+    "mrp": 3340,
+    "weight": 5,
+    "unit": "Ltr",
+    "img": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-front-1787220555964-2Y6a7B7UxbkWzfJqJxwFbU2eiunMgc.png",
+    "imgFront": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-front-1787220555964-2Y6a7B7UxbkWzfJqJxwFbU2eiunMgc.png",
+    "imgBack": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-back-1787220556888-Xlq3w1ZV3wO61AS1dNgbO6Jz2LKYwo.png",
     "scans": 0,
     "compositions": [
       {
-        "label": "Potassium Humate",
-        "value": "4-4"
+        "label": "Iron (Fe)",
+        "value": "4.0%"
       },
       {
-        "label": "Amino Acid",
-        "value": "2-2"
+        "label": "Zinc (Zn)",
+        "value": "6.0%"
       },
       {
-        "label": "Seaweed Extract",
-        "value": "2-2"
+        "label": "Copper (Cu)",
+        "value": "0.5%"
       },
       {
-        "label": "Fulvic Acid",
-        "value": "2-5"
+        "label": "Boron (B)",
+        "value": "0.5%"
+      },
+      {
+        "label": "Manganese (Mn)",
+        "value": "1.0%"
+      },
+      {
+        "label": "Zyme & Vitamins",
+        "value": "Q.S."
+      },
+      {
+        "label": "Carrier",
+        "value": "Q.S."
       }
     ],
     "specifications": [
       {
-        "label": "MRP",
-        "value": "5000"
+        "label": "Pack size",
+        "value": "5 Litre"
       },
       {
-        "label": "Bag Weight",
-        "value": "50"
+        "label": "MRP",
+        "value": "₹3,340"
+      },
+      {
+        "label": "Recommended application",
+        "value": "Drip application only"
+      },
+      {
+        "label": "Nutrient support",
+        "value": "Fe, Zn, Cu, B and Mn"
+      }
+    ],
+    "updatedAt": "2026-08-20T10:09:17.502Z"
+  },
+  {
+    "id": "agri-power-1ltr",
+    "slug": "agri-power-1ltr",
+    "name": "Agri Power (1 Ltr)",
+    "badge": "MICRONUTRIENTS",
+    "desc": "Agri Power is a micronutrient crop-nutrition formulation. It supplies iron, zinc, copper, boron and manganese to support balanced plant development.",
+    "mrp": 765,
+    "weight": 1,
+    "unit": "Ltr",
+    "img": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-1ltr-front-1787221149232-Am2XCv145JUU4zDoWvqb7B11bbP6Yy.png",
+    "imgFront": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-1ltr-front-1787221149232-Am2XCv145JUU4zDoWvqb7B11bbP6Yy.png",
+    "imgBack": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-1ltr-back-1787221150274-ITXzKrxW4R18WrnGeGiaIUzExtJPWK.png",
+    "scans": 0,
+    "compositions": [
+      {
+        "label": "Iron (Fe)",
+        "value": "4.0%"
+      },
+      {
+        "label": "Zinc (Zn)",
+        "value": "6.0%"
+      },
+      {
+        "label": "Copper (Cu)",
+        "value": "0.5%"
+      },
+      {
+        "label": "Boron (B)",
+        "value": "0.5%"
+      },
+      {
+        "label": "Manganese (Mn)",
+        "value": "1.0%"
+      },
+      {
+        "label": "Zyme & Vitamins",
+        "value": "Q.S."
+      },
+      {
+        "label": "Carrier",
+        "value": "Q.S."
+      }
+    ],
+    "specifications": [
+      {
+        "label": "Pack size",
+        "value": "1 Litre"
+      },
+      {
+        "label": "MRP",
+        "value": "₹765"
+      },
+      {
+        "label": "Nutrient support",
+        "value": "Fe, Zn, Cu, B and Mn"
       },
       {
         "label": "Use",
-        "value": "5"
+        "value": "For agricultural use"
       }
     ],
-    "imgFront": "/uploads/oooo-main-1786360393672.jpg",
-    "updatedAt": "2026-08-10T11:13:26.620Z",
-    "imgBack": "/uploads/oooo-main-1786360393672.jpg"
+    "updatedAt": "2026-08-20T10:19:11.264Z"
+  },
+  {
+    "id": "agri-power-500ml",
+    "slug": "agri-power-500ml",
+    "name": "Agri Power (500 ML)",
+    "badge": "MICRONUTRIENTS",
+    "desc": "Agri Power is a micronutrient crop-nutrition formulation. It supplies iron, zinc, copper, boron and manganese to support balanced plant development.",
+    "mrp": 430,
+    "weight": 500,
+    "unit": "ML",
+    "img": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-500ml-front-1787221587292-RBTIVl7nay6k7RTL5mfClAcEC6DW1A.png",
+    "imgFront": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-500ml-front-1787221587292-RBTIVl7nay6k7RTL5mfClAcEC6DW1A.png",
+    "imgBack": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-500ml-back-1787221588119-zhKjd487YMG3l1rNjHVkllQyw2JnwV.png",
+    "scans": 0,
+    "compositions": [
+      {
+        "label": "Iron (Fe)",
+        "value": "4.0%"
+      },
+      {
+        "label": "Zinc (Zn)",
+        "value": "6.0%"
+      },
+      {
+        "label": "Copper (Cu)",
+        "value": "0.5%"
+      },
+      {
+        "label": "Boron (B)",
+        "value": "0.5%"
+      },
+      {
+        "label": "Manganese (Mn)",
+        "value": "1.0%"
+      },
+      {
+        "label": "Zyme & Vitamins",
+        "value": "Q.S."
+      },
+      {
+        "label": "Carrier",
+        "value": "Q.S."
+      }
+    ],
+    "specifications": [
+      {
+        "label": "Pack size",
+        "value": "500 ML"
+      },
+      {
+        "label": "MRP",
+        "value": "₹430"
+      },
+      {
+        "label": "Nutrient support",
+        "value": "Fe, Zn, Cu, B and Mn"
+      },
+      {
+        "label": "Use",
+        "value": "For agricultural use"
+      }
+    ],
+    "updatedAt": "2026-08-20T10:26:28.919Z"
+  },
+  {
+    "id": "agri-power-250ml",
+    "slug": "agri-power-250ml",
+    "name": "Agri Power (250 ML)",
+    "badge": "MICRONUTRIENTS",
+    "desc": "Agri Power is a micronutrient crop-nutrition formulation. It supplies iron, zinc, copper, boron and manganese to support balanced plant development.",
+    "mrp": 260,
+    "weight": 250,
+    "unit": "ML",
+    "img": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-250ml-front-1787221940532-eABUl1ZupUkMzv8M949JgrD9yqnLKI.png",
+    "imgFront": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-250ml-front-1787221940532-eABUl1ZupUkMzv8M949JgrD9yqnLKI.png",
+    "imgBack": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-250ml-back-1787221941634-LzqRKljtqstTlaPqUBnhgGMZfhZVl3.png",
+    "scans": 0,
+    "compositions": [
+      {
+        "label": "Iron (Fe)",
+        "value": "4.0%"
+      },
+      {
+        "label": "Zinc (Zn)",
+        "value": "6.0%"
+      },
+      {
+        "label": "Copper (Cu)",
+        "value": "0.5%"
+      },
+      {
+        "label": "Boron (B)",
+        "value": "0.5%"
+      },
+      {
+        "label": "Manganese (Mn)",
+        "value": "1.0%"
+      },
+      {
+        "label": "Zyme & Vitamins",
+        "value": "Q.S."
+      },
+      {
+        "label": "Carrier",
+        "value": "Q.S."
+      }
+    ],
+    "specifications": [
+      {
+        "label": "Pack size",
+        "value": "250 ML"
+      },
+      {
+        "label": "MRP",
+        "value": "₹260"
+      },
+      {
+        "label": "Nutrient support",
+        "value": "Fe, Zn, Cu, B and Mn"
+      },
+      {
+        "label": "Use",
+        "value": "For agricultural use"
+      }
+    ],
+    "updatedAt": "2026-08-20T10:32:22.304Z"
   }
 ]
