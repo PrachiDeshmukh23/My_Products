@@ -148,132 +148,6 @@
     "updatedAt": "2026-08-20T10:09:17.502Z"
   },
   {
-    "id": "agri-power-500ml",
-    "slug": "agri-power-500ml",
-    "name": "Agri Power (500 ML)",
-    "badge": "MICRONUTRIENTS",
-    "desc": "Agri Power is a micronutrient crop-nutrition formulation. It supplies iron, zinc, copper, boron and manganese to support balanced plant development.",
-    "mrp": 430,
-    "weight": 500,
-    "unit": "ML",
-    "img": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-500ml-front-1787221587292-RBTIVl7nay6k7RTL5mfClAcEC6DW1A.png",
-    "imgFront": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-500ml-front-1787221587292-RBTIVl7nay6k7RTL5mfClAcEC6DW1A.png",
-    "imgBack": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-500ml-back-1787221588119-zhKjd487YMG3l1rNjHVkllQyw2JnwV.png",
-    "scans": 0,
-    "compositions": [
-      {
-        "label": "Iron (Fe)",
-        "value": "4.0%"
-      },
-      {
-        "label": "Zinc (Zn)",
-        "value": "6.0%"
-      },
-      {
-        "label": "Copper (Cu)",
-        "value": "0.5%"
-      },
-      {
-        "label": "Boron (B)",
-        "value": "0.5%"
-      },
-      {
-        "label": "Manganese (Mn)",
-        "value": "1.0%"
-      },
-      {
-        "label": "Zyme & Vitamins",
-        "value": "Q.S."
-      },
-      {
-        "label": "Carrier",
-        "value": "Q.S."
-      }
-    ],
-    "specifications": [
-      {
-        "label": "Pack size",
-        "value": "500 ML"
-      },
-      {
-        "label": "MRP",
-        "value": "₹430"
-      },
-      {
-        "label": "Nutrient support",
-        "value": "Fe, Zn, Cu, B and Mn"
-      },
-      {
-        "label": "Use",
-        "value": "For agricultural use"
-      }
-    ],
-    "updatedAt": "2026-08-20T10:26:28.919Z"
-  },
-  {
-    "id": "agri-power-250ml",
-    "slug": "agri-power-250ml",
-    "name": "Agri Power (250 ML)",
-    "badge": "MICRONUTRIENTS",
-    "desc": "Agri Power is a micronutrient crop-nutrition formulation. It supplies iron, zinc, copper, boron and manganese to support balanced plant development.",
-    "mrp": 260,
-    "weight": 250,
-    "unit": "ML",
-    "img": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-250ml-front-1787221940532-eABUl1ZupUkMzv8M949JgrD9yqnLKI.png",
-    "imgFront": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-250ml-front-1787221940532-eABUl1ZupUkMzv8M949JgrD9yqnLKI.png",
-    "imgBack": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-250ml-back-1787221941634-LzqRKljtqstTlaPqUBnhgGMZfhZVl3.png",
-    "scans": 0,
-    "compositions": [
-      {
-        "label": "Iron (Fe)",
-        "value": "4.0%"
-      },
-      {
-        "label": "Zinc (Zn)",
-        "value": "6.0%"
-      },
-      {
-        "label": "Copper (Cu)",
-        "value": "0.5%"
-      },
-      {
-        "label": "Boron (B)",
-        "value": "0.5%"
-      },
-      {
-        "label": "Manganese (Mn)",
-        "value": "1.0%"
-      },
-      {
-        "label": "Zyme & Vitamins",
-        "value": "Q.S."
-      },
-      {
-        "label": "Carrier",
-        "value": "Q.S."
-      }
-    ],
-    "specifications": [
-      {
-        "label": "Pack size",
-        "value": "250 ML"
-      },
-      {
-        "label": "MRP",
-        "value": "₹260"
-      },
-      {
-        "label": "Nutrient support",
-        "value": "Fe, Zn, Cu, B and Mn"
-      },
-      {
-        "label": "Use",
-        "value": "For agricultural use"
-      }
-    ],
-    "updatedAt": "2026-08-20T10:32:22.304Z"
-  },
-  {
     "id": "agri-power-1ltr",
     "slug": "agri-power-1ltr",
     "aliases": [
@@ -338,5 +212,137 @@
       }
     ],
     "updatedAt": "2026-08-21T06:50:01.426Z"
+  },
+  {
+    "id": "agri-power-500ml",
+    "slug": "agri-power-500ml",
+    "aliases": [
+      "agri-power-1bottle500ml"
+    ],
+    "name": "Agri Power (500 ML)",
+    "badge": "MICRONUTRIENTS",
+    "desc": "Agri Power is a micronutrient crop-nutrition formulation. It supplies iron, zinc, copper, boron and manganese to support balanced plant development.",
+    "mrp": 430,
+    "weight": 500,
+    "unit": "ML",
+    "img": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-500ml-front-1787295362692-L9FeLVoTbR7qVqPR7d316FsR8EYGQ8.png",
+    "imgFront": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-500ml-front-1787295362692-L9FeLVoTbR7qVqPR7d316FsR8EYGQ8.png",
+    "imgBack": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-500ml-back-1787295363445-LTo6bJ3KAm8uiO68PUii2j0LvY3FOW.png",
+    "scans": 0,
+    "compositions": [
+      {
+        "label": "Iron (Fe)",
+        "value": "4.0%"
+      },
+      {
+        "label": "Zinc (Zn)",
+        "value": "6.0%"
+      },
+      {
+        "label": "Copper (Cu)",
+        "value": "0.5%"
+      },
+      {
+        "label": "Boron (B)",
+        "value": "0.5%"
+      },
+      {
+        "label": "Manganese (Mn)",
+        "value": "1.0%"
+      },
+      {
+        "label": "Zyme & Vitamins",
+        "value": "Q.S."
+      },
+      {
+        "label": "Carrier",
+        "value": "Q.S."
+      }
+    ],
+    "specifications": [
+      {
+        "label": "Pack size",
+        "value": "500 ML"
+      },
+      {
+        "label": "MRP",
+        "value": "₹430"
+      },
+      {
+        "label": "Nutrient support",
+        "value": "Fe, Zn, Cu, B and Mn"
+      },
+      {
+        "label": "Use",
+        "value": "For agricultural use"
+      }
+    ],
+    "updatedAt": "2026-08-21T06:56:04.135Z"
+  },
+  {
+    "id": "agri-power-250ml",
+    "slug": "agri-power-250ml",
+    "aliases": [
+      "agri-power-1bottle250ml"
+    ],
+    "name": "Agri Power (250 ML)",
+    "badge": "MICRONUTRIENTS",
+    "desc": "Agri Power is a micronutrient crop-nutrition formulation. It supplies iron, zinc, copper, boron and manganese to support balanced plant development.",
+    "mrp": 260,
+    "weight": 250,
+    "unit": "ML",
+    "img": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-250ml-front-1787295366418-JOkH85vaEjjR28CzurnLxlcjGHvJZE.png",
+    "imgFront": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-250ml-front-1787295366418-JOkH85vaEjjR28CzurnLxlcjGHvJZE.png",
+    "imgBack": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-250ml-back-1787295367134-IbNwoHhouul0Pe5GaDJ77cmS1ByGU8.png",
+    "scans": 0,
+    "compositions": [
+      {
+        "label": "Iron (Fe)",
+        "value": "4.0%"
+      },
+      {
+        "label": "Zinc (Zn)",
+        "value": "6.0%"
+      },
+      {
+        "label": "Copper (Cu)",
+        "value": "0.5%"
+      },
+      {
+        "label": "Boron (B)",
+        "value": "0.5%"
+      },
+      {
+        "label": "Manganese (Mn)",
+        "value": "1.0%"
+      },
+      {
+        "label": "Zyme & Vitamins",
+        "value": "Q.S."
+      },
+      {
+        "label": "Carrier",
+        "value": "Q.S."
+      }
+    ],
+    "specifications": [
+      {
+        "label": "Pack size",
+        "value": "250 ML"
+      },
+      {
+        "label": "MRP",
+        "value": "₹260"
+      },
+      {
+        "label": "Nutrient support",
+        "value": "Fe, Zn, Cu, B and Mn"
+      },
+      {
+        "label": "Use",
+        "value": "For agricultural use"
+      }
+    ],
+    "updatedAt": "2026-08-21T06:56:07.815Z"
   }
 ]

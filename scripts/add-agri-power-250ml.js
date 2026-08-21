@@ -20,6 +20,7 @@ async function main() {
   const input = {
     id: 'agri-power-250ml',
     slug: 'agri-power-250ml',
+    aliases: ['agri-power-1bottle250ml'],
     name: 'Agri Power (250 ML)',
     badge: 'MICRONUTRIENTS',
     desc: 'Agri Power is a micronutrient crop-nutrition formulation. It supplies iron, zinc, copper, boron and manganese to support balanced plant development.',
