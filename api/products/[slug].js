@@ -12,9 +12,21 @@ function getSlug(req) {
 }
 
 function matchesProductIdentifier(product, identifier) {
-  return product.slug === identifier ||
-    String(product.id) === identifier ||
-    (Array.isArray(product.aliases) && product.aliases.includes(identifier));
+  if (product.slug === identifier ||
+      String(product.id) === identifier ||
+      (Array.isArray(product.aliases) && product.aliases.includes(identifier))) {
+    return true;
+  }
+
+  // Older Admin pages generated package QR slugs such as
+  // "agri-power-500bottle500ml". Match their size and unit to the
+  // canonical Agri Power product so those printed codes stay valid.
+  const oldCode = String(identifier || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  const name = String(product.name || '').toLowerCase();
+  const unit = String(product.unit || '').toLowerCase();
+  const packUnit = unit.includes('ml') ? 'ml' : (unit.includes('ltr') || unit === 'l' ? 'ltr' : '');
+  const pack = `${String(product.weight || '').toLowerCase()}${packUnit}`;
+  return name.startsWith('agri power') && oldCode.startsWith('agripower') && Boolean(pack) && oldCode.includes(pack);
 }
 
 module.exports = async function productBySlugApi(req, res) {
