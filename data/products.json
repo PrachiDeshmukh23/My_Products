@@ -85,54 +85,6 @@
     "unit": "KG"
   },
   {
-    "id": 1787219952118,
-    "name": "Onion & Corn",
-    "desc": "efea",
-    "mrp": 111,
-    "weight": "50",
-    "unit": "Bottle (1 Ltr)",
-    "badge": "ORGANIC",
-    "slug": "onion-corn-50bottle1ltr",
-    "img": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/onion-corn-50bottle1ltr-front-1787219925149-SaFqUVDf30TROUnFPQsfuJceyL7uoQ.png",
-    "imgFront": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/onion-corn-50bottle1ltr-front-1787219925149-SaFqUVDf30TROUnFPQsfuJceyL7uoQ.png",
-    "imgBack": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/onion-corn-50bottle1ltr-front-1787219925149-SaFqUVDf30TROUnFPQsfuJceyL7uoQ.png",
-    "qrImg": "",
-    "scans": 0,
-    "compositions": [
-      {
-        "label": "Potassium Humate",
-        "value": "4"
-      },
-      {
-        "label": "Amino Acid",
-        "value": "3"
-      },
-      {
-        "label": "Seaweed Extract",
-        "value": "44"
-      },
-      {
-        "label": "Fulvic Acid",
-        "value": "3"
-      }
-    ],
-    "specifications": [
-      {
-        "label": "MRP",
-        "value": "111"
-      },
-      {
-        "label": "Bag Weight",
-        "value": "45"
-      },
-      {
-        "label": "Use",
-        "value": "5"
-      }
-    ],
-    "updatedAt": "2026-08-20T09:59:09.029Z"
-  },
-  {
     "id": 5,
     "slug": "agri-power",
     "name": "Agri Power",
@@ -194,69 +146,6 @@
       }
     ],
     "updatedAt": "2026-08-20T10:09:17.502Z"
-  },
-  {
-    "id": "agri-power-1ltr",
-    "slug": "agri-power-1ltr",
-    "name": "Agri Power (1 Ltr)",
-    "badge": "MICRONUTRIENTS",
-    "desc": "Agri Power is a micronutrient crop-nutrition formulation. It supplies iron, zinc, copper, boron and manganese to support balanced plant development.",
-    "mrp": 765,
-    "weight": 1,
-    "unit": "Ltr",
-    "img": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-1ltr-front-1787221149232-Am2XCv145JUU4zDoWvqb7B11bbP6Yy.png",
-    "imgFront": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-1ltr-front-1787221149232-Am2XCv145JUU4zDoWvqb7B11bbP6Yy.png",
-    "imgBack": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-1ltr-back-1787221150274-ITXzKrxW4R18WrnGeGiaIUzExtJPWK.png",
-    "scans": 0,
-    "compositions": [
-      {
-        "label": "Iron (Fe)",
-        "value": "4.0%"
-      },
-      {
-        "label": "Zinc (Zn)",
-        "value": "6.0%"
-      },
-      {
-        "label": "Copper (Cu)",
-        "value": "0.5%"
-      },
-      {
-        "label": "Boron (B)",
-        "value": "0.5%"
-      },
-      {
-        "label": "Manganese (Mn)",
-        "value": "1.0%"
-      },
-      {
-        "label": "Zyme & Vitamins",
-        "value": "Q.S."
-      },
-      {
-        "label": "Carrier",
-        "value": "Q.S."
-      }
-    ],
-    "specifications": [
-      {
-        "label": "Pack size",
-        "value": "1 Litre"
-      },
-      {
-        "label": "MRP",
-        "value": "₹765"
-      },
-      {
-        "label": "Nutrient support",
-        "value": "Fe, Zn, Cu, B and Mn"
-      },
-      {
-        "label": "Use",
-        "value": "For agricultural use"
-      }
-    ],
-    "updatedAt": "2026-08-20T10:19:11.264Z"
   },
   {
     "id": "agri-power-500ml",
@@ -383,5 +272,71 @@
       }
     ],
     "updatedAt": "2026-08-20T10:32:22.304Z"
+  },
+  {
+    "id": "agri-power-1ltr",
+    "slug": "agri-power-1ltr",
+    "aliases": [
+      "agri-power-1bottle1ltr"
+    ],
+    "name": "Agri Power (1 Ltr)",
+    "badge": "MICRONUTRIENTS",
+    "desc": "Agri Power is a micronutrient crop-nutrition formulation. It supplies iron, zinc, copper, boron and manganese to support balanced plant development.",
+    "mrp": 765,
+    "weight": 1,
+    "unit": "Ltr",
+    "img": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-1ltr-front-1787294999652-DWJ7Mky65yUJfFaZfbZLhFRyXMgHfy.png",
+    "imgFront": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-1ltr-front-1787294999652-DWJ7Mky65yUJfFaZfbZLhFRyXMgHfy.png",
+    "imgBack": "https://jcxtvof5xikvbaxw.public.blob.vercel-storage.com/plantcare/uploads/agri-power-1ltr-back-1787295000750-nw6iOOMwU4OrVDjeo1ePnOss3gvXsC.png",
+    "scans": 0,
+    "compositions": [
+      {
+        "label": "Iron (Fe)",
+        "value": "4.0%"
+      },
+      {
+        "label": "Zinc (Zn)",
+        "value": "6.0%"
+      },
+      {
+        "label": "Copper (Cu)",
+        "value": "0.5%"
+      },
+      {
+        "label": "Boron (B)",
+        "value": "0.5%"
+      },
+      {
+        "label": "Manganese (Mn)",
+        "value": "1.0%"
+      },
+      {
+        "label": "Zyme & Vitamins",
+        "value": "Q.S."
+      },
+      {
+        "label": "Carrier",
+        "value": "Q.S."
+      }
+    ],
+    "specifications": [
+      {
+        "label": "Pack size",
+        "value": "1 Litre"
+      },
+      {
+        "label": "MRP",
+        "value": "₹765"
+      },
+      {
+        "label": "Nutrient support",
+        "value": "Fe, Zn, Cu, B and Mn"
+      },
+      {
+        "label": "Use",
+        "value": "For agricultural use"
+      }
+    ],
+    "updatedAt": "2026-08-21T06:50:01.426Z"
   }
 ]

@@ -37,6 +37,12 @@ function readProducts() {
   } catch { return []; }
 }
 
+function matchesProductIdentifier(product, identifier) {
+  return product.slug === identifier ||
+    String(product.id) === identifier ||
+    (Array.isArray(product.aliases) && product.aliases.includes(identifier));
+}
+
 async function readSharedProducts() {
   if (cloudStore && process.env.BLOB_READ_WRITE_TOKEN) {
     try {
@@ -231,7 +237,7 @@ const server = http.createServer(async (req, res) => {
   if (pathname === '/api/products' && req.method === 'GET') return sendJson(res, 200, await readSharedProducts());
   if (pathname.startsWith('/api/products/') && req.method === 'GET') {
     const slug = decodeURIComponent(pathname.slice('/api/products/'.length));
-    const product = (await readSharedProducts()).find(p => p.slug === slug || String(p.id) === slug);
+    const product = (await readSharedProducts()).find(p => matchesProductIdentifier(p, slug));
     return product ? sendJson(res, 200, product) : sendJson(res, 404, { error: 'Product not found' });
   }
   if (pathname.startsWith('/api/products/') && req.method === 'DELETE') {

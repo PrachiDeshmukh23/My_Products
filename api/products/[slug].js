@@ -11,11 +11,17 @@ function getSlug(req) {
   return decodeURIComponent(pathname.split('/').filter(Boolean).pop() || '');
 }
 
+function matchesProductIdentifier(product, identifier) {
+  return product.slug === identifier ||
+    String(product.id) === identifier ||
+    (Array.isArray(product.aliases) && product.aliases.includes(identifier));
+}
+
 module.exports = async function productBySlugApi(req, res) {
   try {
     const slug = getSlug(req);
     const products = await getProducts();
-    const product = products.find(item => item.slug === slug || String(item.id) === slug);
+    const product = products.find(item => matchesProductIdentifier(item, slug));
 
     if (req.method === 'GET') {
       return product

@@ -307,6 +307,9 @@
           if (response.ok) {
             data = await response.json();
             loadedFromSharedDb = true;
+            // Old printed QR codes can use a legacy alias. Once resolved,
+            // use the canonical slug for this product's displayed QR code.
+            PRODUCT_SLUG = data.slug || PRODUCT_SLUG;
             cacheCanonicalProduct(data);
           } else if (response.status === 404) {
             removeCachedProduct(PRODUCT_SLUG);
